@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="picnic.min.css" />
+  <title>Champipi</title>
+</head>
+<body>
+  <div class="flex one">
+  <h1>Champipi</h1>
+  
+    <div class="flex two">
+    
+    <div class="">
+      <label for="searchField">Recherche dans les descriptions :</label>
+      <input type="text" id="searchField" placeholder="Entrez un terme de recherche">
+    </div>
+    <div class="third-500 full">
+      <label for="criteria">Choisir un critère de recherche :</label>
+      <select id="criteria">
+    </div>
+    </select>
+    </div>
+    <div id="filtresActifs" class="filtresContainer"><ul id="criteriaList"></ul> </div>
+   
+    <div class="full">
+      <button id="searchButton" type="submit">Rechercher</button>
+      <button id="clearButton" type="button">Réinitialiser</button>
+      <span id="searchResultCount"></span>
+  </div>
+    
+    
+    <ul id="searchResults"></ul>
+
+    <div id="fiche-detail" style="display: none;">
+        <!-- Détail de la fiche -->
+      </div>
+  </div>
+    <script src="champipi_parsed.js"></script>
+    <script src="app.js"></script>
+    <script src="db.js"></script>
+    <script src="data.js"></script>
+</body>
+</html>

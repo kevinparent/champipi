@@ -1,0 +1,112 @@
+function loadData(filtres) {
+    elementCount = document.getElementById('searchResultCount');
+    if (filtres == undefined) {
+      getAllData().then(dataList => {
+        elementCount.innerHTML = `Nombre de résultats : ${dataList.length}`;  // Afficher le nombre de résultats
+        tousLesChampignons = dataList;  // Stocker les données dans la variable globale
+        remplirMenuCritere(dataList);  // Remplir le menu déroulant avec les critères de recherche
+        const list = document.getElementById('searchResults');
+        list.innerHTML = '';
+        dataList.forEach(item => {
+          list.appendChild(afficherChampignon(item));  // Afficher chaque champignon dans la liste
+        });
+      });
+    } else {
+      const list = document.getElementById('searchResults');
+      list.innerHTML = '';
+      elementCount.innerHTML = `Nombre de résultats : ${filtres.length}`;  // Afficher le nombre de résultats
+      filtres.forEach(item => {
+        list.appendChild(afficherChampignon(item));  // Afficher chaque champignon dans la liste
+  
+      });
+    }
+  }
+
+  function saveData() {
+    const input = document.getElementById('dataInput');
+    const value = input.value.trim();
+    if (value) {
+      addData(value).then(() => {
+        input.value = '';
+        loadData();
+      });
+    }
+  }
+
+  
+function appliquerRecherche() {
+  
+    if (Object.values(criteresRecherches).length == 0) {
+      loadData();
+    } else {
+      const filtres = tousLesChampignons.filter(champi => {
+        return Object.values(criteresRecherches).every((critere) => {
+          const champiDescription = champi.description || [];
+          const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
+          const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
+  
+          const mots = valeur.toLowerCase().split(/\W+/);
+  
+           return critere.termes.every(t => {
+                return mots.some(val => distanceLevenshtein(val, t.toLowerCase()) <= getTolerance(t.length));
+           });
+
+          //return mots.some(val => {return distanceLevenshtein(val, critere.terme.toLowerCase()) <= getTolerance(critere.terme.length);}); // Vérifier si la valeur correspond au terme de recherche
+        });
+      });
+      console.log("Recherches Champi = " + filtres.length);
+      loadData(filtres);
+    }  
+  }
+  
+  function getTolerance(a) {
+      tolerance = 1;
+  
+      if (a > 10) tolerance = 4;
+      else if (a > 7) tolerance = 3;
+      else if (a > 4) tolerance = 2;	
+  
+      return tolerance;
+  }
+  
+  function distanceLevenshtein(a, b) {
+    const matrix = [];
+  
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+  
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1,     // insertion
+            matrix[i - 1][j] + 1      // suppression
+          );
+        }
+      }
+    }
+  
+    return matrix[b.length][a.length];
+  }
+  
+  function loadInitialDataIfNeeded() {
+    getAllData().then(data => {
+      if (data.length === 0 && window.champiData) {
+        addMultipleData(window.champiData).then(() => {
+          console.log("Données initiales chargées.");
+          loadData();  // Charger les données après l'ajout
+        
+        });
+      } else {
+        console.log("Données déjà présentes, pas besoin de charger les données initiales.");
+        loadData();  // Charger les données existantes
+      }
+    });
+  }
