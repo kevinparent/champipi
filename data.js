@@ -93,9 +93,9 @@ function appliquerRecherche() {
   function getTolerance(a) {
       tolerance = 1;
   
-      if (a > 10) tolerance = 4;
-      else if (a > 7) tolerance = 3;
-      else if (a > 4) tolerance = 2;	
+      if (a > 10) tolerance = 3;
+      else if (a > 7) tolerance = 2;
+      else if (a > 4) tolerance = 1;	
   
       return tolerance;
   }
