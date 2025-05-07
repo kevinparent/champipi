@@ -74,11 +74,19 @@ function afficherChampignon(champignon) {
       champiHeader = document.createElement('h5');
       champiHeader.appendChild(document.createTextNode(champignon["list champi"]));
       champiHeaderText = document.createElement('p');
-      li.appendChild(champiHeader);
-      li.appendChild(champiHeaderText);
+      champiCard = document.createElement('div');
+      champiCardHeader = document.createElement('div');
+      champiCardHeader.className = 'card-header';
+      champiCardBody = document.createElement('div');
+      champiCardBody.className = 'card-body';
+      champiCard.className = 'card';
+      champiCardHeader.appendChild(champiHeader);
+      champiCard.appendChild(champiCardHeader);
+      champiCard.appendChild(champiCardBody);
+      li.appendChild(champiCard);
 
       if (descriptionItems != "") {
-        li.innerHTML += `
+        champiCardBody.innerHTML += `
         <p><strong>Descriptions :</strong></p>  
         <ul>
           ${descriptionItems}
