@@ -1,7 +1,7 @@
 {
     "name": "Champipi",
     "short_name": "ChampipiApp",
-    "start_url": "/",
+    "start_url": "/champipi",
     "display": "standalone",
     "background_color": "#ffffff",
     "description": "Application de recherche hors-ligne de champignons comestibles et toxiques.",
