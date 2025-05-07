@@ -74,7 +74,6 @@ function afficherChampignon(champignon) {
       champiHeader = document.createElement('h5');
       champiHeader.appendChild(document.createTextNode(champignon["list champi"]));
       champiHeaderText = document.createElement('p');
-      champiHeaderText.innerHTML =  `<strong>Titre :</strong> ${champignon.champiTitre}`
       li.appendChild(champiHeader);
       li.appendChild(champiHeaderText);
 
