@@ -22,6 +22,10 @@ function loadData(filtres) {
     }
   }
 
+function sansAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
   function saveData() {
     const input = document.getElementById('dataInput');
     const value = input.value.trim();
@@ -50,12 +54,12 @@ function appliquerRecherche() {
            return critere.termes.every(t => {
                 const estNegatif = t.startsWith("!");
                 const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-                let termeMin = termeNettoye.toLowerCase();
+                let termeMin = sansAccent(termeNettoye.toLowerCase());
                 let tolerenceMin = getTolerance(termeNettoye.length);
 
                 if (estNegatif) {
                   return mots.every(val => {
-                    mm = val.toLowerCase();
+                    mm = sansAccent(val.toLowerCase());
                     if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
                     debutMot = mm.slice(0, termeMin.length);
                     distance = distanceLevenshtein(debutMot, termeMin);
@@ -79,7 +83,7 @@ function appliquerRecherche() {
   }
 
   function validerDonneeRecherche(termeMin, tolerenceMin, val) {
-    motMin = val.toLowerCase();
+    motMin = sansAccent(val.toLowerCase());
 
     if (motMin.startsWith(termeMin)) return true;
 
