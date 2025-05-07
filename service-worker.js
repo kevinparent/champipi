@@ -1,10 +1,14 @@
-const CACHE_NAME = 'offline-cache-v1';
+const CACHE_NAME = 'champipi-offline-cache-v1';
 const FILES_TO_CACHE = [
   '/',
+  '/champipi_parsed.js',
   '/index.html',
   '/app.js',
   '/db.js',
-  '/manifest.json'
+  '/data.js',
+  '/manifest.json',
+  '/bootstrap/css/bootstrap.min.css',
+  '/bootstrap/css/bootstrap-grid.min.css'
 ];
 
 self.addEventListener('install', event => {
