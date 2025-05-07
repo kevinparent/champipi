@@ -48,7 +48,26 @@ function appliquerRecherche() {
           const mots = valeur.toLowerCase().split(/\W+/);
   
            return critere.termes.every(t => {
-                return mots.some(val => distanceLevenshtein(val, t.toLowerCase()) <= getTolerance(t.length));
+                const estNegatif = t.startsWith("!");
+                const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
+                let termeMin = termeNettoye.toLowerCase();
+                let tolerenceMin = getTolerance(termeNettoye.length);
+
+                if (estNegatif) {
+                  return mots.every(val => {
+                    mm = val.toLowerCase();
+                    if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
+                    debutMot = mm.slice(0, termeMin.length);
+                    distance = distanceLevenshtein(debutMot, termeMin);
+                    memeInitiale = mm.charAt(0) === termeMin.charAt(0);
+                    return distance > tolerenceMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
+                  })
+                } else {
+                  return mots.some(val => {
+                    return validerDonneeRecherche(termeMin, tolerenceMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
+                  });
+                }
+                
            });
 
           //return mots.some(val => {return distanceLevenshtein(val, critere.terme.toLowerCase()) <= getTolerance(critere.terme.length);}); // Vérifier si la valeur correspond au terme de recherche
@@ -57,6 +76,18 @@ function appliquerRecherche() {
       console.log("Recherches Champi = " + filtres.length);
       loadData(filtres);
     }  
+  }
+
+  function validerDonneeRecherche(termeMin, tolerenceMin, val) {
+    motMin = val.toLowerCase();
+
+    if (motMin.startsWith(termeMin)) return true;
+
+    debutMot = motMin.slice(0, termeMin.length);
+    distance = distanceLevenshtein(debutMot, termeMin);
+    memeInitiale = motMin.charAt(0) === termeMin.charAt(0);
+
+    return memeInitiale && distance <= tolerenceMin;
   }
   
   function getTolerance(a) {

@@ -15,12 +15,12 @@ const resetButton = document.getElementById('clearButton');
 // Event Listeners
 boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
 resetButton.addEventListener('click', () => {
-  ignorerRecherche = true;  // Ignorer la recherche lors de la réinitialisation
+  ignorerRecherche = false;  // Ignorer la recherche lors de la réinitialisation
   Object.keys(criteresRecherches).forEach(k => delete criteresRecherches[k]);  
+  valeurRecherche.value = '';  // Réinitialiser le champ de recherche
+  criteriaList.selectedIndex = 0;
   miseAJourCritere() // Recharger les données sans filtres
-  setTimeout(() => {
-    ignorerRecherche = false;  // Réinitialiser le flag après un court délai
-  }, 100);
+
 });
 
 
@@ -71,10 +71,12 @@ function afficherChampignon(champignon) {
         
       });
 
-      li.innerHTML = `
-        <h3>${champignon["list champi"]}</h3>
-        <p><strong>Titre :</strong> ${champignon.champiTitre}</p>   
-      `;
+      champiHeader = document.createElement('h5');
+      champiHeader.appendChild(document.createTextNode(champignon["list champi"]));
+      champiHeaderText = document.createElement('p');
+      champiHeaderText.innerHTML =  `<strong>Titre :</strong> ${champignon.champiTitre}`
+      li.appendChild(champiHeader);
+      li.appendChild(champiHeaderText);
 
       if (descriptionItems != "") {
         li.innerHTML += `
@@ -125,20 +127,21 @@ function miseAJourCritere() {
 }
 
 function modifierListeCritere() {
-  criteriaContainer.innerHTML = '';
+  criteriaList.innerHTML = '';
   
   if (Object.values(criteresRecherches).length == 0) {
-      criteriaContainer.innerHTML = 'Aucun Filtre Actif';
+      criteriaList.innerHTML = '<h4>Aucun Filtre Actif</h4>';
       return;
   }
 
   Object.values(criteresRecherches).forEach((critere, index) => {
     const li = document.createElement('li');
+    li.className = 'list-group-item';
     li.innerHTML = `
       <strong>${critere.critere} :</strong> ${critere.termes.join(", ")}
-      <button class="remove" onclick="supprimerCritere('${critere.critere}')">X</button>
+      <button class="btn-close"  onclick="supprimerCritere('${critere.critere}')"></button>
     `;
-    criteriaContainer.appendChild(li);
+    criteriaList.appendChild(li);
   });
 }
 

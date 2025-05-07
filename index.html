@@ -4,40 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="picnic.min.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
   <title>Champipi</title>
 </head>
 <body>
-  <div class="flex one">
-  <h1>Champipi</h1>
-  
-    <div class="flex two">
+  <div class="container">
+  <h1 style="margin-bottom: 1em;">Champipi</h1>
+    <div class="row" style="padding-bottom: 1em;">
     
-    <div class="">
-      <label for="searchField">Recherche dans les descriptions :</label>
-      <input type="text" id="searchField" placeholder="Entrez un terme de recherche">
+      <div class="col-8">
+        <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
+      </div>
+      <div class="col-4">
+        <select class="form-select" id="criteria"></select>
+      </div>    
     </div>
-    <div class="third-500 full">
-      <label for="criteria">Choisir un critère de recherche :</label>
-      <select id="criteria">
-    </div>
-    </select>
-    </div>
-    <div id="filtresActifs" class="filtresContainer"><ul id="criteriaList"></ul> </div>
+    
+    
    
-    <div class="full">
-      <button id="searchButton" type="submit">Rechercher</button>
-      <button id="clearButton" type="button">Réinitialiser</button>
-      <span id="searchResultCount"></span>
-  </div>
+    <div class="row gx-5" style="border-bottom: 1px solid black; padding-bottom: 1em;">
+      <div class="col-5">     
+      <button id="searchButton" type="button" class="btn btn-primary">Rechercher</button>
+        <button id="clearButton" type="button" class="btn btn-warning">Réinitialiser</button>
+      </div>
+      <div class="col text-end">
+        <h4 id="searchResultCount"></h4>
+        </div>
+      </div>
+      
+  
+  <div id="filtresActifs" class="filtresContainer row"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
     
-    
-    <ul id="searchResults"></ul>
+  <div class="resultContainer row">    <ul id="searchResults"></ul></div>
+
 
     <div id="fiche-detail" style="display: none;">
         <!-- Détail de la fiche -->
       </div>
-  </div>
+</div>
     <script src="champipi_parsed.js"></script>
     <script src="app.js"></script>
     <script src="db.js"></script>
