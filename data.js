@@ -49,17 +49,17 @@ function appliquerRecherche() {
           const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
           const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
   
-          const mots = sansAccent(valeur.toLowerCase()).split(/\W+/);
+          const mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
   
            return critere.termes.every(t => {
                 const estNegatif = t.startsWith("!");
                 const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-                let termeMin = sansAccent(termeNettoye.toLowerCase());
+                let termeMin = sansAccents(termeNettoye.toLowerCase());
                 let tolerenceMin = getTolerance(termeNettoye.length);
 
                 if (estNegatif) {
                   return mots.every(val => {
-                    mm = sansAccent(val.toLowerCase());
+                    mm = sansAccents(val.toLowerCase());
                     if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
                     debutMot = mm.slice(0, termeMin.length);
                     distance = distanceLevenshtein(debutMot, termeMin);
@@ -83,7 +83,7 @@ function appliquerRecherche() {
   }
 
   function validerDonneeRecherche(termeMin, tolerenceMin, val) {
-    motMin = sansAccent(val.toLowerCase());
+    motMin = sansAccents(val.toLowerCase());
 
     if (motMin.startsWith(termeMin)) return true;
 
