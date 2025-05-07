@@ -49,7 +49,7 @@ function appliquerRecherche() {
           const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
           const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
   
-          const mots = valeur.toLowerCase().split(/\W+/);
+          const mots = sansAccent(valeur.toLowerCase()).split(/\W+/);
   
            return critere.termes.every(t => {
                 const estNegatif = t.startsWith("!");
