@@ -50,8 +50,10 @@ function appliquerRecherche() {
           const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
   
           const mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
-  
+
            return critere.termes.every(t => {
+                const st = t.split('/\s+OU\s+/i').map(t => t.trim());
+
                 const estNegatif = t.startsWith("!");
                 const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
                 let termeMin = sansAccents(termeNettoye.toLowerCase());

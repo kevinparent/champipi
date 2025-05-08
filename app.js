@@ -61,7 +61,7 @@ function afficherChampignon(champignon) {
 
         const critereCorrespondant = Object.values(criteresRecherches).find(critere => critere.critere === Object.keys(desc)[0]);
 
-        const contenuText = critereCorrespondant
+        const contenuText = critereCorrespondant && critereCorrespondant.termes.length > 0
               ? surlignerMotsProches(descriptionValue, critereCorrespondant.termes) 
               : descriptionValue;  // Vérifier si le critère correspond à la description
 
@@ -142,13 +142,15 @@ function modifierListeCritere() {
   }
 
   Object.values(criteresRecherches).forEach((critere, index) => {
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.innerHTML = `
-      <strong>${critere.critere} :</strong> ${critere.termes.join(", ")}
-      <button class="btn-close"  onclick="supprimerCritere('${critere.critere}')"></button>
-    `;
-    criteriaList.appendChild(li);
+    if (critere.termes.length > 0) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.innerHTML = `
+        <strong>${critere.critere} :</strong> ${critere.termes.join(", ")}
+        <button class="btn-close"  onclick="supprimerCritere('${critere.critere}')"></button>
+      `;
+      criteriaList.appendChild(li);
+    }
   });
 }
 
