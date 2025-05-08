@@ -37,6 +37,16 @@ function sansAccents(str) {
     }
   }
 
+  function trouverSynonymes(tm) {
+    tm = sansAccents(tm.toLowerCase());
+    for (const groupe of dictionnaireSynonymes) {
+      if (groupe.includes(tm)) {
+        return groupe;
+      }
+    }
+    return [tm];
+  }
+
   
 function appliquerRecherche() {
   
@@ -57,21 +67,32 @@ function appliquerRecherche() {
                 return st.some(t => {
                   const estNegatif = t.startsWith("!");
                   const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-                  let termeMin = sansAccents(termeNettoye.toLowerCase());
-                  let tolerenceMin = getTolerance(termeNettoye.length);
+                  /*let termeMin = sansAccents(termeNettoye.toLowerCase());
+                  let tolerenceMin = getTolerance(termeNettoye.length);*/
+
+                  const syno = trouverSynonymes(termeNettoye);
 
                   if (estNegatif) {
-                    return mots.every(val => {
-                      mm = sansAccents(val.toLowerCase());
-                      if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
-                      debutMot = mm.slice(0, termeMin.length);
-                      distance = distanceLevenshtein(debutMot, termeMin);
-                      memeInitiale = mm.charAt(0) === termeMin.charAt(0);
-                      return distance > tolerenceMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
-                    })
+                    return syno.every(s => {
+                      sMin = sansAccents(s.toLowerCase());
+                      const tolMin = getTolerance(sMin.length);
+
+                      return mots.every(val => {
+                        mm = sansAccents(val.toLowerCase());
+                        if (mm.startsWith(sMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
+                        debutMot = mm.slice(0, sMin.length);
+                        distance = distanceLevenshtein(debutMot, sMin);
+                        memeInitiale = mm.charAt(0) === sMin.charAt(0);
+                        return distance > tolMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
+                      });
+                    });
                   } else {
-                    return mots.some(val => {
-                      return validerDonneeRecherche(termeMin, tolerenceMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
+                    return syno.some(s => { 
+                      const sMin = sansAccents(s.toLowerCase());
+                      const tolMin = getTolerance(sMin.length); 
+                      return mots.some(val => {
+                        return validerDonneeRecherche(sMin, tolMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
+                      });
                     });
                   }
                 });

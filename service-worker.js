@@ -3,6 +3,7 @@ const FILES_TO_CACHE = [
   '/',
   '/champipi_parsed.js',
   '/index.html',
+  '/synonymes.js',
   '/app.js',
   '/db.js',
   '/data.js',

@@ -1,46 +1,48 @@
 import json
-import re
-import unicodedata
+import time
+import openai
 
-def normalize_element_name(name):
-    """
-    Normalizes the given element name by:
-    - Removing spaces and special characters
-    - Replacing accented characters with their unaccented equivalents
-    - Converting to uppercase
-    """
-    # Normalize Unicode to decompose accented characters (e.g., É -> E)
-    name = unicodedata.normalize('NFD', name)
-    # Remove diacritics (accents) by filtering out combining characters
-    name = ''.join(char for char in name if not unicodedata.combining(char))
-    # Remove all non-alphanumeric characters using regex
-    normalized_name = re.sub(r'[^a-zA-Z0-9]', '', name)
-    # Convert to uppercase for consistency
-    normalized_name = normalized_name.upper()
-    return normalized_name
+# 🔐 Ta clé API OpenAI
+openai.api_key = "sk-..."  # remplace par ta propre clé
 
-# Load the input file
-input_file = "champipi_parsed_2.json"  # Replace with your file name
-output_file = "champipi_parsed_3.json"  # Replace with your desired output file name
+# 🔁 Résumer un texte via ChatGPT (GPT-4 recommandé)
+def generer_resume_concis(texte):
+    prompt = (
+        "Voici un extrait de fiche descriptive d’un champignon. "
+        "Fais un résumé concis (en 150 mots maximum), en français, informatif mais accessible :\n\n"
+        f"{texte}"
+    )
 
-# Read the input JSON file
-with open(input_file, "r", encoding="utf-8") as file:
-    data = json.load(file)
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # ou "gpt-3.5-turbo" si tu veux moins cher
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3
+        )
+        return response['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        print("Erreur :", e)
+        return ""
 
-# Transform the data
-resume = ""
-transformed_data = []
-for item in data:
-    print(f"Transforming. {item['list champi']}")
-    if "description" in item:
-        item.pop("list champi-href")
-        item.pop("description")
-    
-       # item["resume"] = resume.strip()
+# 📂 Charger les données avec champ "resume"
+with open("champipi_avec_resume.json", "r", encoding="utf-8") as f:
+    champignons = json.load(f)
 
-# Write the transformed data to the output file
-with open(output_file, "w", encoding="utf-8") as file:
-    json.dump(data, file, indent=4)
+# 🪄 Générer les résumés synthétiques
+for i, champi in enumerate(champignons):
+    if "resume_concis" in champi and champi["resume_concis"].strip():
+        continue  # sauter si déjà résumé
+    texte = champi.get("resume", "")
+    if not texte.strip():
+        champi["resume_concis"] = ""
+        continue
 
-print(f"Transformation complete. Output written to {output_file}")
+    print(f"⏳ [{i+1}/{len(champignons)}] Résumé en cours…")
+    champi["resume_concis"] = generer_resume_concis(texte)
+    time.sleep(1.2)  # ⏱️ Pour respecter les limites de l’API (surtout avec GPT-4)
 
+# 💾 Sauvegarder dans un nouveau fichier
+with open("champipi_resume_concis_chatgpt.json", "w", encoding="utf-8") as f:
+    json.dump(champignons, f, ensure_ascii=False, indent=2)
+
+print("✅ Résumés terminés et enregistrés.")

@@ -79,19 +79,20 @@ function afficherChampignon(champignon) {
       champiCardHeader.className = 'card-header';
       champiCardBody = document.createElement('div');
       champiCardBody.className = 'card-body';
+      champiCardBody.appendChild(document.createTextNode("Tricholoma smithii est un champignon mycorhizien non comestible, poussant sous conifères (épinette, pin, pruche, sapin) sur sol forestier. Son chapeau, de 6 à 15 cm, est convexe puis étalé, sec, à surface tan terne à grisâtre, souvent orné de petites squamules. Les lames, serrées et chamois, deviennent plus foncées avec l’âge. Le pied, de 4 à 12 cm, est plein, chamois, parfois orné de squamules. La chair est blanchâtre, immuable, avec une odeur et une saveur farineuses ou poivrées. Les spores sont blanches, ellipsoïdes, lisses. Microscopiquement, il présente des basides à 4 stérigmates, des cystides variables et des hyphes hyalines à faiblement pigmentées. L’espèce a été confirmée par analyse moléculaire (ITS). Elle se distingue par sa morphologie robuste et son habitat sous conifères, mais elle n’est pas comestible."));
       champiCard.className = 'card';
       champiCardHeader.appendChild(champiHeader);
       champiCard.appendChild(champiCardHeader);
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
 
-      if (descriptionItems != "") {
+      /*if (descriptionItems != "") {
         champiCardBody.innerHTML += `
         <p><strong>Descriptions :</strong></p>  
         <ul>
           ${descriptionItems}
         </ul>`
-      }
+      }*/
       return li;
 }
 

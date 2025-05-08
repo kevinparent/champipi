@@ -1,9 +1,9 @@
 import json
 import re
 import unicodedata
+from openai import OpenAI;
 
-from transformers import pipeline, AutoTokenizer
-from time import sleep
+client = OpenAI(api_key = "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")  # Remplace par ta propre clé API OpenAI
 
 def normalize_element_name(name):
     """
@@ -16,7 +16,6 @@ def normalize_element_name(name):
     name = unicodedata.normalize('NFD', name)
     # Remove diacritics (accents) by filtering out combining characters
     name = ''.join(char for char in name if not unicodedata.combining(char))
-    # Remove all non-alphanumeric characters using regex
     normalized_name = re.sub(r'[^a-zA-Z0-9]', '', name)
     # Convert to uppercase for consistency
     normalized_name = normalized_name.upper()
@@ -25,26 +24,31 @@ def normalize_element_name(name):
 def generer_resume(resume):
     res = ""
 
-    if len(resume) > 0:
-        try:
-            tex = resume.strip()
-            mots = tex.split()
-            if len(mots) > 1000:
-                tex = " ".join(mots[:1000])
-            res = summarizer(tex, max_length=250, min_length=10, do_sample=False)[0]["summary_text"]
-        except Exception as e:
-            print(f"[Erreur à l’entrée] {e}")
-            res = ""
+    prompt = (
+        "Voici un extrait de fiche descriptive d’un champignon. "
+        "Fais un résumé concis (en 150 mots maximum), en français, informatif mais accessible :\n\n"
+        f"{resume}"
+    )
 
-    # Facultatif : pause pour éviter surcharge CPU ou throttling
-    sleep(0.1)
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1",  # ou "gpt-3.5-turbo"
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3
+        )
+        res = response.choices[0].message.content.strip()
+    except Exception as e:
+        print("Erreur :", e)
+        res = ""
 
-    print(f"Résumé : {res}")
+    print(f"Résumé généré : {res}")
 
     return res;
 
-tokenizer = AutoTokenizer.from_pretrained("plguillou/t5-base-fr-sum-cnndm", use_fast=False)
-summarizer = pipeline("summarization", model="plguillou/t5-base-fr-sum-cnndm", tokenizer=tokenizer)
+#tokenizer = AutoTokenizer.from_pretrained("plguillou/t5-base-fr-sum-cnndm", use_fast=False)
+#summarizer = pipeline("summarization", model="plguillou/t5-base-fr-sum-cnndm", tokenizer=tokenizer)
 
 # Load the input file
 input_file = "champipi.json"  # Replace with your file name
@@ -65,8 +69,6 @@ for item in data:
         item.pop("list select")
         item.pop("list select-href")
         item.pop("champiTitre")
-        item.pop("description-id")
-        item.pop("groupe")
         transformed_descriptions = []
         for desc in item["description"]:
             resume = "\n\n".join(
