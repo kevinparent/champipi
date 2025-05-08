@@ -51,29 +51,30 @@ function appliquerRecherche() {
   
           const mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
 
-           return critere.termes.every(t => {
-                const st = t.split('/\s+OU\s+/i').map(t => t.trim());
+           return critere.termes.every(ts => {
+                const st = ts.split(' OU ').map(t => t.trim());
 
-                const estNegatif = t.startsWith("!");
-                const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-                let termeMin = sansAccents(termeNettoye.toLowerCase());
-                let tolerenceMin = getTolerance(termeNettoye.length);
+                return st.some(t => {
+                  const estNegatif = t.startsWith("!");
+                  const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
+                  let termeMin = sansAccents(termeNettoye.toLowerCase());
+                  let tolerenceMin = getTolerance(termeNettoye.length);
 
-                if (estNegatif) {
-                  return mots.every(val => {
-                    mm = sansAccents(val.toLowerCase());
-                    if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
-                    debutMot = mm.slice(0, termeMin.length);
-                    distance = distanceLevenshtein(debutMot, termeMin);
-                    memeInitiale = mm.charAt(0) === termeMin.charAt(0);
-                    return distance > tolerenceMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
-                  })
-                } else {
-                  return mots.some(val => {
-                    return validerDonneeRecherche(termeMin, tolerenceMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
-                  });
-                }
-                
+                  if (estNegatif) {
+                    return mots.every(val => {
+                      mm = sansAccents(val.toLowerCase());
+                      if (mm.startsWith(termeMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
+                      debutMot = mm.slice(0, termeMin.length);
+                      distance = distanceLevenshtein(debutMot, termeMin);
+                      memeInitiale = mm.charAt(0) === termeMin.charAt(0);
+                      return distance > tolerenceMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
+                    })
+                  } else {
+                    return mots.some(val => {
+                      return validerDonneeRecherche(termeMin, tolerenceMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
+                    });
+                  }
+                });
            });
 
           //return mots.some(val => {return distanceLevenshtein(val, critere.terme.toLowerCase()) <= getTolerance(critere.terme.length);}); // Vérifier si la valeur correspond au terme de recherche
