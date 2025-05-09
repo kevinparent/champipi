@@ -35,5 +35,5 @@ const dictionnaireSynonymes = [
   ["sol", "terre", "substrat"],
   ["bois", "tronc", "souche", "racine", "écorce"],
   ["forêt", "sous-bois", "lisière", "clairière"],
-  ["prairie", "pelouse", "champ", "herbe", "bord de chemin"]
+  ["prairie", "pelouse", "champ", "herbe"]
 ]
