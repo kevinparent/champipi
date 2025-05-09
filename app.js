@@ -119,15 +119,15 @@ function miseAJourCritere() {
     .map(t  => t.trim())    
     .filter(t => t.length > 0); // Filtrer les termes vides
 
-    if (!criteresRecherches[cle]) {
+    //if (!criteresRecherches[cle]) {
       criteresRecherches[critereSelect.value] = { critere: critereSelect.value, termes: termeRech };  
-    } else {
+   /* } else {
       termeRech.forEach(t => {
         if (!criteresRecherches[cle].termes.includes(t)) {
           criteresRecherches[cle].termes.push(t);
         }
       });
-    } 
+    } */
     
   modifierListeCritere();  
   appliquerRecherche();
