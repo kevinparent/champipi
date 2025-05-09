@@ -2,8 +2,9 @@ import json
 import re
 import unicodedata
 from openai import OpenAI;
+import time
 
-client = OpenAI(api_key = "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")  # Remplace par ta propre clé API OpenAI
+client = OpenAI(api_key = "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")  # Remplace par ta propre clé API OpenAI
 
 def normalize_element_name(name):
     """
@@ -61,35 +62,35 @@ with open(input_file, "r", encoding="utf-8") as file:
 # Transform the data
 resume = ""
 transformed_data = []
-for item in data:
-    print(f"Transforming. {item['list champi']}")
-    if "description" in item:
-        item.pop("web-scraper-order")
-        item.pop("web-scraper-start-url")
-        item.pop("list select")
-        item.pop("list select-href")
-        item.pop("champiTitre")
-        transformed_descriptions = []
-        for desc in item["description"]:
-            resume = "\n\n".join(
-                d["description-id"].strip() + " " + d["description"].strip()
-                for d in item["description"]
-                if "description" in d and d["description"].strip() and d["description-id"] not in ["Remarques", "Références", "Adaptation", "titres"]
-            )
-            item["resume"] = resume
-            if "description-id" in desc and "description" in desc:
-                if desc["description-id"] not in ["Remarques", "Références", "Adaptation", "titres"]: 
-                    transformed_descriptions.append({
-                        normalize_element_name(desc["description-id"]): desc["description"],
-                        "description-name": desc["description-id"]
-                    })
-        item["description"] = transformed_descriptions
-        item["resume_concis"] = generer_resume(resume)
-       # item["resume"] = resume.strip()
+with open(output_file, "a", encoding="utf-8") as out_file:
+    for item in data:
+        print(f"Transforming. {item['list champi']}")
+        if "description" in item:
+            item.pop("web-scraper-order")
+            item.pop("web-scraper-start-url")
+            item.pop("list select")
+            item.pop("list select-href")
+            item.pop("champiTitre")
+            transformed_descriptions = []
+            for desc in item["description"]:
+                resume = "\n\n".join(
+                    d["description-id"].strip() + " " + d["description"].strip()
+                    for d in item["description"]
+                    if "description" in d and d["description"].strip() and d["description-id"] not in ["Remarques", "Références", "Adaptation", "titres"]
+                )
+                item["resume"] = resume
+                if "description-id" in desc and "description" in desc:
+                    if desc["description-id"] not in ["Remarques", "Références", "Adaptation", "titres"]: 
+                        transformed_descriptions.append({
+                            normalize_element_name(desc["description-id"]): desc["description"],
+                            "description-name": desc["description-id"]
+                        })
+            item["description"] = transformed_descriptions
+            item["resume_concis"] = generer_resume(resume)
 
-# Write the transformed data to the output file
-with open(output_file, "w", encoding="utf-8") as file:
-    json.dump(data, file, indent=4)
+            out_file.write(json.dumps(item, ensure_ascii=False) + "\n")
+            time.sleep(0.8)
+        # item["resume"] = resume.strip()
 
 print(f"Transformation complete. Output written to {output_file}")
 
