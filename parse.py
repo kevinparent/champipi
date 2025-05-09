@@ -4,7 +4,6 @@ import unicodedata
 from openai import OpenAI;
 import time
 
-client = OpenAI(api_key = "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")  # Remplace par ta propre clé API OpenAI
 
 def normalize_element_name(name):
     """

@@ -1,15 +1,14 @@
 function loadData(filtres) {
     elementCount = document.getElementById('searchResultCount');
     if (filtres == undefined) {
-      getAllData().then(dataList => {
-        elementCount.innerHTML = `Nombre de résultats : ${dataList.length}`;  // Afficher le nombre de résultats
-        tousLesChampignons = dataList;  // Stocker les données dans la variable globale
-        remplirMenuCritere(dataList);  // Remplir le menu déroulant avec les critères de recherche
-        const list = document.getElementById('searchResults');
-        list.innerHTML = '';
-        dataList.forEach(item => {
-          list.appendChild(afficherChampignon(item));  // Afficher chaque champignon dans la liste
-        });
+      dataList = getAllData();  // Récupérer toutes les données
+      elementCount.innerHTML = `Nombre de résultats : ${dataList.length}`;  // Afficher le nombre de résultats
+      tousLesChampignons = dataList;  // Stocker les données dans la variable globale
+      remplirMenuCritere(dataList);  // Remplir le menu déroulant avec les critères de recherche
+      const list = document.getElementById('searchResults');
+      list.innerHTML = '';
+      dataList.forEach(item => {
+        list.appendChild(afficherChampignon(item));  // Afficher chaque champignon dans la liste
       });
     } else {
       const list = document.getElementById('searchResults');
@@ -21,6 +20,10 @@ function loadData(filtres) {
       });
     }
   }
+
+  function getAllData() {
+  return window.champiData;
+}
 
 function sansAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -156,16 +159,15 @@ function appliquerRecherche() {
   }
   
   function loadInitialDataIfNeeded() {
-    getAllData().then(data => {
-      if (data.length === 0 && window.champiData) {
-        addMultipleData(window.champiData).then(() => {
-          console.log("Données initiales chargées.");
-          loadData();  // Charger les données après l'ajout
-        
-        });
-      } else {
-        console.log("Données déjà présentes, pas besoin de charger les données initiales.");
-        loadData();  // Charger les données existantes
-      }
-    });
-  }
+    data = getAllData();
+    if (data.length === 0 && window.champiData) {
+      addMultipleData(window.champiData).then(() => {
+        console.log("Données initiales chargées.");
+        loadData();  // Charger les données après l'ajout
+      
+      });
+    } else {
+      console.log("Données déjà présentes, pas besoin de charger les données initiales.");
+      loadData();  // Charger les données existantes
+    }
+}

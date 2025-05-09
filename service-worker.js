@@ -5,7 +5,6 @@ const FILES_TO_CACHE = [
   '/index.html',
   '/synonymes.js',
   '/app.js',
-  '/db.js',
   '/data.js',
   '/manifest.json',
   '/bootstrap/css/bootstrap.min.css',

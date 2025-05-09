@@ -1,7 +1,7 @@
 // Init Variables
 let ignorerRecherche = false;
 const filtres = [];
-tousLesChampignons = [];
+tousLesChampignons = window.champiData;
 criteresRecherches = [];
 
 // Elements HTML
