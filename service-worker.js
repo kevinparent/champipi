@@ -8,7 +8,8 @@ const FILES_TO_CACHE = [
   '/data.js',
   '/manifest.json',
   '/bootstrap/css/bootstrap.min.css',
-  '/bootstrap/css/bootstrap-grid.min.css'
+  '/bootstrap/css/bootstrap-grid.min.css',
+  '/bootstrap/js/bootstrap.min.js',
 ];
 
 self.addEventListener('install', event => {
