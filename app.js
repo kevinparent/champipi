@@ -50,6 +50,29 @@ function installerApp() {
   }
 }
 
+function retirerObs(nom, observationASupprimer) {
+      const observations = JSON.parse(localStorage.getItem("observations")) || [];
+      const updatedObservations = observations.map(item => {
+        if (nom === item.nom) {
+           const nouvellesObservations = item.observations.filter(obs =>
+            obs.date !== observationASupprimer.date ||
+            obs.notes !== observationASupprimer.notes ||
+            obs.localisation.latitude !== observationASupprimer.localisation.latitude ||
+            obs.localisation.longitude !== observationASupprimer.localisation.longitude
+          );
+
+          return {
+            ...item,
+            observations: nouvellesObservations
+          };
+        }
+        return item;
+      }).filter(item => item.observations.length > 0);
+
+      localStorage.setItem("observations", JSON.stringify(updatedObservations));
+      chargerObservations();
+    }
+
 function remplirMenuCritere(champignons) {
   const select = document.getElementById('criteria');
   const criteres = new Map();

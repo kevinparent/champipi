@@ -56,11 +56,7 @@
       container.innerHTML = "";
       statsContainer.innerHTML = "";
 
-      const map = L.map('carte').setView([46.8, -71.2], 7); // Centré sur le Québec
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+      
 
       if (observations.length === 0) {
         container.innerHTML = "<p>Vous n'avez encore enregistré aucune observation.</p>";
@@ -103,31 +99,61 @@
             .addTo(map)
             .bindPopup(`<strong>${item.nom}</strong><br>${new Date(obs.date).toLocaleDateString("fr-CA")}`);
         }
-          const date = new Date(obs.date).toLocaleString("fr-CA");
+          const date = new Date(obs.date).toLocaleDateString("fr-CA");
           const notes = obs.notes || "<em>Aucune note</em>";
           const lat = obs.localisation?.latitude?.toFixed(5) || "?";
           const lng = obs.localisation?.longitude?.toFixed(5) || "?";
 
-          return `<div style="border-bottom: 1px solid black" class="card-text">
-              <div><strong>Date :</strong> ${date}</div>
+          fObs = document.createElement("div");
+          fObs.className = "card-text";
+          fObs.innerHTML = `  <div><strong>Date :</strong> ${date}</div>
               <div><strong>Coordonnées :</strong> ${lat}, ${lng}</div>
               <div><strong>Notes :</strong> ${notes}</div>
               </div>
           `;
-        }).join("");
 
-        container.innerHTML += `
+          btnSupprObs = document.createElement("button");
+          btnSupprObs.className = "btn-close";
+          btnSupprObs.setAttribute("aria-label", "Close");
+          btnSupprObs.addEventListener("click", () => {
+            retirerObs(item.nom, obs);
+          });
+
+          fObs.appendChild(btnSupprObs);
+          return fObs;
+        });
+        
+        obsCard = document.createElement("div");
+        obsCard.className = "card col-xs-12 col-md-6 col-lg-4";
+        obsCardBody = document.createElement("div");
+        obsCardBody.className = "card-body";
+        obsCardBody.innerHTML = `<h4 class="card-title">${item.nom}</h4>`;
+        obsCardBody.append(...fiches);
+        obsCard.appendChild(obsCardBody);
+        container.appendChild(obsCard);
+
+
+        
+        /* container.innerHTML += `
             <div class="card col-xs-12 col-md-6 col-lg-4">
                 <div class="card-body">
                     <h4 class="card-title">${item.nom}</h4>
                     ${fiches}
                 </div>
             </div>
-                `;
+                `;*/
       });
     }
 
-    window.addEventListener("DOMContentLoaded", chargerObservations);
+    window.addEventListener("DOMContentLoaded", () => {
+      
+      map = L.map('carte').setView([46.8, -71.2], 7); // Centré sur le Québec
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        chargerObservations();
+    });
     </script>
    
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -144,6 +170,16 @@
       }
       .card-body {
         font-size: 10pt;
+      }
+      .card-text {
+        border-bottom: 1px solid black;
+        padding-bottom: 1em;
+        position: relative;      
+      }
+      .btn-close {
+        position: absolute;
+        top: 0;
+        right: 0;
       }
     </style>
 </body>
