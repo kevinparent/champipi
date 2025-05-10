@@ -22,6 +22,9 @@
           <a class="nav-link active" aria-current="page" href="./index.html">Recherche</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="./favoris.html">Favoris</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="./aide.html">Aide</a>
         </li>
         <li class="nav-item">
@@ -63,11 +66,38 @@
         <!-- Détail de la fiche -->
       </div>
 </div>
+
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="champipi_parsed.js"></script>
     <script src="synonymes.js"></script>
     <script src="app.js"></script>
     <script src="data.js"></script>
+    <script>
+      window.onload = (e) => { 
+       
+        loadInitialDataIfNeeded();
+          modifierListeCritere();
+
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+              .then(() => console.log('Service Worker enregistré.'))
+              .catch(err => console.error('Erreur Service Worker :', err));
+          }
+
+
+           document.querySelectorAll(".favori-icon").forEach(icon => {
+        const id = icon.getAttribute("data-id");
+        const favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
+
+        icon.src = favoris.includes(id)
+          ? "img/mushroom_selected_32.png"
+          : "img/mushroom_unselected_32.png";
+
+          
+      });
+    };
+      
+    </script>
     <style>
       ul {
         list-style-type: none;
@@ -77,6 +107,10 @@
       }
       .card-body {
         font-size: 10pt;
+      }
+      .favori-icon {
+        width: 28px;
+        float: right;
       }
     </style>
 </body>

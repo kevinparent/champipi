@@ -4,6 +4,8 @@ const filtres = [];
 tousLesChampignons = window.champiData;
 criteresRecherches = [];
 
+let favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
+
 // Elements HTML
 const critereSelect = document.getElementById('criteria');
 const valeurRecherche = document.getElementById('searchField');
@@ -13,8 +15,8 @@ const criteriaContainer = document.getElementById('filtresActifs');
 const resetButton = document.getElementById('clearButton');
 
 // Event Listeners
-boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
-resetButton.addEventListener('click', () => {
+if (boutonRecherche) boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
+if (resetButton) resetButton.addEventListener('click', () => {
   ignorerRecherche = false;  // Ignorer la recherche lors de la réinitialisation
   Object.keys(criteresRecherches).forEach(k => delete criteresRecherches[k]);  
   valeurRecherche.value = '';  // Réinitialiser le champ de recherche
@@ -71,17 +73,42 @@ function afficherChampignon(champignon) {
         
       });
 
-      champiHeader = document.createElement('h5');
-      champiHeader.appendChild(document.createTextNode(champignon["list champi"]));
-      champiHeaderText = document.createElement('p');
+      head = document.createElement("h5");
+      head.className = "col-10"
+      head.innerHTML = champignon["list champi"];
+
+      favIcon = document.createElement('img');
+      favIcon.src = "./img/mushroom_unselected_32.png";
+      favIcon.className = "favori-icon";
+      favIcon.setAttribute("data-id", champignon["list champi"]);
+      favIcon.addEventListener('click', (element) => {
+        elem = element.target;
+        const id = elem.getAttribute("data-id");
+        let favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
+
+        if (favoris.includes(id)) {
+          favoris = favoris.filter(f => f !== id);
+          elem.src = "img/mushroom_unselected_32.png";
+        } else {
+          favoris.push(id);
+          elem.src = "img/mushroom_selected_32.png";
+        }
+
+        localStorage.setItem("champiFavoris", JSON.stringify(favoris));
+      });
+      iconWrapper = document.createElement('div');
+      iconWrapper.className = "col-2 text-end";
+      iconWrapper.appendChild(favIcon);
+
       champiCard = document.createElement('div');
       champiCardHeader = document.createElement('div');
-      champiCardHeader.className = 'card-header';
+      champiCardHeader.className = 'card-header row';
       champiCardBody = document.createElement('div');
       champiCardBody.className = 'card-body';
       champiCardBody.appendChild(document.createTextNode(champignon["resume_concis"]));
       champiCard.className = 'card';
-      champiCardHeader.appendChild(champiHeader);
+      champiCardHeader.appendChild(head);
+      champiCardHeader.appendChild(iconWrapper);
       champiCard.appendChild(champiCardHeader);
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
@@ -160,15 +187,3 @@ function supprimerCritere(critere) {
   modifierListeCritere();
   appliquerRecherche();
 }
-
-
-window.addEventListener('load', () => {
-  loadInitialDataIfNeeded();
-  modifierListeCritere();
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker enregistré.'))
-      .catch(err => console.error('Erreur Service Worker :', err));
-  }
-});

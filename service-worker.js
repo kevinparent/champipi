@@ -3,6 +3,9 @@ const FILES_TO_CACHE = [
   '/',
   '/champipi_parsed.js',
   '/index.html',
+  '/aide.html',
+  '/synonymes.html',
+  '/favoris.html',
   '/synonymes.js',
   '/app.js',
   '/data.js',
@@ -10,6 +13,9 @@ const FILES_TO_CACHE = [
   '/bootstrap/css/bootstrap.min.css',
   '/bootstrap/css/bootstrap-grid.min.css',
   '/bootstrap/js/bootstrap.min.js',
+  '/icon.png',
+  '/img/mushroom_unselected_32.png',
+  '/img/mushroom_selected_32.png'
 ];
 
 self.addEventListener('install', event => {
