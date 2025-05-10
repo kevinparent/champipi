@@ -143,6 +143,7 @@ function afficherChampignon(champignon) {
 
       champiCardBody.appendChild(champiCardBodyText);
       champiCard.className = 'card champi-card';
+      champiCardBody.appendChild(favIcon);
       /*headerWrapper = document.createElement('div');
       headerWrapper.className = 'row';
       headerWrapper.appendChild(head);

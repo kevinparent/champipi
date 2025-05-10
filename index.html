@@ -42,7 +42,9 @@
         <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
       </div>
       <div class="col-12">
-        <select class="form-select" id="criteria"></select>
+        <select class="form-select" id="criteria">
+          <option value="TOUT">Toutes les catégories</option>
+        </select>
       </div>    
     </div>
     
@@ -111,10 +113,12 @@
       }
       .card-body {
         font-size: 10pt;
+        position: relative;
       }
       .favori-icon {
-        width: 28px;
-        float: right;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
     </style>
 </body>

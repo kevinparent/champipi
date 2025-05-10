@@ -66,7 +66,17 @@ function appliquerRecherche() {
           const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
           const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
   
-          const mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
+           let mots = [];
+
+          if (critere.critere === "TOUT") {
+            texteGlobal =  champi["list champi"] + " ";
+            texteGlobal += champiDescription.map(d => Object.values(d)[0]).join(" ");
+            mots = sansAccents(texteGlobal.toLowerCase()).split(/\W+/);
+          } else {
+            const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
+            const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
+            mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
+          }
 
            return critere.termes.every(ts => {
                 const st = ts.split(' OU ').map(t => t.trim());
@@ -74,8 +84,6 @@ function appliquerRecherche() {
                 return st.some(t => {
                   const estNegatif = t.startsWith("!");
                   const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-                  /*let termeMin = sansAccents(termeNettoye.toLowerCase());
-                  let tolerenceMin = getTolerance(termeNettoye.length);*/
 
                   const syno = trouverSynonymes(termeNettoye);
 
