@@ -158,7 +158,7 @@ function afficherChampignon(champignon) {
       champiCardBody.className = 'card-body';
       champiCardBodyTitle = document.createElement('h5');
       champiCardBodyTitle.className = 'card-title';
-      nomChampiLatin = champignon["champiTitre"].substring(0, champignon["champiTitre"].indexOf("/"));
+      nomChampiLatin = champignon["champiTitre"] ? champignon["champiTitre"].substring(0, champignon["champiTitre"].indexOf("/")) : "";
       champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 0.5em'> (" + nomChampiLatin + ") </small>";  
       champiCardBody.appendChild(champiCardBodyTitle);
       champiCardBodyText = document.createElement('p');
