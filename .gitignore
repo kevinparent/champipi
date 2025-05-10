@@ -1,0 +1,7 @@
+# Ignorer tous les fichiers Python
+*.py
+champipi_avec_titre.json
+champipi_parsed copy.js
+champipi_parsed_2.json
+champipi_parsed_bk.json
+champipi_text.json
