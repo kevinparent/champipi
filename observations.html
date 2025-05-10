@@ -6,6 +6,8 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="leaflet.js"></script>
   <title>Champipi</title>
 </head>
 <body>
@@ -42,6 +44,7 @@
             <h2 class="col-12" style="padding: 1em 0">Mes Observations</h2>
             <div id="stats-container" style="border-bottom: 2px solid black; padding-bottom: 1em; margin-bottom: 1em;" class="row stats-card"></div>
             <div class="row" id="observations-container" ></div>
+            <div id="carte" style="height: 400px; margin-bottom: 2rem;"></div>
     </div>
     </div>
 
@@ -52,6 +55,12 @@
       const statsContainer = document.getElementById("stats-container");
       container.innerHTML = "";
       statsContainer.innerHTML = "";
+
+      const map = L.map('carte').setView([46.8, -71.2], 7); // Centré sur le Québec
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
       if (observations.length === 0) {
         container.innerHTML = "<p>Vous n'avez encore enregistré aucune observation.</p>";
@@ -74,9 +83,26 @@
         </ul>
       `;
 
+      const mushroomIcon = L.icon({
+        iconUrl: './img/mushroom_selected_32.png', // Chemin vers ton image
+        iconSize:     [32, 32],              // taille de l'icône
+        iconAnchor:   [16, 32],              // point d'ancrage de l'icône
+        popupAnchor:  [0, -32]               // position du popup par rapport à l'icône
+        });
+
       observations.forEach(item => {
         
+       
+
         const fiches = item.observations.map(obs => {
+             if (obs.localisation && obs.localisation.latitude && obs.localisation.longitude) {
+                const offset = (Math.random() - 0.5) * 0.0008; // ~80 m
+                const lat = obs.localisation.latitude + offset;
+                const lng = obs.localisation.longitude + offset;
+        L.marker([lat, lng], { icon: mushroomIcon })
+            .addTo(map)
+            .bindPopup(`<strong>${item.nom}</strong><br>${new Date(obs.date).toLocaleDateString("fr-CA")}`);
+        }
           const date = new Date(obs.date).toLocaleString("fr-CA");
           const notes = obs.notes || "<em>Aucune note</em>";
           const lat = obs.localisation?.latitude?.toFixed(5) || "?";

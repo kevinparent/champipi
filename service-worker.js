@@ -10,6 +10,8 @@ const FILES_TO_CACHE = [
   '/observations.html',
   '/app.js',
   '/data.js',
+  '/leaflet.css',
+  '/leaflet.js',
   '/manifest.json',
   '/bootstrap/css/bootstrap.min.css',
   '/bootstrap/css/bootstrap-grid.min.css',
