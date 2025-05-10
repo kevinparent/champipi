@@ -22,7 +22,11 @@ function loadData(filtres) {
   }
 
   function getAllData() {
-  return window.champiData;
+  return [...window.champiData].sort((a, b) => {
+      const nomA = a["list champi"]?.toLowerCase() || "";
+      const nomB = b["list champi"]?.toLowerCase() || "";
+      return nomA.localeCompare(nomB);
+    });
 }
 
 function sansAccents(str) {

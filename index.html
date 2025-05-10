@@ -36,10 +36,10 @@
     </nav>
     <div class="row" style="padding-bottom: 1em; padding-top: 1em;">
     
-      <div class="col-8">
+      <div class="col-12" style="padding-bottom: 0.5em;">
         <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
       </div>
-      <div class="col-4">
+      <div class="col-12">
         <select class="form-select" id="criteria"></select>
       </div>    
     </div>
@@ -59,7 +59,7 @@
   
   <div id="filtresActifs" class="filtresContainer row"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
     
-  <div class="resultContainer row">    <ul id="searchResults"></ul></div>
+  <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12"></ul></div>
 
 
     <div id="fiche-detail" style="display: none;">
@@ -104,6 +104,8 @@
       }
       .card {
         margin-bottom: 1em;
+        padding-left: 0;
+        padding-right: 0;
       }
       .card-body {
         font-size: 10pt;

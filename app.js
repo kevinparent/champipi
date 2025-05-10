@@ -102,13 +102,16 @@ function afficherChampignon(champignon) {
 
       champiCard = document.createElement('div');
       champiCardHeader = document.createElement('div');
-      champiCardHeader.className = 'card-header row';
+      champiCardHeader.className = 'card-header col-xs-12';
       champiCardBody = document.createElement('div');
       champiCardBody.className = 'card-body';
       champiCardBody.appendChild(document.createTextNode(champignon["resume_concis"]));
-      champiCard.className = 'card';
-      champiCardHeader.appendChild(head);
-      champiCardHeader.appendChild(iconWrapper);
+      champiCard.className = 'card champi-card';
+      headerWrapper = document.createElement('div');
+      headerWrapper.className = 'row';
+      headerWrapper.appendChild(head);
+      headerWrapper.appendChild(iconWrapper);
+      champiCardHeader.appendChild(headerWrapper);
       champiCard.appendChild(champiCardHeader);
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
