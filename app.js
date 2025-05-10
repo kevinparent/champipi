@@ -141,15 +141,29 @@ function afficherChampignon(champignon) {
       champiCardBodyText.className = 'card-text';
       champiCardBodyText.innerHTML = champignon["resume_concis"]
 
+      observationButton = document.createElement('button');
+      observationButton.innerHTML = "Ajouter une observation";
+      observationButton.className = 'btn btn-primary btnObservation champi-btn';
+      observationButton.setWidth = "100%";
+      observationButton.addEventListener('click', () => {
+        ouvrirModaleObservation(champignon);
+      });
+   
+
+
       mycoButton = document.createElement('a');
       mycoButton.innerHTML = "En savoir plus";
-      mycoButton.className = 'btn btn-light champi-btn float-end';
+      mycoButton.className = 'btn btn-info champi-btn float-end';
       mycoButton.href = champignon["list champi-href"]
 
       champiCardBody.appendChild(champiCardBodyText);
 
-      if (window.navigator.onLine) champiCardBody.appendChild(mycoButton);
+      buttonGroupChamp = document.createElement('div');
+      buttonGroupChamp.className = 'btn-group-vertical col-12';
+      buttonGroupChamp.appendChild(observationButton);
+      if (window.navigator.onLine) buttonGroupChamp.appendChild(mycoButton);
 
+      champiCardBody.appendChild(buttonGroupChamp);
 
       champiCard.className = 'card champi-card';
       champiCardBody.appendChild(favIcon);
@@ -170,6 +184,63 @@ function afficherChampignon(champignon) {
         </ul>`
       }*/
       return li;
+}
+
+function ouvrirModaleObservation(champignon) {
+  const myModal = document.getElementById('myModal');
+  const champiNom = document.getElementById('modalChampiNom');
+  const champiNotes = document.getElementById('modalObservationNotes');
+  const champiDate = document.getElementById('modalObservationDate');
+
+  champiNom.innerHTML = champignon["list champi"];
+  /*champiNotes.value = ""; // Réinitialiser le champ de notes
+  champiDate.innerHTML = new Date().toLocaleString(); // Date actuelle
+  champiLocalisation.innerHTML = "En attente de localisation...";*/
+  myModal.style.display = "block"; // Afficher la modale
+  // Fermer la modale si l'utilisateur clique en dehors d'elle
+  window.onclick = function(event) {
+    if (event.target == myModal) {
+      myModal.style.display = "none";
+    }
+  };
+
+ const ajouterBtn = document.getElementById('ajouterObservationBtn');
+  ajouterBtn.onclick = function() {
+    navigator.geolocation.getCurrentPosition(position => {
+      const nouvelle = {
+        date: champiDate.value,
+        notes: champiNotes.value,
+        localisation: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+      }
+
+      ajouterObservation(champignon, nouvelle);
+      myModal.style.display = "none"; // Fermer la modale après ajout
+    });
+    
+  };
+}
+
+function ajouterObservation(champi, observation) {
+  const observations = JSON.parse(localStorage.getItem("observations")) || [];
+
+    const champiId = champi["list champi"];
+    const index = observations.findIndex(o => o.champiId === champiId);
+
+    if (index !== -1) {
+      observations[index].observations.push(observation);
+    } else {
+      observations.push({
+        champiId: champiId,
+        nom: champi["list champi"],
+        observations: [observation]
+      });
+    }
+
+    localStorage.setItem("observations", JSON.stringify(observations));
+    alert("Observation ajoutée !");
 }
 
 function surlignerMotsProches(texte, termeRecherche) {

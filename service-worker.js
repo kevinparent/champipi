@@ -7,6 +7,7 @@ const FILES_TO_CACHE = [
   '/synonymes.html',
   '/favoris.html',
   '/synonymes.js',
+  '/observations.html',
   '/app.js',
   '/data.js',
   '/manifest.json',

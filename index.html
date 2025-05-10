@@ -23,6 +23,9 @@
           <a class="nav-link active" aria-current="page" href="./index.html">Recherche</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="./observations.html">Mes Observations</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" aria-current="page" href="./favoris.html">Favoris</a>
         </li>
         <li class="nav-item">
@@ -65,11 +68,37 @@
     
   <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
 
+  <div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="modalChampiNom" class="modal-title">Champignon</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <span class="input-group-text">Date d'observation</span>
+          <input type="date" id="modalObservationDate" class="form-control" aria-label="Date d'observation" />
+        </div>
+        <div class="input-group" style="padding-top: 0.5em;">
+          <span class="input-group-text">Notes</span>
+          <textarea id="modalObservationNotes" class="form-control" aria-label="Notes d'observation" ></textarea>
+        </div>       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" id="ajouterObservationBtn" class="btn btn-primary">Ajouter Observation</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <div id="fiche-detail" style="display: none;">
         <!-- Détail de la fiche -->
       </div>
 </div>
+
+    
 
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="champipi_parsed.js"></script>
@@ -122,6 +151,9 @@
       }
       .card-text {
         text-align: justify;
+      }
+      .btnObservation {
+        width: 100%;
       }
     </style>
 </body>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
+  <title>Champipi</title>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1"><img src="icon.png" alt="Champipi" width="24" height="24">Champipi</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="./index.html">Recherche</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="./observations.html">Mes Observations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="./favoris.html">Favoris</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./aide.html">Aide</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./synonymes.html">Synonymes</a>
+        </li>
+      </ul>
+      <button onclick="installerApp()" id="installBtn" class="btn btn-outline-success me-2" style="width: 100%; display: none;" type="button">Ajouter à l'Acceuil</button>
+    </div>
+    
+    </nav>
+     <div class="row">
+            <h2 class="col-12" style="padding: 1em 0">Mes Observations</h2>
+            <div id="stats-container" style="border-bottom: 2px solid black; padding-bottom: 1em; margin-bottom: 1em;" class="row stats-card"></div>
+            <div class="row" id="observations-container" ></div>
+    </div>
+    </div>
+
+    <script>
+        function chargerObservations() {
+      const observations = JSON.parse(localStorage.getItem("observations")) || [];
+      const container = document.getElementById("observations-container");
+      const statsContainer = document.getElementById("stats-container");
+      container.innerHTML = "";
+      statsContainer.innerHTML = "";
+
+      if (observations.length === 0) {
+        container.innerHTML = "<p>Vous n'avez encore enregistré aucune observation.</p>";
+        return;
+      }   
+
+      const totalEspèces = observations.length;
+      const totalObservations = observations.reduce((acc, item) => acc + item.observations.length, 0);
+      const toutesLesDates = observations.flatMap(item => item.observations.map(obs => new Date(obs.date)));
+      const dateMin = new Date(Math.min(...toutesLesDates));
+      const dateMax = new Date(Math.max(...toutesLesDates));
+
+      statsContainer.innerHTML = `
+        <h5 class="mb-3">Statistiques</h5>
+        <ul class="mb-0">
+          <li><strong>Espèces observées :</strong> ${totalEspèces}</li>
+          <li><strong>Observations totales :</strong> ${totalObservations}</li>
+          <li><strong>Première observation :</strong> ${dateMin.toLocaleDateString("fr-CA")}</li>
+          <li><strong>Dernière observation :</strong> ${dateMax.toLocaleDateString("fr-CA")}</li>
+        </ul>
+      `;
+
+      observations.forEach(item => {
+        
+        const fiches = item.observations.map(obs => {
+          const date = new Date(obs.date).toLocaleString("fr-CA");
+          const notes = obs.notes || "<em>Aucune note</em>";
+          const lat = obs.localisation?.latitude?.toFixed(5) || "?";
+          const lng = obs.localisation?.longitude?.toFixed(5) || "?";
+
+          return `<div style="border-bottom: 1px solid black" class="card-text">
+              <div><strong>Date :</strong> ${date}</div>
+              <div><strong>Coordonnées :</strong> ${lat}, ${lng}</div>
+              <div><strong>Notes :</strong> ${notes}</div>
+              </div>
+          `;
+        }).join("");
+
+        container.innerHTML += `
+            <div class="card col-xs-12 col-md-6 col-lg-4">
+                <div class="card-body">
+                    <h4 class="card-title">${item.nom}</h4>
+                    ${fiches}
+                </div>
+            </div>
+                `;
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", chargerObservations);
+    </script>
+   
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="champipi_parsed.js"></script>
+    <script src="synonymes.js"></script>
+    <script src="app.js"></script>
+    <script src="data.js"></script>
+    <style>
+      ul {
+        list-style-type: none;
+      }
+      .card {
+        margin-bottom: 1em;
+      }
+      .card-body {
+        font-size: 10pt;
+      }
+    </style>
+</body>
+</html>
