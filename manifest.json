@@ -1,6 +1,6 @@
 {
     "name": "Champipi",
-    "short_name": "ChampipiApp",
+    "short_name": "Champipi",
     "start_url": "/champipi",
     "display": "standalone",
     "background_color": "#ffffff",
