@@ -101,18 +101,30 @@ function afficherChampignon(champignon) {
       iconWrapper.appendChild(favIcon);
 
       champiCard = document.createElement('div');
-      champiCardHeader = document.createElement('div');
-      champiCardHeader.className = 'card-header col-xs-12';
+      champiImg = document.createElement('img');
+      champiImg.src = champignon["image"] ? champignon["image"] : "./icon.png";
+      champiImg.className = 'card-img-top champi-img';
+      champiCard.appendChild(champiImg);
+      //champiCardHeader = document.createElement('div');
+      //champiCardHeader.className = 'card-header col-xs-12';
       champiCardBody = document.createElement('div');
       champiCardBody.className = 'card-body';
-      champiCardBody.appendChild(document.createTextNode(champignon["resume_concis"]));
+      champiCardBodyTitle = document.createElement('h5');
+      champiCardBodyTitle.className = 'card-title';
+      champiCardBodyTitle.innerHTML = champignon["list champi"];  
+      champiCardBody.appendChild(champiCardBodyTitle);
+      champiCardBodyText = document.createElement('p');
+      champiCardBodyText.className = 'card-text';
+      champiCardBodyText.innerHTML = champignon["resume_concis"]
+
+      champiCardBody.appendChild(champiCardBodyText);
       champiCard.className = 'card champi-card';
-      headerWrapper = document.createElement('div');
+      /*headerWrapper = document.createElement('div');
       headerWrapper.className = 'row';
       headerWrapper.appendChild(head);
       headerWrapper.appendChild(iconWrapper);
-      champiCardHeader.appendChild(headerWrapper);
-      champiCard.appendChild(champiCardHeader);
+      champiCardHeader.appendChild(headerWrapper);*/
+      //champiCard.appendChild(champiCardHeader);
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
 
