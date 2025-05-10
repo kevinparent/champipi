@@ -102,6 +102,7 @@ function afficherChampignon(champignon) {
 
       champiCard = document.createElement('div');
       champiImg = document.createElement('img');
+      champiImg.setAttribute("loading", "lazy");
       champiImg.src = champignon["image"] ? champignon["image"] : "./icon.png";
       champiImg.className = 'card-img-top champi-img';
       champiCard.appendChild(champiImg);
