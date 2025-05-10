@@ -6,6 +6,17 @@ criteresRecherches = [];
 
 let favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
 
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Empêche l'affichage automatique de la bannière
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Affiche ton bouton manuellement (dans le menu)
+  document.getElementById("installBtn").style.display = "inline-block";
+});
+
 // Elements HTML
 const critereSelect = document.getElementById('criteria');
 const valeurRecherche = document.getElementById('searchField');
@@ -25,7 +36,19 @@ if (resetButton) resetButton.addEventListener('click', () => {
 
 });
 
-
+function installerApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt(); // Affiche la boîte native
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('Utilisateur a accepté l’installation');
+      } else {
+        console.log('Utilisateur a refusé l’installation');
+      }
+      deferredPrompt = null;
+    });
+  }
+}
 
 function remplirMenuCritere(champignons) {
   const select = document.getElementById('criteria');
