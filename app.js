@@ -141,7 +141,16 @@ function afficherChampignon(champignon) {
       champiCardBodyText.className = 'card-text';
       champiCardBodyText.innerHTML = champignon["resume_concis"]
 
+      mycoButton = document.createElement('a');
+      mycoButton.innerHTML = "En savoir plus";
+      mycoButton.className = 'btn btn-light champi-btn float-end';
+      mycoButton.href = champignon["list champi-href"]
+
       champiCardBody.appendChild(champiCardBodyText);
+
+      if (window.navigator.onLine) champiCardBody.appendChild(mycoButton);
+
+
       champiCard.className = 'card champi-card';
       champiCardBody.appendChild(favIcon);
       /*headerWrapper = document.createElement('div');
