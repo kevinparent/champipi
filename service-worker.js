@@ -1,24 +1,22 @@
 const CACHE_NAME = 'champipi-offline-cache-v1';
 const FILES_TO_CACHE = [
-  '/',
-  '/champipi_parsed.js',
-  '/index.html',
-  '/aide.html',
-  '/synonymes.html',
-  '/favoris.html',
-  '/synonymes.js',
-  '/observations.html',
-  '/app.js',
-  '/data.js',
-  '/leaflet.css',
-  '/leaflet.js',
-  '/manifest.json',
-  '/bootstrap/css/bootstrap.min.css',
-  '/bootstrap/css/bootstrap-grid.min.css',
-  '/bootstrap/js/bootstrap.min.js',
-  '/icon.png',
-  '/img/mushroom_unselected_32.png',
-  '/img/mushroom_selected_32.png'
+  '/champipi/',
+  '/champipi/index.html',
+  '/champipi/aide.html',
+  '/champipi/synonymes.html',
+  '/champipi/favoris.html',
+  '/champipi/observations.html',
+  '/champipi/app.js',
+  '/champipi/data.js',
+  '/champipi/leaflet.css',
+  '/champipi/leaflet.js',
+  '/champipi/manifest.json',
+  '/champipi/bootstrap/css/bootstrap.min.css',
+  '/champipi/bootstrap/css/bootstrap-grid.min.css',
+  '/champipi/bootstrap/js/bootstrap.min.js',
+  '/champipi/icon.png',
+  '/champipi/img/mushroom_unselected_32.png',
+  '/champipi/img/mushroom_selected_32.png'
 ];
 
 self.addEventListener('install', event => {
