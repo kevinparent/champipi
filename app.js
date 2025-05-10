@@ -51,7 +51,7 @@ function remplirMenuCritere(champignons) {
 
 function afficherChampignon(champignon) {
   const li = document.createElement('li');
-
+  li.className = 'list-group-item champi-item col-lg-4 col-md-6 col-xs-12';
       // Map pour parcourir les descriptions
       let descriptionItems = "";
       
