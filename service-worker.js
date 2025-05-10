@@ -25,6 +25,30 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+const request = event.request;
+
+  // Gère les requêtes vers le répertoire /img dynamiquement
+  if (request.url.includes('/img/')) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(request).then(response => {
+          if (response) return response;
+
+          return fetch(request).then(networkResponse => {
+            if (networkResponse.status === 200) {
+              cache.put(request, networkResponse.clone());
+            }
+            return networkResponse;
+          }).catch(() => {
+            // Optionnel : retourner une image par défaut si offline
+            return caches.match('/img/icon.png');
+          });
+        })
+      )
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
