@@ -44,11 +44,16 @@
       <div class="col-12" style="padding-bottom: 0.5em;">
         <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
       </div>
-      <div class="col-12">
+      <div class="col-12" style="padding-bottom: 0.5em;">
         <select class="form-select" id="criteria">
           <option value="TOUT">Toutes les catégories</option>
         </select>
-      </div>    
+      </div>  
+      <div class="col-12">
+        <select id="filtre-division" class="form-select" onchange="filtrerParDivision()">
+          <option value="">Toutes les divisions</option>
+        </select>
+        </div>    
     </div>
     
     
@@ -110,6 +115,7 @@
        
         loadInitialDataIfNeeded();
           modifierListeCritere();
+          initialiserFiltreDivisions(window.champiData);
 
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')

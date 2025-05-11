@@ -149,7 +149,7 @@ function afficherChampignon(champignon) {
       champiCard = document.createElement('div');
       champiImg = document.createElement('img');
       champiImg.setAttribute("loading", "lazy");
-      champiImg.src = champignon["image"] ? champignon["image"] : "./icon.png";
+      champiImg.src = getImageSrc(champignon);
       champiImg.className = 'card-img-top champi-img';
       champiCard.appendChild(champiImg);
       //champiCardHeader = document.createElement('div');
@@ -159,7 +159,9 @@ function afficherChampignon(champignon) {
       champiCardBodyTitle = document.createElement('h5');
       champiCardBodyTitle.className = 'card-title';
       nomChampiLatin = champignon["champiTitre"] ? champignon["champiTitre"].substring(0, champignon["champiTitre"].indexOf("/")) : "";
-      champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 0.5em'> (" + nomChampiLatin + ") </small>";  
+      groupeTaxo = getGroupeTaxo(champignon["champiTitre"]);
+      groupeDivision = champignon["division"] ? champignon["division"] : "";
+      champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 0.5em'> (" + nomChampiLatin + " / " + groupeTaxo +" ) <br /> Division : "+ groupeDivision +" </small>  ";  
       champiCardBody.appendChild(champiCardBodyTitle);
       champiCardBodyText = document.createElement('p');
       champiCardBodyText.className = 'card-text';
@@ -208,6 +210,50 @@ function afficherChampignon(champignon) {
         </ul>`
       }*/
       return li;
+}
+
+function getImageSrc(champignon) {
+  if (champignon["image"] != "./img/icon.jpg") return champignon["image"];
+
+  if (champignon["division"] != "Inconnue") return "./img/" + champignon["division"] + ".png";
+
+  return "./img/icon.jpg";
+}
+
+function getGroupeTaxo(champiTitre) {
+  if (!champiTitre) return "";
+ const match = champiTitre.match(/Groupe\s*:\s*([^:]+)/);
+
+if (match) {
+  const groupe = match[1].trim();
+  return groupe;
+} else {
+  console.log("Groupe non trouvé");
+  return "";
+}
+}
+
+function filtrerParDivision() {
+  const divisionChoisie = document.getElementById("filtre-division").value;
+
+  if (!divisionChoisie) {
+    loadData(); // Recharge toutes les données
+  } else {
+    const filtres = window.champiData.filter(champi => champi.division === divisionChoisie);
+    loadData(filtres); // Affiche seulement les fiches de cette division
+  }
+}
+
+function initialiserFiltreDivisions(data) {
+  const select = document.getElementById("filtre-division");
+  const divisions = [...new Set(data.map(champi => champi.division).filter(Boolean))].sort();
+
+  for (const division of divisions) {
+    const option = document.createElement("option");
+    option.value = division;
+    option.textContent = division;
+    select.appendChild(option);
+  }
 }
 
 function ouvrirModaleObservation(champignon) {
