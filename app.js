@@ -215,7 +215,7 @@ function afficherChampignon(champignon) {
 function getImageSrc(champignon) {
   if (champignon["image"] != "./img/icon.jpg") return champignon["image"];
 
-  if (champignon["division"] != "Inconnue") return "./img/" + champignon["division"] + ".png";
+  if (champignon["division"] != "Inconnue") return "./img/" + champignon["division"].toLowerCase() + ".png";
 
   return "./img/icon.jpg";
 }
