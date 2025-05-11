@@ -245,7 +245,7 @@ function filtrerParDivision() {
     delete criteresRecherches["division"];
   }
 
-  appliquerRecherche();
+  miseAJourCritere();
 }
 
 function initialiserFiltreDivisions(data) {
@@ -378,6 +378,7 @@ function modifierListeCritere() {
 
 function supprimerCritere(critere) {
   if (critere.critere == "division") {
+    document.getElementById("filtre-division").selectedIndex = 0;
     document.getElementById("filtre-division").value = ""; // Réinitialiser le filtre de division
   } 
   delete criteresRecherches[critere];
