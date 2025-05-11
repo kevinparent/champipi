@@ -414,7 +414,7 @@ document.getElementById("photoInput").addEventListener("change", function(event)
     document.getElementById("resultatsPhoto").innerHTML = `
       <div class="alert alert-info">
         <h3><small>Les informations ici sont à titre indicatives et doivent servir UNIQUEMENT à vous guider dans votre recherche. 
-            Vous devez toujours valider votre identifier par vous même</small></h3>
+            Vous devez toujours valider votre identification par vous même</small></h3>
         <strong>Suggestions de mots-clés :</strong><br>
         ${data.description.replace(/\n/g, "<br>")}
       </div>`;
