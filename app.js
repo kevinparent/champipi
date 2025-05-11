@@ -395,6 +395,10 @@ document.getElementById("photoInput").addEventListener("change", function(event)
   reader.onloadend = async function () {
     const base64Image = reader.result.split(',')[1];
 
+  // ✅ Affiche le spinner
+    document.getElementById("spinnerPhoto").style.display = "block";
+    document.getElementById("resultatsPhoto").innerHTML = "";
+
     // Appel à ton backend hébergé (ex: Render)
     const response = await fetch("https://champipi-be.onrender.com/analyser", {
       method: "POST",
@@ -405,6 +409,8 @@ document.getElementById("photoInput").addEventListener("change", function(event)
     });
 
     const data = await response.json();
+    document.getElementById("spinnerPhoto").style.display = "none";
+
     document.getElementById("resultatsPhoto").innerHTML = `
       <div class="alert alert-info">
         <strong>Suggestions de mots-clés :</strong><br>
