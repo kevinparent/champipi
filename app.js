@@ -377,7 +377,11 @@ function modifierListeCritere() {
 }
 
 function supprimerCritere(critere) {
-  delete criteresRecherches[critere];  // Supprimer le critère de recherche
+  if (critere.critere == "division") {
+    document.getElementById("filtre-division").value = ""; // Réinitialiser le filtre de division
+  } 
+  delete criteresRecherches[critere];
+    // Supprimer le critère de recherche
   modifierListeCritere();
   appliquerRecherche();
 }
