@@ -15,6 +15,13 @@ const FILES_TO_CACHE = [
   '/champipi/bootstrap/css/bootstrap-grid.min.css',
   '/champipi/bootstrap/js/bootstrap.min.js',
   '/champipi/icon.png',
+  '/champipi/img/icon.jpg',
+  '/champipi/img/ascomycota.png',
+  '/champipi/img/basidiomycota.png',
+  '/champipi/img/entomophtoromycota.png',
+  '/champipi/img/eumycetozoa.png',
+  '/champipi/img/glomeromycota.png',
+  '/champipi/img/mucoromycota.png',
   '/champipi/img/mushroom_unselected_32.png',
   '/champipi/img/mushroom_selected_32.png'
 ];

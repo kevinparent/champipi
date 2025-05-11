@@ -66,6 +66,10 @@ function appliquerRecherche() {
           const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
           const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
   
+           if (critere.critere === "division") {
+              return champi.division === critere.termes[0];
+            }
+
            let mots = [];
 
           if (critere.critere === "TOUT") {

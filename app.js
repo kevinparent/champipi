@@ -236,12 +236,16 @@ if (match) {
 function filtrerParDivision() {
   const divisionChoisie = document.getElementById("filtre-division").value;
 
-  if (!divisionChoisie) {
-    loadData(); // Recharge toutes les données
+  if (divisionChoisie || divisionChoisie === "") {
+    criteresRecherches["division"] = {
+      critere: "division",
+      termes: [divisionChoisie]
+    };
   } else {
-    const filtres = window.champiData.filter(champi => champi.division === divisionChoisie);
-    loadData(filtres); // Affiche seulement les fiches de cette division
+    delete criteresRecherches["division"];
   }
+
+  appliquerRecherche();
 }
 
 function initialiserFiltreDivisions(data) {
