@@ -413,6 +413,7 @@ document.getElementById("photoInput").addEventListener("change", function(event)
 
     document.getElementById("resultatsPhoto").innerHTML = `
       <div class="alert alert-info">
+        <button type="button" class="btn-close float-end" onClick="closeThis()" aria-label="Close"></button>
         <h3><small>Les informations ici sont à titre indicatives et doivent servir UNIQUEMENT à vous guider dans votre recherche. 
             Vous devez toujours valider votre identification par vous même</small></h3>
         <strong>Suggestions de mots-clés :</strong><br>
@@ -422,3 +423,7 @@ document.getElementById("photoInput").addEventListener("change", function(event)
 
   reader.readAsDataURL(file);
 });
+
+function closeThis() {
+  document.getElementById("resultatsPhoto").innerHTML = "";
+}
