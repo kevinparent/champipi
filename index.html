@@ -62,10 +62,16 @@
       <div class="col-12" style="padding-bottom: 1em;">
       <button id="searchButton" type="button" class="btn btn-primary">Rechercher</button>
         <button id="clearButton" type="button" class="btn btn-warning">Réinitialiser</button>
+        <div id="photoBoot" class="col-6 float-end">
+          <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
+        <button class="btn btn-primary" onclick="document.getElementById('photoInput').click()">📷 Prendre une photo</button>
+        
+        </div>
       </div>
       <div class="col-12">
         <h4 id="searchResultCount"></h4>
         </div>
+        <div id="resultatsPhoto" class="col-12"></div>
       </div>
       
   
@@ -127,6 +133,8 @@
            document.querySelectorAll(".favori-icon").forEach(icon => {
         const id = icon.getAttribute("data-id");
         const favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
+
+          if (!window.navigator.onLine) document.getElementById("photoBoot").style.display = "none";
 
         icon.src = favoris.includes(id)
           ? "img/mushroom_selected_32.png"

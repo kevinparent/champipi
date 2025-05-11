@@ -386,3 +386,31 @@ function supprimerCritere(critere) {
   modifierListeCritere();
   appliquerRecherche();
 }
+
+document.getElementById("photoInput").addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onloadend = async function () {
+    const base64Image = reader.result.split(',')[1];
+
+    // Appel à ton backend hébergé (ex: Render)
+    const response = await fetch("https://champipi-be.onrender.com/analyser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ image: base64Image })
+    });
+
+    const data = await response.json();
+    document.getElementById("resultatsPhoto").innerHTML = `
+      <div class="alert alert-info">
+        <strong>Suggestions de mots-clés :</strong><br>
+        ${data.description.replace(/\n/g, "<br>")}
+      </div>`;
+  };
+
+  reader.readAsDataURL(file);
+});
