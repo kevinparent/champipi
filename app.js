@@ -335,53 +335,43 @@ function miseAJourCritere() {
 
   const saisie = valeurRecherche.value.trim();
 
-  // Réinitialiser les termes si on fait une recherche complète
+  // Réinitialiser les anciens critères uniquement si on détecte des blocs
   const nouvellesRecherches = {};
 
-  // Liste des critères valides (en majuscules)
-  const listeCriteres = Array.from(criteresSelect.keys());
-
-  // Séparer chaque bloc par virgule
-  const blocs = saisie.split(",").map(b => b.trim()).filter(b => b.length > 0);
+  const blocs = saisie
+    .split(",")
+    .map(b => b.trim())
+    .filter(b => b.length > 0);
 
   for (const bloc of blocs) {
     const mots = bloc.split(/\s+/);
-    if (mots.length < 2) continue;
+    if (mots.length === 0) continue;
 
-    const premierMot = mots[0].toUpperCase();
-    let critere = trouverCritereCorrespondant(premierMot);;
+    const premierMot = mots[0];
+    const critereDetecte = trouverCritereCorrespondant(premierMot);
 
-    if (critere) {
+    if (critereDetecte && mots.length > 1) {
       const termes = mots.slice(1).join(" ").split(" OU ").map(t => t.trim()).filter(Boolean);
-
       if (termes.length > 0) {
-        nouvellesRecherches[critere] = {
-          critere: critere,
+        nouvellesRecherches[critereDetecte] = {
+          critere: critereDetecte,
           termes: termes
         };
+      }
+    } else {
+      // Aucun critère reconnu → on utilise le critère sélectionné
+      const cle = critereSelect.value;
+      const termes = bloc.split(" OU ").map(t => t.trim()).filter(Boolean);
+      if (termes.length > 0) {
+        if (!nouvellesRecherches[cle]) {
+          nouvellesRecherches[cle] = { critere: cle, termes: [] };
+        }
+        nouvellesRecherches[cle].termes.push(...termes);
       }
     }
   }
 
-  // Si aucune correspondance automatique : utiliser le critère sélectionné manuellement
-  if (Object.keys(nouvellesRecherches).length === 0) {
-    const cle = critereSelect.value;
-    const termeRech = saisie
-      .split(",")
-      .map(t => t.trim())
-      .filter(t => t.length > 0);
-
-    if (termeRech.length > 0) {
-      nouvellesRecherches[cle] = {
-        critere: cle,
-        termes: termeRech
-      };
-    }
-  }
-
-  // Met à jour le dictionnaire principal
   criteresRecherches = nouvellesRecherches;
-
   modifierListeCritere();
   appliquerRecherche();
 }
@@ -394,10 +384,8 @@ function trouverCritereCorrespondant(mot) {
   for (const cle of criteresSelect.keys()) {
     const cleNet = sansAccents(cle).toLowerCase();
 
-    // ✅ Si la clé contient directement le mot (ex : "ODEUR ET GOUT" contient "odeur")
     if (cleNet.includes(motNet)) return cle;
 
-    // ✅ Sinon on mesure la distance typographique
     const d = distanceLevenshtein(motNet, cleNet);
     if (d < distanceMin && d <= 1) {
       meilleurCritere = cle;
