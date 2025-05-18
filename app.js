@@ -151,7 +151,18 @@ function afficherChampignon(champignon) {
       champiImg.setAttribute("loading", "lazy");
       champiImg.src = getImageSrc(champignon);
       champiImg.className = 'card-img-top champi-img';
-      champiCard.appendChild(champiImg);
+      
+      champiImgOverlay = document.createElement('div');
+      champiImgOverlay.className = 'card-img-overlay';
+      champiImgOverlayAuthor = document.createElement('h5');
+      champiImgOverlayAuthor.className = 'card-title';
+      champiImgOverlayAuthor.innerHTML = "Crédit photo : " + champignon["auteur"];
+      champiCard.appendChild(champiImg);  
+      if (champignon["auteur"]) {
+        champiImgOverlay.appendChild(champiImgOverlayAuthor);
+      }
+      
+      champiCard.appendChild(champiImgOverlay);
       //champiCardHeader = document.createElement('div');
       //champiCardHeader.className = 'card-header col-xs-12';
       champiCardBody = document.createElement('div');
@@ -193,22 +204,10 @@ function afficherChampignon(champignon) {
 
       champiCard.className = 'card champi-card';
       champiCardBody.appendChild(favIcon);
-      /*headerWrapper = document.createElement('div');
-      headerWrapper.className = 'row';
-      headerWrapper.appendChild(head);
-      headerWrapper.appendChild(iconWrapper);
-      champiCardHeader.appendChild(headerWrapper);*/
-      //champiCard.appendChild(champiCardHeader);
+
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
 
-      /*if (descriptionItems != "") {
-        champiCardBody.innerHTML += `
-        <p><strong>Descriptions :</strong></p>  
-        <ul>
-          ${descriptionItems}
-        </ul>`
-      }*/
       return li;
 }
 
@@ -400,7 +399,7 @@ function trouverCritereCorrespondant(mot) {
 
     // ✅ Sinon on mesure la distance typographique
     const d = distanceLevenshtein(motNet, cleNet);
-    if (d < distanceMin && d <= 3) {
+    if (d < distanceMin && d <= 1) {
       meilleurCritere = cle;
       distanceMin = d;
     }
