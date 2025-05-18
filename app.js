@@ -3,6 +3,7 @@ let ignorerRecherche = false;
 const filtres = [];
 tousLesChampignons = window.champiData;
 criteresRecherches = [];
+criteresSelect = new Map();
 
 let favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
 
@@ -75,15 +76,14 @@ function retirerObs(nom, observationASupprimer) {
 
 function remplirMenuCritere(champignons) {
   const select = document.getElementById('criteria');
-  const criteres = new Map();
 
   champignons.forEach(champi => {
     champi.description.forEach(desc => {
-      criteres.set(Object.keys(desc)[0], desc["description-name"], );  // Ajouter le critère à l'ensemble
+      criteresSelect.set(Object.keys(desc)[0], desc["description-name"], );  // Ajouter le critère à l'ensemble
     });
   });
 
-  const criteresArray = Array.from(criteres).sort();
+  const criteresArray = Array.from(criteresSelect).sort();
 
   criteresArray.forEach(critere => {
     const option = document.createElement('option');
@@ -331,7 +331,85 @@ function surlignerMotsProches(texte, termeRecherche) {
     .join('');
 }
 
+function miseAJourCritere() {
+  if (ignorerRecherche) return;
 
+  const saisie = valeurRecherche.value.trim();
+
+  // Réinitialiser les termes si on fait une recherche complète
+  const nouvellesRecherches = {};
+
+  // Liste des critères valides (en majuscules)
+  const listeCriteres = Array.from(criteresSelect.keys());
+
+  // Séparer chaque bloc par virgule
+  const blocs = saisie.split(",").map(b => b.trim()).filter(b => b.length > 0);
+
+  for (const bloc of blocs) {
+    const mots = bloc.split(/\s+/);
+    if (mots.length < 2) continue;
+
+    const premierMot = mots[0].toUpperCase();
+    let critere = trouverCritereCorrespondant(premierMot);;
+
+    if (critere) {
+      const termes = mots.slice(1).join(" ").split(" OU ").map(t => t.trim()).filter(Boolean);
+
+      if (termes.length > 0) {
+        nouvellesRecherches[critere] = {
+          critere: critere,
+          termes: termes
+        };
+      }
+    }
+  }
+
+  // Si aucune correspondance automatique : utiliser le critère sélectionné manuellement
+  if (Object.keys(nouvellesRecherches).length === 0) {
+    const cle = critereSelect.value;
+    const termeRech = saisie
+      .split(",")
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
+    if (termeRech.length > 0) {
+      nouvellesRecherches[cle] = {
+        critere: cle,
+        termes: termeRech
+      };
+    }
+  }
+
+  // Met à jour le dictionnaire principal
+  criteresRecherches = nouvellesRecherches;
+
+  modifierListeCritere();
+  appliquerRecherche();
+}
+
+function trouverCritereCorrespondant(mot) {
+  let meilleurCritere = null;
+  let distanceMin = Infinity;
+  const motNet = sansAccents(mot).toLowerCase();
+
+  for (const cle of criteresSelect.keys()) {
+    const cleNet = sansAccents(cle).toLowerCase();
+
+    // ✅ Si la clé contient directement le mot (ex : "ODEUR ET GOUT" contient "odeur")
+    if (cleNet.includes(motNet)) return cle;
+
+    // ✅ Sinon on mesure la distance typographique
+    const d = distanceLevenshtein(motNet, cleNet);
+    if (d < distanceMin && d <= 3) {
+      meilleurCritere = cle;
+      distanceMin = d;
+    }
+  }
+
+  return meilleurCritere;
+}
+
+/*
 function miseAJourCritere() {
   if (!ignorerRecherche) {
     const cle = critereSelect.value;
@@ -340,20 +418,13 @@ function miseAJourCritere() {
     .map(t  => t.trim())    
     .filter(t => t.length > 0); // Filtrer les termes vides
 
-    //if (!criteresRecherches[cle]) {
       criteresRecherches[critereSelect.value] = { critere: critereSelect.value, termes: termeRech };  
-   /* } else {
-      termeRech.forEach(t => {
-        if (!criteresRecherches[cle].termes.includes(t)) {
-          criteresRecherches[cle].termes.push(t);
-        }
-      });
-    } */
+
     
   modifierListeCritere();  
   appliquerRecherche();
   }
-}
+}*/
 
 function modifierListeCritere() {
   criteriaList.innerHTML = '';
@@ -418,7 +489,7 @@ document.getElementById("photoInput").addEventListener("change", function(event)
             Vous devez toujours valider votre identification par vous même</small></h3>
         <strong>Suggestions de mots-clés :</strong><br>
         ${data.description.replace(/\n/g, "<br>")}
-      </div>`;
+      </div>`;  
   };
 
   reader.readAsDataURL(file);
