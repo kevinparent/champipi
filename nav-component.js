@@ -8,7 +8,7 @@ class ChampipiNav extends HTMLElement {
           bottom: 0;
           left: 0;
           right: 0;
-          height: 50px;
+          height: 75px;
           background-color: #F5F3E7;
           display: flex;
           justify-content: space-around;
