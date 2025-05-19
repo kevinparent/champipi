@@ -41,6 +41,9 @@
      <div class="row">
         <div class="container-fluid" style="padding-top: 1em;">
             <h2>Aide et conseils</h3>
+              <button class="button" type="button" id="refreshSW">
+          🔄 Recharger les données
+        </button> 
             <h4>Comment utiliser la recherche</h4>
             <p>
                 La recherche vous permet de trouver des champignons en fonction de leur description.
@@ -103,9 +106,7 @@
             <p>Étape 2</p>
             <img src="./img/ajout_favori_2.PNG" alt="iPhone étape 2" width="300" height="auto" />
           </div>
-          <button id="refreshSW" style="position: absolute; bottom: 10px; left: 10px; z-index: 10;">
-          🔄 Recharger les données
-        </button>
+          
     </div>
     </div>
    
@@ -116,15 +117,15 @@
     <script src="data.js"></script>
     <script>
         document.getElementById("refreshSW").addEventListener("click", async () => {
-        if ('serviceWorker' in navigator) {
-          const reg = await navigator.serviceWorker.getRegistration();
-          if (reg?.waiting) {
-            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          } else {
-            location.reload();
+          if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.getRegistration();
+            if (reg?.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            } else {
+              location.reload();
+            }
           }
-        }
-      });
+        });
     </script>
     <style>
       ul {
