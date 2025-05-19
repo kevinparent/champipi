@@ -3,6 +3,8 @@ class ObservationModal extends HTMLElement {
   connectedCallback() {
     const champignons = (window.champiData || []).map(item => item["list champi"]).sort();
     const options = champignons.map(nom => `<option value="${nom}">${nom}</option>`).join('');
+
+    const dateNow = new Date().toISOString().split('T')[0];
     this.innerHTML = `
       <style>
         .modal-backdrop {
@@ -72,6 +74,7 @@ class ObservationModal extends HTMLElement {
 
     this.querySelector('.close').addEventListener('click', () => this.remove());
     this.querySelector('#valider').addEventListener('click', () => this.submit());
+    this.querySelector('#date').value = dateNow;
 
     // Détection automatique de la position
     if (navigator.geolocation) {
