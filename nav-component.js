@@ -35,11 +35,11 @@ class ChampipiNav extends HTMLElement {
         }
       </style>
       <nav class="bottom-nav">
-        <a href="acceuil.html" class="nav-item ${page === 'index' ? 'active' : ''}" data-page="index">🏠<span></span></a>
-        <a href="index.html" class="nav-item ${page === 'identification' ? 'active' : ''}" data-page="identification">🔍<span></span></a>
-        <a href="observations.html" class="nav-item ${page === 'observations' ? 'active' : ''}" data-page="observations">🗺️<span></span></a>
-        <a href="favoris.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="favoris">⭐<span></span></a>
-        <a href="aide.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="aide">❓<span></span></a>
+        <a href="index.html" class="nav-item ${page === 'index' ? 'active' : ''}" data-page="index">🏠<span>Acceuil</span></a>
+        <a href="recherche.html" class="nav-item ${page === 'identification' ? 'active' : ''}" data-page="identification">🔍<span>Recherche</span></a>
+        <a href="observations.html" class="nav-item ${page === 'observations' ? 'active' : ''}" data-page="observations">🗺️<span>Observations</span></a>
+        <a href="favoris.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="favoris">⭐<span>Favoris</span></a>
+        <a href="aide.html" class="nav-item ${page === 'aide' ? 'active' : ''}" data-page="aide">❓<span>Aide</span></a>
       </nav>
     `;
   }

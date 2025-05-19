@@ -1,179 +1,93 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="manifest.json" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champipi - Accueil</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
-   <link rel="stylesheet" href="bootstrap/css/bootstrap-reboot.min.css" />
-  <title>Champipi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #F5F3E7;
+      color: #3F6634;
+    }
+
+    header {
+      background: url('img/natureheader.png') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    .container {
+      padding: 2rem 1rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .button {
+      display: inline-block;
+      background-color: #88B378;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      text-align: center;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      header h1 {
+        font-size: 3.5rem;
+      }
+      .container {
+        padding: 3rem 5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    
-    <div class="row" style="padding-bottom: 1em; padding-top: 1em;">
-    
-      <div class="input-group col-12" style="padding-bottom: 0.5em;">
-        <!--<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#glossaireModal">Glossaire</button>-->
-        <input class="form-control" type="text" id="searchField" placeholder="🔍 Rechercher par mot-clé...">
-      </div>
-      <div class="col-12" style="padding-bottom: 0.5em;">
-        <select class="form-select card-select" id="criteria">
-          <option value="TOUT">Toutes les catégories</option>
-        </select>
-      </div>  
-      <div class="col-12">
-        <select id="filtre-division" class="form-select card-select" onchange="filtrerParDivision()">
-          <option value="">Toutes les divisions</option>
-        </select>
-        </div>    
-    </div>
-    
-    
-   
-    <div class="row gx-5" style="border-bottom: 1px solid black; padding-bottom: 1em;">
-      <div class="col-12" style="padding-bottom: 1em;">
-        <button id="searchButton" type="button" class="btn btn-primary">🔍 Appliquer les filtres</button>
-        <button id="clearButton" type="button" class="btn btn-warning">Réinitialiser</button>
-        </div>
-          <div id="photoBoot" class="col-12">
-          <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
-        <button class="btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>        
-        </div>
-      <div id="spinnerPhoto" class="text-center col-12" style="display: none;">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Analyse en cours...</span>
-          </div>
-          <div class="mt-2">Analyse de la photo...</div>
-        </div>
-      <div id="searchResultCountId" style="display:none" class="col-12">
-        <h4 id="searchResultCount"></h4>
-        </div>
-        <div id="resultatsPhoto" class="col-12">
-          
-        </div>
-      </div>
-      
-  
-  <div id="filtresActifs" class="filtresContainer row" style="display: none;"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
-    
-  <div class="resultContainer row" style="display: none;">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
+  <header>
+    <h1>🍄 Champipi</h1>
+    <p>Identifie les champignons, explore la nature</p>
+  </header>
 
-  <div id="glossaireModal" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Glossaire</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>  
+  <main class="container">
+    <section class="section">
+      <h2>Identifier un champignon</h2>
+      <p>Prends une photo ou utilise des critères pour identifier facilement un champignon.</p>
+      <a href="recherche.html" class="button">Commencer</a><a style="margin-left:1em;" href="aide.html" class="button">Aide</a>
+    </section>
 
-  <div id="myModal" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 id="modalChampiNom" class="modal-title">Champignon</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <span class="input-group-text">Date d'observation</span>
-          <input type="date" id="modalObservationDate" class="form-control" aria-label="Date d'observation" />
-        </div>
-        <div class="input-group" style="padding-top: 0.5em;">
-          <span class="input-group-text">Notes</span>
-          <textarea id="modalObservationNotes" class="form-control" aria-label="Notes d'observation" ></textarea>
-        </div>       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" id="ajouterObservationBtn" class="btn btn-primary">Ajouter Observation</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <section class="section">
+      <h2>Mes observations</h2>
+      <p>Consulte ta carte d'observation et ajoute de nouveaux spécimens observés.</p>
+      <a href="observations.html" class="button">Voir la carte</a>
+    </section>
 
-    <div id="fiche-detail" style="display: none;">
-        <!-- Détail de la fiche -->
-      </div>
-</div>
-
-    
-
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="champipi_parsed.js"></script>
-    <script src="synonymes.js"></script>
-    <script src="app.js"></script>
-    <script src="data.js"></script>
-    <script>
-      window.onload = (e) => { 
-       
-        loadInitialDataIfNeeded();
-          modifierListeCritere();
-          initialiserFiltreDivisions(window.champiData);
-
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-              .then(() => console.log('Service Worker enregistré.'))
-              .catch(err => console.error('Erreur Service Worker :', err));
-          }
-
-
-           document.querySelectorAll(".favori-icon").forEach(icon => {
-        const id = icon.getAttribute("data-id");
-        const favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
-
-          if (!window.navigator.onLine) document.getElementById("photoBoot").style.display = "none";
-
-        icon.src = favoris.includes(id)
-          ? "img/mushroom_selected_32.png"
-          : "img/mushroom_unselected_32.png";
-
-          
-      });
-    };
-      
-    </script>
-    <style>
-      ul {
-        list-style-type: none;
-      }
-      .card {
-        margin-bottom: 1em;
-        padding-left: 0;
-        padding-right: 0;
-      }
-      .card-body {
-        font-size: 10pt;
-        position: relative;
-      }
-      .favori-icon {
-        position: absolute;
-        top: 2em;
-        right: 1em;
-      }
-      .card-text {
-        text-align: justify;
-      }
-      .btnObservation {
-        width: 100%;
-      }
-      #resultatsPhoto h3 {
-        font-size: 9pt;
-      }
-    </style>
-    <script src="nav-component.js" type="module"></script>
+    <section class="section">
+      <h2>Favoris</h2>
+      <p>Retrouve les espèces que tu préfères ou que tu rencontres souvent.</p>
+      <a href="favoris.html" class="button">Accéder</a>
+    </section>
+  </main>
+  <script src="nav-component.js" type="module"></script>
   <champipi-nav></champipi-nav>
 </body>
 </html>
