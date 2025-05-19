@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Champipi</title>
+</head>
+<body>
+  <div class="container">
+    
+     <div class="row">
+        <div class="container-fluid" style="padding-top: 1em;">
+            <h2>Aide et conseils</h3>
+            <h4>Comment utiliser la recherche</h4>
+            <p>
+                La recherche vous permet de trouver des champignons en fonction de leur description.
+                <br />
+                <br />Par exemple, si vous cherchez un champignon avec un chapeau rouge, vous pouvez taper "Rouge" dans le champ de recherche et sélectionner "Chapeau" dans le menu déroulant.
+                <br />Vous pouvez également combiner plusieurs critères de recherche pour affiner vos résultats en séparant les mots par des <b>virgules</b>
+                <br />(ex: "Rouge, strié" pour trouver des champignons avec un chapeau rouge et strié).
+                <br />
+                <br />
+                Vous pouvez également exclure de la recherche certains mots en le précédent d'un <b>Point d'exclamation</b> ce qui excluera de la recherche les critères contenant ce terme.
+                <br />(ex: "Rouge, strié, !méchuleux" pour trouver des champignons avec un chapeau rouge et strié et dont le terme méchuleux n'apparait pas dans la recherche).
+            
+                <br />
+                <br />
+                
+                Vous pouvez élargir votre recherche en utilisant le mot <b>OU</b> entre les mots pour rechercher des champignons qui contiennent l'un ou l'autre des mots 
+                <br />(ex: "Rouge OU jaune" pour trouver des champignons avec un chapeau rouge ou jaune).
+
+                <br />
+                <br />
+
+                Vous pouvez également combiné ces types de recherche pour afficher votre recherche.
+                <br />Par exemple, "Rouge OU jaune, strié, !méchuleux" pour trouver des champignons avec un chapeau rouge ou jaune, strié et dont le terme méchuleux n'apparait pas dans la description.
+
+                <br />
+                <br />
+
+                Nous vous donnons l'exemple avec seulement le chapeau, mais vous pouvez faire de même avec les autres critères de recherche et les combiner entre eux.
+            </p>
+            <h4>Bon à savoir</h4>
+            <p>
+                La recherche utilise un dictionnaire de synonymes pour vous aider à trouver les champignons que vous cherchez.
+                <br />Par exemple, si vous tapez "Rouge", la recherche inclura également les champignons qui ont un chapeau de couleur "Cramoisi" ou "Vermillon".
+                <br />Si vous souhaitez ajouter des nouveaux synonymes, n'hésitez pas à nous le faire savoir. Vous pouvez voir la liste actuelle sur la page <a href="./synonymes.html">synonymes</a>.
+                <br /><br />
+
+                La recherche permet aussi une petite flexibilité sur l'ortographe, par exemple, si vous tapez "Rouge", la recherche inclura également les champignons qui ont un chapeau de couleur "Rouge" ou "Rougeâtre".
+            </p>
+
+            <br />
+            <br />
+            <h4>Mes Observations</h4>
+            <p>Vous pouvez ajouter vos observations depuis la page de recherche. L'application persistera votre position et la date de l'observation.</p>
+            <p>Vous pourrez ensuite revoir vos observations sur la page "Mes Observations" et les repérer sur une carte!</p>
+
+            <br />
+            <br />
+            <h4>Source des données</h4>
+            <p>Les données utilisé sur l'application proviennent du web et les <b>descriptions</b> ont été généré grâce à l'intelligence artificielle. 
+            <br />La recherche s'appuie sur le dictionnaire de données et non pas sur l'intelligence artificielle. Si vous notez des erreurs dans les descriptions ou des informations qui vous semblez erronées, n'hésitez pas à nous le faire savoir.
+            </p>
+
+            <br />
+            <br />
+            <h4>Ajouter à l'écran d'acceuil de votre téléphone</h4>
+            <p>Vous pouvez ajouter l'application à l'écran d'accueil de votre téléphone pour y accéder plus facilement. Pour cela, ouvrez le menu de votre navigateur et sélectionnez "Ajouter à l'écran d'accueil".</p>
+            <h5>iPhone</h5>
+            <p>Étape 1</p>
+            <img src="./img/ajout_favori_1.PNG" alt="iPhone étape 1" width="300" height="auto" />
+            <p>Étape 2</p>
+            <img src="./img/ajout_favori_2.PNG" alt="iPhone étape 2" width="300" height="auto" />
+          </div>
+          
+    </div>
+    </div>
+   
+    <script>
+        document.getElementById("refreshSW").addEventListener("click", async () => {
+          if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.getRegistration();
+            if (reg?.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            } else {
+              location.reload();
+            }
+          }
+        });
+    </script>
+    <style>
+      ul {
+        list-style-type: none;
+      }
+      .card {
+        margin-bottom: 1em;
+      }
+      .card-body {
+        font-size: 10pt;
+      }
+    </style>
+    <script src="nav-component.js" type="module"></script>
+  <champipi-nav></champipi-nav>
+</body>
+</html>

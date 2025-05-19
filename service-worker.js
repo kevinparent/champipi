@@ -1,9 +1,11 @@
 const CACHE_NAME = 'champipi-offline-cache-v1-2025-05-19-452';
 const FILES_TO_CACHE = [
   '/champipi/',
+   '/champipi/acceuil.html',
   '/champipi/index.html',
   '/champipi/aide.html',
   '/champipi/synonymes.html',
+  '/champipi/synonymes.js',
   '/champipi/favoris.html',
   '/champipi/observations.html',
   '/champipi/app.js',
@@ -11,9 +13,7 @@ const FILES_TO_CACHE = [
   '/champipi/leaflet.css',
   '/champipi/leaflet.js',
   '/champipi/manifest.json',
-  '/champipi/bootstrap/css/bootstrap.min.css',
-  '/champipi/bootstrap/css/bootstrap-grid.min.css',
-  '/champipi/bootstrap/js/bootstrap.min.js',
+  '/champipi/styles.css',
   '/champipi/icon.png',
   '/champipi/img/icon.jpg',
   '/champipi/img/ascomycota.png',
