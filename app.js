@@ -37,6 +37,11 @@ if (resetButton) resetButton.addEventListener('click', () => {
 
 });
 
+document.body.addEventListener('observation-ajoutee', (e) => {
+  console.log('Observation ajoutée :', e.detail);
+  // Ici tu peux enregistrer e.detail dans IndexedDB, localStorage ou ta logique d'app
+});
+
 function installerApp() {
   if (deferredPrompt) {
     deferredPrompt.prompt(); // Affiche la boîte native
@@ -160,7 +165,7 @@ function afficherChampignon(champignon) {
       observationButton.className = 'button btn btn-primary btnObservation champi-btn';
       observationButton.setWidth = "100%";
       observationButton.addEventListener('click', () => {
-        ouvrirModaleObservation(champignon);
+        document.body.appendChild(document.createElement('observation-modal'))
       });
    
 
