@@ -6,6 +6,7 @@ const FILES_TO_CACHE = [
   '/champipi/aide.html',
   '/champipi/synonymes.html',
   '/champipi/synonymes.js',
+   '/champipi/recherche.html',
   '/champipi/favoris.html',
   '/champipi/observations.html',
   '/champipi/app.js',

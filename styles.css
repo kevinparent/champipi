@@ -18,6 +18,8 @@ header {
   text-align: center;
 }
 
+
+
 header {
   background-color: #88B378;
   padding: 1em;
@@ -26,6 +28,32 @@ header {
   text-align: center;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+#criteria {
+  width: 100%;
+}
+
+#criteriaList li {
+  display: inline-block;
+  padding: 0.75em;
+}
+
+#criteriaList li button {
+    border-radius: 50%;
+    border-width: 1px;
+}
+
+#sectionRecherche {
+  padding: 1em;  
+}
+
+#sectionRecherche select {
+  padding-left: 1em;
+}
+
+#searchField {
+  width: 100%;
 }
 
 h1, h2 {

@@ -313,7 +313,6 @@ function miseAJourCritere() {
 
   document.getElementById("filtresActifs").style.display = "none";
   document.getElementsByClassName("resultContainer")[0].style.display = "none";
-  document.getElementById("searchResultCountId").style.display = "none";
 
   const saisie = valeurRecherche.value.trim();
 
@@ -358,7 +357,6 @@ function miseAJourCritere() {
   if (Object.values(criteresRecherches).length > 0) {
     document.getElementById("filtresActifs").style.display = "block";
     document.getElementsByClassName("resultContainer")[0].style.display = "block";
-    document.getElementById("searchResultCountId").style.display = "block";
   }
 
   modifierListeCritere();
@@ -413,10 +411,10 @@ function modifierListeCritere() {
   Object.values(criteresRecherches).forEach((critere, index) => {
     if (critere.termes.length > 0) {
       const li = document.createElement('li');
-      li.className = 'list-group-item';
+      li.className = 'list-group-item card';
       li.innerHTML = `
         <strong>${critere.critere} :</strong> ${critere.termes.join(", ")}
-        <button class="btn-close"  onclick="supprimerCritere('${critere.critere}')"></button>
+        <button class="btn-close"  onclick="supprimerCritere('${critere.critere}')">X</button>
       `;
       criteriaList.appendChild(li);
     }
