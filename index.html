@@ -41,7 +41,8 @@
     </nav>
     <div class="row" style="padding-bottom: 1em; padding-top: 1em;">
     
-      <div class="col-12" style="padding-bottom: 0.5em;">
+      <div class="input-group col-12" style="padding-bottom: 0.5em;">
+        <!--<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#glossaireModal">Glossaire</button>-->
         <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
       </div>
       <div class="col-12" style="padding-bottom: 0.5em;">
@@ -86,6 +87,23 @@
   <div id="filtresActifs" class="filtresContainer row"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
     
   <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
+
+  <div id="glossaireModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Glossaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>  
 
   <div id="myModal" class="modal" tabindex="-1">
   <div class="modal-dialog">
