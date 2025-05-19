@@ -8,7 +8,7 @@ class ChampipiNav extends HTMLElement {
           bottom: 0;
           left: 0;
           right: 0;
-          height: 60px;
+          height: 50px;
           background-color: #F5F3E7;
           display: flex;
           justify-content: space-around;
@@ -35,10 +35,11 @@ class ChampipiNav extends HTMLElement {
         }
       </style>
       <nav class="bottom-nav">
-        <a href="index.html" class="nav-item ${page === 'index' ? 'active' : ''}" data-page="index">🏠<span>Accueil</span></a>
-        <a href="identification.html" class="nav-item ${page === 'identification' ? 'active' : ''}" data-page="identification">🔍<span>Identifier</span></a>
-        <a href="observations.html" class="nav-item ${page === 'observations' ? 'active' : ''}" data-page="observations">🗺️<span>Observations</span></a>
-        <a href="favoris.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="favoris">⭐<span>Favoris</span></a>
+        <a href="acceuil.html" class="nav-item ${page === 'index' ? 'active' : ''}" data-page="index">🏠<span></span></a>
+        <a href="index.html" class="nav-item ${page === 'identification' ? 'active' : ''}" data-page="identification">🔍<span></span></a>
+        <a href="observations.html" class="nav-item ${page === 'observations' ? 'active' : ''}" data-page="observations">🗺️<span></span></a>
+        <a href="favoris.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="favoris">⭐<span></span></a>
+        <a href="aide.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="aide">❓<span></span></a>
       </nav>
     `;
   }

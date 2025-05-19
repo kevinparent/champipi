@@ -13,34 +13,7 @@
 </head>
 <body>
   <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1"><img src="icon.png" alt="Champipi" width="24" height="24">Champipi</span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="./index.html">Recherche</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./observations.html">Mes Observations</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="./favoris.html">Favoris</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./aide.html">Aide</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./synonymes.html">Synonymes</a>
-        </li>
-      </ul>
-      <button onclick="installerApp()" id="installBtn" class="btn btn-outline-success me-2" style="width: 100%; display: none;" type="button">Ajouter à l'Acceuil</button>
-    </div>
-      </div>
-    </nav>
+    
     <div class="row" style="padding-bottom: 1em; padding-top: 1em;">
     
       <div class="input-group col-12" style="padding-bottom: 0.5em;">
@@ -200,5 +173,7 @@
         font-size: 9pt;
       }
     </style>
+    <script src="nav-component.js" type="module"></script>
+  <champipi-nav></champipi-nav>
 </body>
 </html>
