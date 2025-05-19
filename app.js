@@ -144,12 +144,12 @@ function afficherChampignon(champignon) {
       //champiCardHeader.className = 'card-header col-xs-12';
       champiCardBody = document.createElement('div');
       champiCardBody.className = 'card-body';
-      champiCardBodyTitle = document.createElement('h5');
+      champiCardBodyTitle = document.createElement('h3');
       champiCardBodyTitle.className = 'card-title';
       nomChampiLatin = champignon["champiTitre"] ? champignon["champiTitre"].substring(0, champignon["champiTitre"].indexOf("/")) : "";
       groupeTaxo = getGroupeTaxo(champignon["champiTitre"]);
       groupeDivision = champignon["division"] ? champignon["division"] : "";
-      champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 0.5em'> (" + nomChampiLatin + " / " + groupeTaxo +" ) <br /> Division : "+ groupeDivision +" </small>  ";  
+      champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 8pt'> (" + nomChampiLatin + " / " + groupeTaxo +" ) <br /> Division : "+ groupeDivision +" </small>  ";  
       champiCardBody.appendChild(champiCardBodyTitle);
       champiCardBodyText = document.createElement('p');
       champiCardBodyText.className = 'card-text';
@@ -157,7 +157,7 @@ function afficherChampignon(champignon) {
 
       observationButton = document.createElement('button');
       observationButton.innerHTML = "Ajouter une observation";
-      observationButton.className = 'btn btn-primary btnObservation champi-btn';
+      observationButton.className = 'button btn btn-primary btnObservation champi-btn';
       observationButton.setWidth = "100%";
       observationButton.addEventListener('click', () => {
         ouvrirModaleObservation(champignon);
@@ -167,7 +167,7 @@ function afficherChampignon(champignon) {
 
       mycoButton = document.createElement('a');
       mycoButton.innerHTML = "En savoir plus";
-      mycoButton.className = 'btn btn-info champi-btn float-end';
+      mycoButton.className = 'button btn btn-info champi-btn-myco';
       mycoButton.href = champignon["list champi-href"]
 
       champiCardBody.appendChild(champiCardBodyText);

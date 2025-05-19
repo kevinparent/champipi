@@ -4,19 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
+   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
   <title>Champipi</title>
 </head>
 <body>
-  <div class="container">
-    
-     <div>
-        <h2 style="padding: 0.5em 0">Mes Favoris</h2>
-
-        <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
+  <header>
+    <h1>⭐ Mes favoris</h1>
+    <p>Retrouve les champignons que tu as marqués</p>
+  </header>
+<main class="container">
+  <section class="section">
+    <div id="listeFavoris">
+      <!-- Exemples d’éléments générés -->
+      <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
     </div>
-    </div>
+  </section>
+</main>
     <script>
 
       // Fonction pour récupérer les favoris depuis le stockage local
@@ -68,6 +72,7 @@
     <style>
       ul {
         list-style-type: none;
+            padding-inline-start: 0;
       }
       .card {
         margin-bottom: 1em;
