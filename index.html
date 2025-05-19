@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
    <link rel="stylesheet" href="bootstrap/css/bootstrap-reboot.min.css" />
@@ -43,15 +45,15 @@
     
       <div class="input-group col-12" style="padding-bottom: 0.5em;">
         <!--<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#glossaireModal">Glossaire</button>-->
-        <input class="form-control" type="text" id="searchField" placeholder="Recherchez dans les descriptions :">
+        <input class="form-control" type="text" id="searchField" placeholder="🔍 Rechercher par mot-clé...">
       </div>
       <div class="col-12" style="padding-bottom: 0.5em;">
-        <select class="form-select" id="criteria">
+        <select class="form-select card-select" id="criteria">
           <option value="TOUT">Toutes les catégories</option>
         </select>
       </div>  
       <div class="col-12">
-        <select id="filtre-division" class="form-select" onchange="filtrerParDivision()">
+        <select id="filtre-division" class="form-select card-select" onchange="filtrerParDivision()">
           <option value="">Toutes les divisions</option>
         </select>
         </div>    
@@ -61,21 +63,20 @@
    
     <div class="row gx-5" style="border-bottom: 1px solid black; padding-bottom: 1em;">
       <div class="col-12" style="padding-bottom: 1em;">
-      <button id="searchButton" type="button" class="btn btn-primary">Rechercher</button>
+        <button id="searchButton" type="button" class="btn btn-primary">🔍 Appliquer les filtres</button>
         <button id="clearButton" type="button" class="btn btn-warning">Réinitialiser</button>
-        <div id="photoBoot" class="col-1 float-end">
-          <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
-        <button class="btn btn-warning float-end" onclick="document.getElementById('photoInput').click()">📷</button>
-        
         </div>
-      </div>
+          <div id="photoBoot" class="col-12">
+          <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
+        <button class="btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>        
+        </div>
       <div id="spinnerPhoto" class="text-center col-12" style="display: none;">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Analyse en cours...</span>
           </div>
           <div class="mt-2">Analyse de la photo...</div>
         </div>
-      <div class="col-12">
+      <div id="searchResultCountId" style="display:none" class="col-12">
         <h4 id="searchResultCount"></h4>
         </div>
         <div id="resultatsPhoto" class="col-12">
@@ -84,9 +85,9 @@
       </div>
       
   
-  <div id="filtresActifs" class="filtresContainer row"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
+  <div id="filtresActifs" class="filtresContainer row" style="display: none;"><ul id="criteriaList" style="padding:1em;" class="list-group list-group-horizontal"></ul> </div>
     
-  <div class="resultContainer row">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
+  <div class="resultContainer row" style="display: none;">    <ul id="searchResults" class="col-xs-12 row"></ul></div>
 
   <div id="glossaireModal" class="modal" tabindex="-1">
   <div class="modal-dialog">

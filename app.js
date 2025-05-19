@@ -51,29 +51,6 @@ function installerApp() {
   }
 }
 
-function retirerObs(nom, observationASupprimer) {
-      const observations = JSON.parse(localStorage.getItem("observations")) || [];
-      const updatedObservations = observations.map(item => {
-        if (nom === item.nom) {
-           const nouvellesObservations = item.observations.filter(obs =>
-            obs.date !== observationASupprimer.date ||
-            obs.notes !== observationASupprimer.notes ||
-            obs.localisation.latitude !== observationASupprimer.localisation.latitude ||
-            obs.localisation.longitude !== observationASupprimer.localisation.longitude
-          );
-
-          return {
-            ...item,
-            observations: nouvellesObservations
-          };
-        }
-        return item;
-      }).filter(item => item.observations.length > 0);
-
-      localStorage.setItem("observations", JSON.stringify(updatedObservations));
-      chargerObservations();
-    }
-
 function remplirMenuCritere(champignons) {
   const select = document.getElementById('criteria');
 
@@ -333,6 +310,11 @@ function surlignerMotsProches(texte, termeRecherche) {
 function miseAJourCritere() {
   if (ignorerRecherche) return;
 
+
+  document.getElementById("filtresActifs").style.display = "none";
+  document.getElementsByClassName("resultContainer")[0].style.display = "none";
+  document.getElementById("searchResultCountId").style.display = "none";
+
   const saisie = valeurRecherche.value.trim();
 
   // Réinitialiser les anciens critères uniquement si on détecte des blocs
@@ -372,6 +354,13 @@ function miseAJourCritere() {
   }
 
   criteresRecherches = nouvellesRecherches;
+
+  if (Object.values(criteresRecherches).length > 0) {
+    document.getElementById("filtresActifs").style.display = "block";
+    document.getElementsByClassName("resultContainer")[0].style.display = "block";
+    document.getElementById("searchResultCountId").style.display = "block";
+  }
+
   modifierListeCritere();
   appliquerRecherche();
 }

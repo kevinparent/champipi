@@ -4,15 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
+   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <!--<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />-->
   <link rel="stylesheet" href="leaflet.css" />
   <script src="leaflet.js"></script>
   <title>Champipi</title>
 </head>
 <body>
-  <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+   <header>
+      <h1>📍 Mes observations</h1>
+      <p>Explore les champignons que tu as rencontrés</p>
+    </header>
+    <!--<nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1"><img src="icon.png" alt="Champipi" width="24" height="24">Champipi</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,14 +44,26 @@
       <button onclick="installerApp()" id="installBtn" class="btn btn-outline-success me-2" style="width: 100%; display: none;" type="button">Ajouter à l'Acceuil</button>
     </div>
     
-    </nav>
-     <div class="row">
-            <h2 class="col-12" style="padding: 1em 0">Mes Observations</h2>
-            <div id="stats-container" style="border-bottom: 2px solid black; padding-bottom: 1em; margin-bottom: 1em;" class="row stats-card"></div>
-            <div class="row" id="observations-container" ></div>
-            <div id="carte" style="height: 400px; margin-bottom: 2rem;"></div>
-    </div>
-    </div>
+   
+
+    </nav>-->
+    
+    <main class="container">
+      <section class="section">
+        <div id="carte" style="height: 400px"></div>
+      </section>
+
+      <button id="ajouterObservation" class="fab">➕</button>
+
+      <section class="section">
+        <h2>Liste des observations</h2>
+        <div id="stats-container" style="border-bottom: 2px solid black; padding-bottom: 1em; margin-bottom: 1em;" class="row stats-card"></div>
+       
+        <div id="observations-container">
+          <!-- Dynamically inserted cards -->
+        </div>
+      </section>
+    </main>
 
     <script>
         function chargerObservations() {
@@ -112,7 +129,8 @@
               </div>
           `;
 
-          btnSupprObs = document.createElement("button");
+          btnSupprObs = document.createElement("a");
+          btnSupprObs.innerHTML = "X"
           btnSupprObs.className = "btn-close";
           btnSupprObs.setAttribute("aria-label", "Close");
           btnSupprObs.addEventListener("click", () => {
@@ -145,6 +163,29 @@
       });
     }
 
+    function retirerObs(nom, observationASupprimer) {
+      const observations = JSON.parse(localStorage.getItem("observations")) || [];
+      const updatedObservations = observations.map(item => {
+        if (nom === item.nom) {
+           const nouvellesObservations = item.observations.filter(obs =>
+            obs.date !== observationASupprimer.date ||
+            obs.notes !== observationASupprimer.notes ||
+            obs.localisation.latitude !== observationASupprimer.localisation.latitude ||
+            obs.localisation.longitude !== observationASupprimer.localisation.longitude
+          );
+
+          return {
+            ...item,
+            observations: nouvellesObservations
+          };
+        }
+        return item;
+      }).filter(item => item.observations.length > 0);
+
+      localStorage.setItem("observations", JSON.stringify(updatedObservations));
+      chargerObservations();
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       
       map = L.map('carte').setView([46.8, -71.2], 7); // Centré sur le Québec
@@ -158,9 +199,6 @@
    
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="champipi_parsed.js"></script>
-    <script src="synonymes.js"></script>
-    <script src="app.js"></script>
-    <script src="data.js"></script>
     <style>
       ul {
         list-style-type: none;
@@ -181,6 +219,37 @@
         top: 0;
         right: 0;
       }
+      header {
+        background: url('img/natureheader.png') center/cover no-repeat;
+        padding: 4rem 1rem 2rem;
+        color: white;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        text-align: center;
+      }
+      .fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #88B378;
+  color: white;
+  border: none;
+  width: 60px;
+  height: 60px;
+  font-size: 2rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.2s ease;
+}
+
+.fab:hover {
+  background-color: #3F6634;
+}
     </style>
+
+   <script src="nav-component.js" type="module"></script>
+  <champipi-nav></champipi-nav>
 </body>
 </html>
