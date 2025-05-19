@@ -32,6 +32,19 @@ self.addEventListener('install', event => {
   );
 });
 
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
 
 self.addEventListener('message', (event) => {
   if (event.data?.type === 'SKIP_WAITING') {
@@ -40,7 +53,22 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('fetch', event => {
-const request = event.request;
+  const request = event.request;
+
+  // Gestion spécifique pour les pages HTML (navigate mode)
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then(networkResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
 
   // Gère les requêtes vers le répertoire /img dynamiquement
   if (request.url.includes('/img/')) {
@@ -55,7 +83,6 @@ const request = event.request;
             }
             return networkResponse;
           }).catch(() => {
-            // Optionnel : retourner une image par défaut si offline
             return caches.match('/img/icon.png');
           });
         })
@@ -64,7 +91,15 @@ const request = event.request;
     return;
   }
 
+  // Par défaut : cache-first pour les autres fichiers (CSS, JS, images, etc.)
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(request).then(response => {
+      return response || fetch(request).then(networkResponse => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(request, networkResponse.clone());
+          return networkResponse;
+        });
+      });
+    })
   );
 });

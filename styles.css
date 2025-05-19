@@ -53,11 +53,14 @@ section {
   margin: 2em;
 }
 
+.resultContainer .card {
+    padding-top: 0;
+}
+
 .card {
   padding: 1rem;
   margin-bottom: 1rem;
-  border-radius: 15px;
-  padding-top: 0;
+  border-radius: 15px; 
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
