@@ -3,7 +3,10 @@ body {
   font-family: 'Poppins', sans-serif;
   color: #3F6634;
   margin: 0;
-  padding: 0;
+}
+
+main, body {
+  padding-bottom: 80px; /* ou au moins la hauteur du menu + un peu de marge */
 }
 
 header, nav {
