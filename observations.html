@@ -157,6 +157,11 @@
       chargerObservations();
     }
 
+    document.body.addEventListener('observation-ajoutee', (e) => {
+  console.log('Observation ajoutée :', e.detail);
+  // Ici tu peux enregistrer e.detail dans IndexedDB, localStorage ou ta logique d'app
+});
+
     window.addEventListener("DOMContentLoaded", () => {
       
       map = L.map('carte').setView([46.8, -71.2], 7); // Centré sur le Québec
