@@ -61,7 +61,6 @@ class ObservationModal extends HTMLElement {
       </style>
       <div class="modal-backdrop">
         <div class="modal">
-          <button class="close" title="Fermer">&times;</button>
           <h2>Ajouter une observation</h2>
           <label for="champignon">Choisir le champignon observé</label>
           <select id="champignon" required>            
@@ -72,7 +71,7 @@ class ObservationModal extends HTMLElement {
           <input type="text" id="localisation" placeholder="Localisation" disabled />
           <textarea id="note" rows="3" placeholder="Note optionnelle..."></textarea>
           <button id="valider">Valider</button>
-          <button id="fermer">Fermer</button>
+          <button class="close" id="fermer">Fermer</button>
         </div>
       </div>
     `;
