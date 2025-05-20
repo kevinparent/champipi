@@ -46,17 +46,11 @@ class ObservationModal extends HTMLElement {
           font-weight: bold;
           cursor: pointer;
         }
-        .modal .close {
-          position: absolute;
-          top: 10px;
-          right: 15px;
-          font-size: 1.4rem;
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
         #fermer {
           margin-left: 1em;
+        }
+        #champignon {
+          width: 100%;
         }
       </style>
       <div class="modal-backdrop">
