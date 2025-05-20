@@ -48,7 +48,7 @@ header {
 }
 
 #installApp {
-  width: 100%;
+  width:100%;
 }
 
 #criteria {
@@ -131,7 +131,7 @@ input[type='text'] {
 }
 
 section {
-  margin: 2em;
+  margin: 1em;
 }
 
 .resultContainer .card {
