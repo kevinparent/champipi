@@ -66,7 +66,7 @@ class ObservationModal extends HTMLElement {
           <select id="champignon" required>            
             ${options}
           </select>
-          <label for="date>Choisir une date d'observation</label>
+          <label for="date">Choisir une date d'observation</label>
           <input type="date" id="date" />
           <input type="text" id="localisation" placeholder="Localisation" disabled />
           <textarea id="note" rows="3" placeholder="Note optionnelle..."></textarea>
