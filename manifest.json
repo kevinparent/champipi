@@ -11,5 +11,12 @@
         "sizes": "192x192",
         "type": "image/png"
       }
+    ],
+    "screenshots": [
+    {
+      "src": "/champipi/screenshot1.png",
+      "type": "image/png",
+      "sizes": "540x720"
+    }
     ]
   }
