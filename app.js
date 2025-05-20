@@ -301,7 +301,9 @@ function miseAJourCritere() {
     }
   }
 
-  criteresRecherches = nouvellesRecherches;
+  for (const cle in nouvellesRecherches) {
+    criteresRecherches[cle] = nouvellesRecherches[cle];
+  }
 
   if (Object.values(criteresRecherches).length > 0) {
     document.getElementById("filtresActifs").style.display = "block";
@@ -332,22 +334,6 @@ function trouverCritereCorrespondant(mot) {
   return meilleurCritere;
 }
 
-/*
-function miseAJourCritere() {
-  if (!ignorerRecherche) {
-    const cle = critereSelect.value;
-    const termeRech = valeurRecherche.value
-    .split(",")
-    .map(t  => t.trim())    
-    .filter(t => t.length > 0); // Filtrer les termes vides
-
-      criteresRecherches[critereSelect.value] = { critere: critereSelect.value, termes: termeRech };  
-
-    
-  modifierListeCritere();  
-  appliquerRecherche();
-  }
-}*/
 
 function modifierListeCritere() {
   criteriaList.innerHTML = '';
