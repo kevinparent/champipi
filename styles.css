@@ -47,6 +47,10 @@ header {
   border-bottom-right-radius: 20px;
 }
 
+#installApp {
+  width: 100%;
+}
+
 #criteria {
   width: 100%;
 }
