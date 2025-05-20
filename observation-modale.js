@@ -55,6 +55,9 @@ class ObservationModal extends HTMLElement {
           border: none;
           cursor: pointer;
         }
+        #fermer {
+          margin-left: 1em;
+        }
       </style>
       <div class="modal-backdrop">
         <div class="modal">
@@ -69,6 +72,7 @@ class ObservationModal extends HTMLElement {
           <input type="text" id="localisation" placeholder="Localisation" disabled />
           <textarea id="note" rows="3" placeholder="Note optionnelle..."></textarea>
           <button id="valider">Valider</button>
+          <button id="fermer">Fermer</button>
         </div>
       </div>
     `;
