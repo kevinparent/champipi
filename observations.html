@@ -82,8 +82,8 @@
         const fiches = item.observations.map(obs => {
              if (obs.localisation && obs.localisation.latitude && obs.localisation.longitude) {
                 const offset = (Math.random() - 0.5) * 0.0008; // ~80 m
-                const lat = obs.localisation.latitude + offset;
-                const lng = obs.localisation.longitude + offset;
+                const lat = parseFloat(obs.localisation.latitude) + offset;
+                const lng = parseFloat(obs.localisation.longitude) + offset;
         L.marker([lat, lng], { icon: mushroomIcon })
             .addTo(map)
             .bindPopup(`<strong>${item.nom}</strong><br>${new Date(obs.date).toLocaleDateString("fr-CA")}`);
