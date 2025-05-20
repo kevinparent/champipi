@@ -9,6 +9,7 @@ const FILES_TO_CACHE = [
   '/champipi/recherche.html',
   '/champipi/favoris.html',
   '/champipi/observations.html',
+  '/champipi/glossaire.html',
   '/champipi/app.js',
   '/champipi/data.js',
   '/champipi/leaflet.css',
