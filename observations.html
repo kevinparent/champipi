@@ -90,8 +90,8 @@
         }
           const date = new Date(obs.date).toLocaleDateString("fr-CA");
           const notes = obs.notes || "<em>Aucune note</em>";
-          const lat = parseFloat(obs.localisation?.latitude?).toFixed(5) || "?";
-          const lng = parseFloat(obs.localisation?.longitude?).toFixed(5) || "?";
+          const lat = parseFloat(obs.localisation?.latitude).toFixed(5) || "?";
+          const lng = parseFloat(obs.localisation?.longitude).toFixed(5) || "?";
 
           fObs = document.createElement("div");
           fObs.className = "card-text";
