@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="leaflet.css" />
    <script type="module" src="observation-modale.js"></script>
   <script src="leaflet.js"></script>
+  <script src="observations.js"></script>
   <title>Champipi</title>
 </head>
 <body>
@@ -134,33 +135,7 @@
       });
     }
 
-    function retirerObs(nom, observationASupprimer) {
-      const observations = JSON.parse(localStorage.getItem("observations")) || [];
-      const updatedObservations = observations.map(item => {
-        if (nom === item.nom) {
-           const nouvellesObservations = item.observations.filter(obs =>
-            obs.date !== observationASupprimer.date ||
-            obs.notes !== observationASupprimer.notes ||
-            obs.localisation.latitude !== observationASupprimer.localisation.latitude ||
-            obs.localisation.longitude !== observationASupprimer.localisation.longitude
-          );
-
-          return {
-            ...item,
-            observations: nouvellesObservations
-          };
-        }
-        return item;
-      }).filter(item => item.observations.length > 0);
-
-      localStorage.setItem("observations", JSON.stringify(updatedObservations));
-      chargerObservations();
-    }
-
-    document.body.addEventListener('observation-ajoutee', (e) => {
-  console.log('Observation ajoutée :', e.detail);
-  // Ici tu peux enregistrer e.detail dans IndexedDB, localStorage ou ta logique d'app
-});
+    
 
     window.addEventListener("DOMContentLoaded", () => {
       

@@ -37,19 +37,7 @@ if (resetButton) resetButton.addEventListener('click', () => {
 
 });
 
-document.body.addEventListener('observation-ajoutee', (e) => {
-  console.log('Observation ajoutée :', e.detail);
-  const nouvelle = {
-        date: e.detail.date,
-        notes: e.detail.note,
-        localisation: {
-          latitude: e.detail.localisation.split(",")[0],
-          longitude: e.detail.localisation.split(",")[1]
-        }
-      }
 
-      ajouterObservation(e.detail.champignon, nouvelle);
-});
 
 function installerApp() {
   if (deferredPrompt) {
@@ -252,61 +240,7 @@ function initialiserFiltreDivisions(data) {
   }
 }
 
-function ouvrirModaleObservation(champignon) {
-  const myModal = document.getElementById('myModal');
-  const champiNom = document.getElementById('modalChampiNom');
-  const champiNotes = document.getElementById('modalObservationNotes');
-  const champiDate = document.getElementById('modalObservationDate');
 
-  champiNom.innerHTML = champignon["list champi"];
-  /*champiNotes.value = ""; // Réinitialiser le champ de notes
-  champiDate.innerHTML = new Date().toLocaleString(); // Date actuelle
-  champiLocalisation.innerHTML = "En attente de localisation...";*/
-  myModal.style.display = "block"; // Afficher la modale
-  // Fermer la modale si l'utilisateur clique en dehors d'elle
-  window.onclick = function(event) {
-    if (event.target == myModal) {
-      myModal.style.display = "none";
-    }
-  };
-
- const ajouterBtn = document.getElementById('ajouterObservationBtn');
-  ajouterBtn.onclick = function() {
-    navigator.geolocation.getCurrentPosition(position => {
-      const nouvelle = {
-        date: champiDate.value,
-        notes: champiNotes.value,
-        localisation: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        }
-      }
-
-      ajouterObservation(champignon, nouvelle);
-      myModal.style.display = "none"; // Fermer la modale après ajout
-    });
-    
-  };
-}
-
-function ajouterObservation(nomChampi, observation) {
-  const observations = JSON.parse(localStorage.getItem("observations")) || [];
-
-    const index = observations.findIndex(o => o.champiId === nomChampi);
-
-    if (index !== -1) {
-      observations[index].observations.push(observation);
-    } else {
-      observations.push({
-        champiId: nomChampi,
-        nom: nomChampi,
-        observations: [observation]
-      });
-    }
-
-    localStorage.setItem("observations", JSON.stringify(observations));
-    alert("Observation ajoutée !");
-}
 
 function surlignerMotsProches(texte, termeRecherche) {
   const mots = texte.split(/(\W+)/); // préserve ponctuation et séparateurs
