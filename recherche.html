@@ -18,10 +18,10 @@
     <section class="section">
       <h2>Recherche par critères</h2>
       
-      <section class="photosection">
+      <div class="photosection">
         <div id="photoBoot" class="col-12">
           <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
-        <button class="button btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>        
+        <button id="photoButton" class="button btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>        
         </div>
       <div id="spinnerPhoto" class="text-center col-12" style="display: none;">
           <div class="spinner-border text-primary" role="status">
@@ -33,7 +33,7 @@
         <div id="resultatsPhoto" class="col-12">
           
         </div>
-      </section>
+    </div>
 
     <div id="sectionRecherche" class="card">
     <label for="filtre-division">Division :</label>
