@@ -54,3 +54,91 @@ function retirerObs(nom, observationASupprimer) {
       localStorage.setItem("observations", JSON.stringify(updatedObservations));
       chargerObservations();
     }
+
+function exporterObservations() {
+  const observations = JSON.parse(localStorage.getItem("observations")) || [];
+
+  const jsonStr = JSON.stringify(observations, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const fichier = new File([blob], "observations.json", { type: "application/json" });
+
+  // Essai de partage
+  if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
+    navigator.share({
+      title: "Mes observations Champipi",
+      text: "Voici mes observations de champignons.",
+      files: [fichier]
+    }).then(() => {
+      console.log("Partage réussi !");
+    }).catch((err) => {
+      console.error("Erreur de partage :", err);
+      telechargerFichier(blob, "observations.json");
+    });
+  } else {
+    // Fallback : téléchargement direct
+    telechargerFichier(blob, "observations.json");
+  }
+}
+
+function telechargerFichier(blob, nomFichier) {
+  const url = URL.createObjectURL(blob);
+  const lien = document.createElement("a");
+  lien.href = url;
+  lien.download = nomFichier;
+  document.body.appendChild(lien);
+  lien.click();
+  document.body.removeChild(lien);
+  URL.revokeObjectURL(url);
+}
+
+    // Gestion de l'import
+document.getElementById("importFile").addEventListener("change", async (event) => {
+  const observations = JSON.parse(localStorage.getItem("observations")) || [];
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const text = await file.text();
+  let nouvellesObs;
+
+  try {
+    nouvellesObs = JSON.parse(text);
+  } catch (e) {
+    alert("Fichier invalide !");
+    return;
+  }
+
+  let ajoutées = 0;
+
+  for (const champi of nouvellesObs) {
+  const champiNom = champi.nom || champi.champiId;
+
+  for (const obs of champi.observations || []) {
+    const observationAplat = {
+      champignon: champiNom,
+      date: obs.date,
+      localisation: obs.localisation,
+      note: obs.notes
+    };
+
+    const estDupliquée = observations.some(o =>
+      o.champignon === observationAplat.champignon &&
+      o.localisation?.latitude === observationAplat.localisation?.latitude &&
+      o.localisation?.longitude === observationAplat.localisation?.longitude
+    );
+
+    if (!estDupliquée) {
+      ajouterObservation(observationAplat.champignon, observationAplat);
+      ajoutées++;
+    }
+  }
+}
+
+  if (ajoutées > 0) {
+    chargerObservations(); // rafraîchit la page
+    alert(`${ajoutées} nouvelle(s) observation(s) ajoutée(s).`);
+  } else {
+    alert("Aucune nouvelle observation ajoutée (doublons ignorés).");
+  }
+
+  event.target.value = ""; // reset du champ
+});

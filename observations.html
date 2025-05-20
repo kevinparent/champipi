@@ -29,8 +29,19 @@
 
       <section class="section">
         <h2>Liste des observations</h2>
-        <div id="stats-container" style="border-bottom: 2px solid black; padding-bottom: 1em; margin-bottom: 1em;" class="row stats-card"></div>
-       
+        
+        <div id="observationContainerHeader">
+          <div id="stats-container" class="row stats-card"></div>
+        
+          <aside class="aside">
+            <h3>📤 Exporter / 📥 Importer</h2>
+            <button class="button" onclick="exporterObservations()">📤 Exporter les observations</button>
+            <div style="margin-top: 1em;">
+              <label for="importFile" class="button themed-button">📥 Importer des observations</label>
+              <input type="file" id="importFile" accept=".json" style="display: none;" />
+            </div>
+          </aside>
+        </div>
         <div id="observations-container">
           <!-- Dynamically inserted cards -->
         </div>
@@ -137,7 +148,6 @@
     });
     </script>
    
-    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="champipi_parsed.js"></script>
     <style>
       ul {
