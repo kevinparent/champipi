@@ -280,8 +280,16 @@ function miseAJourCritere() {
     const premierMot = mots[0];
     const critereDetecte = trouverCritereCorrespondant(premierMot);
 
+    const regex = new RegExp(`^${premierMot}\\s+`, 'i'); // début du bloc + espace
+    const reste = bloc.replace(regex, '').trim();
+
     if (critereDetecte && mots.length > 1) {
-      const termes = mots.slice(1).join(" ").split(" OU ").map(t => t.trim()).filter(Boolean);
+      const sousBlocs = reste.split(/\bET\b/i).map(t => t.trim()).filter(Boolean);
+      let termes = [];
+      for (const sous of sousBlocs) {
+        termes.push(...sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean));
+      }
+      
       if (termes.length > 0) {
         nouvellesRecherches[critereDetecte] = {
           critere: critereDetecte,
@@ -291,7 +299,13 @@ function miseAJourCritere() {
     } else {
       // Aucun critère reconnu → on utilise le critère sélectionné
       const cle = critereSelect.value;
-      const termes = bloc.split(" OU ").map(t => t.trim()).filter(Boolean);
+      
+      const sousBlocs = reste.split(/\bET\b/i).map(t => t.trim()).filter(Boolean);
+      let termes = [];
+      for (const sous of sousBlocs) {
+        termes.push(...sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean));
+      }
+
       if (termes.length > 0) {
         if (!nouvellesRecherches[cle]) {
           nouvellesRecherches[cle] = { critere: cle, termes: [] };
