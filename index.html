@@ -88,6 +88,11 @@
   let deferredPrompt;
   const installBtn = document.getElementById('installApp');
 
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  console.log('✅ beforeinstallprompt déclenché !', e);
+});
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
