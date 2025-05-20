@@ -76,6 +76,12 @@ class ObservationModal extends HTMLElement {
         </div>
       </div>
     `;
+    
+    const champignonInitial = this.getAttribute('champName');
+    if (champignonInitial) {
+      const select = this.querySelector('#champignon');
+      if (select) select.value = champignonInitial;
+    }
 
     this.querySelector('.close').addEventListener('click', () => this.remove());
     this.querySelector('#valider').addEventListener('click', () => this.submit());

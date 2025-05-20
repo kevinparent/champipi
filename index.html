@@ -87,7 +87,36 @@
       <a href="favoris.html" class="button">Accéder</a>
     </section>
   </main>
+  <button id="installApp" class="button" style="display: none;">📲 Installer l'application</button>
   <script src="nav-component.js" type="module"></script>
   <champipi-nav></champipi-nav>
 </body>
+
+<script>
+  let deferredPrompt;
+  const installBtn = document.getElementById('installApp');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-block';
+
+    installBtn.addEventListener('click', async () => {
+      installBtn.disabled = true;
+      deferredPrompt.prompt();
+
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('L’utilisateur a installé l’application');
+      }
+      deferredPrompt = null;
+    });
+  });
+
+  // Optionnel : cacher le bouton si l'app est déjà installée
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    console.log('Application installée');
+  });
+</script>
 </html>

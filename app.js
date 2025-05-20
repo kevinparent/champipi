@@ -174,7 +174,9 @@ function afficherChampignon(champignon) {
       observationButton.className = 'button btn btn-primary btnObservation champi-btn';
       observationButton.setWidth = "100%";
       observationButton.addEventListener('click', () => {
-        document.body.appendChild(document.createElement('observation-modal'))
+        modale = document.createElement('observation-modal');
+        modale.setAttribute("champName", champignon["list champi"]);
+        document.body.appendChild(modale)
       });
    
 
