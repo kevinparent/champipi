@@ -16,12 +16,20 @@
     {
       "src": "/champipi/screenshot1.png",
       "type": "image/png",
-      "sizes": "540x720"
+      "sizes": "540x720",
+      "form_factor": "narrow"
     },
     {
       "src": "/champipi/screenshot2.png",
       "type": "image/png",
-      "sizes": "540x720"
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+     {
+    "src": "/champipi/screenshot3.png",
+    "type": "image/png",
+    "sizes": "1280x720",
+    "form_factor": "wide"
     }
     ]
   }
