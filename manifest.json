@@ -1,13 +1,13 @@
 {
     "name": "Champipi",
     "short_name": "Champipi",
-    "start_url": "/champipi",
+    "start_url": "/champipi/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "description": "Application de recherche hors-ligne de champignons comestibles et toxiques.",
     "icons": [
       {
-        "src": "icon.png",
+        "src": "/champipi/icon.png",
         "sizes": "192x192",
         "type": "image/png"
       }
