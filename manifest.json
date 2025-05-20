@@ -17,6 +17,11 @@
       "src": "/champipi/screenshot1.png",
       "type": "image/png",
       "sizes": "540x720"
+    },
+    {
+      "src": "/champipi/screenshot2.png",
+      "type": "image/png",
+      "sizes": "540x720"
     }
     ]
   }
