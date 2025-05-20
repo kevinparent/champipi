@@ -85,12 +85,6 @@
           modifierListeCritere();
           initialiserFiltreDivisions(window.champiData);
 
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-              .then(() => console.log('Service Worker enregistré.'))
-              .catch(err => console.error('Erreur Service Worker :', err));
-          }
-
 
            document.querySelectorAll(".favori-icon").forEach(icon => {
         const id = icon.getAttribute("data-id");
