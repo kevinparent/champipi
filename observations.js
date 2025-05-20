@@ -128,6 +128,7 @@ document.getElementById("importFile").addEventListener("change", async (event) =
 
     if (!estDupliquée) {
       ajouterObservation(observationAplat.champignon, observationAplat);
+      observations.push(observationAplat);
       ajoutées++;
     }
   }
