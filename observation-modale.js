@@ -60,10 +60,11 @@ class ObservationModal extends HTMLElement {
         <div class="modal">
           <button class="close" title="Fermer">&times;</button>
           <h2>Ajouter une observation</h2>
-          <select id="champignon" required>
-            <option value="" disabled selected>Choisir un champignon...</option>
+          <label for="champignon">Choisir le champignon observé</label>
+          <select id="champignon" required>            
             ${options}
           </select>
+          <label for="date>Choisir une date d'observation</label>
           <input type="date" id="date" />
           <input type="text" id="localisation" placeholder="Localisation" disabled />
           <textarea id="note" rows="3" placeholder="Note optionnelle..."></textarea>

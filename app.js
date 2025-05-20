@@ -39,7 +39,16 @@ if (resetButton) resetButton.addEventListener('click', () => {
 
 document.body.addEventListener('observation-ajoutee', (e) => {
   console.log('Observation ajoutée :', e.detail);
-  // Ici tu peux enregistrer e.detail dans IndexedDB, localStorage ou ta logique d'app
+  const nouvelle = {
+        date: e.date,
+        notes: e.note,
+        localisation: {
+          latitude: e.localisation.split(",")[0],
+          longitude: e.localisation.split(",")[1]
+        }
+      }
+
+      ajouterObservation(e.champignon, nouvelle);
 });
 
 function installerApp() {
@@ -278,18 +287,17 @@ function ouvrirModaleObservation(champignon) {
   };
 }
 
-function ajouterObservation(champi, observation) {
+function ajouterObservation(nomChampi, observation) {
   const observations = JSON.parse(localStorage.getItem("observations")) || [];
 
-    const champiId = champi["list champi"];
-    const index = observations.findIndex(o => o.champiId === champiId);
+    const index = observations.findIndex(o => o.champiId === nomChampi);
 
     if (index !== -1) {
       observations[index].observations.push(observation);
     } else {
       observations.push({
-        champiId: champiId,
-        nom: champi["list champi"],
+        champiId: nomChampi,
+        nom: nomChampi,
         observations: [observation]
       });
     }
