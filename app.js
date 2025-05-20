@@ -40,15 +40,15 @@ if (resetButton) resetButton.addEventListener('click', () => {
 document.body.addEventListener('observation-ajoutee', (e) => {
   console.log('Observation ajoutée :', e.detail);
   const nouvelle = {
-        date: e.date,
-        notes: e.note,
+        date: e.detail.date,
+        notes: e.detail.note,
         localisation: {
-          latitude: e.localisation.split(",")[0],
-          longitude: e.localisation.split(",")[1]
+          latitude: e.detail.localisation.split(",")[0],
+          longitude: e.detail.localisation.split(",")[1]
         }
       }
 
-      ajouterObservation(e.champignon, nouvelle);
+      ajouterObservation(e.detail.champignon, nouvelle);
 });
 
 function installerApp() {
