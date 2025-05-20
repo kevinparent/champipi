@@ -2,29 +2,34 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-grid.min.css" />
-  <title>Champipi</title>
-  <script src="synonymes.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synonymes – Champipi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="nav-component.js"></script>
 </head>
 <body>
-  <div class="container">
-   
-     <div class="row">
-        <h3>Liste de synonymes</h3>
-        
-        <p>L'engin de recherche vous simplifie la vie en comparant vos termes de recherches avec une banque de synonymes pour vous permettre de chercher plus simplement</p>
-        <p>Cette page vous permet de consulter la liste des synonymes. N'hésitez pas à communiquer avec nous pour la modifier</p>
-        <div id="synonymesContainer" class="container-fluid" style="padding-top: 1em;">
-            
-        </div>
-        <script>
+  <header>
+    <h1>🔄 Synonymes</h1>
+    <p>Découvrez les équivalents ou termes similaires utilisés pour décrire les champignons</p>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div id="synonymesContainer">
+
+      </div>
+    </section>
+  </main>
+
+  <champipi-nav></champipi-nav>
+
+  <script src="synonymes.js"></script>
+  <script>
             sysContainer = document.getElementById("synonymesContainer");
             dictionnaireSynonymes.forEach(dic => {
                 ul = document.createElement("ul");
-                ul.className = "list-group list-group-horizontal sysList";
+                ul.className = "card list-group list-group-horizontal sysList";
 
                 dic.forEach(el => {
                     li = document.createElement("li");
@@ -35,20 +40,5 @@
                 sysContainer.appendChild(ul);
             });
         </script>
-    </div>
-    </div>
-   
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="champipi_parsed.js"></script>
-    
-    <script src="app.js"></script>
-    <script src="data.js"></script>
-    <style>
-      .sysList {
-        padding-bottom: 1em;
-      } 
-    </style>
-    <script src="nav-component.js" type="module"></script>
-  <champipi-nav></champipi-nav>
 </body>
 </html>

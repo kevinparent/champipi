@@ -40,6 +40,7 @@ class ChampipiNav extends HTMLElement {
         <a href="observations.html" class="nav-item ${page === 'observations' ? 'active' : ''}" data-page="observations">🗺️<span>Observations</span></a>
         <a href="favoris.html" class="nav-item ${page === 'favoris' ? 'active' : ''}" data-page="favoris">⭐<span>Favoris</span></a>
         <a href="aide.html" class="nav-item ${page === 'aide' ? 'active' : ''}" data-page="aide">❓<span>Aide</span></a>
+        <a href="synonymes.html" class="nav-item ${page === 'synonymes' ? 'active' : ''}" data-page="synonymes">🔄<span>Synonymes</span></a>
       </nav>
     `;
   }
