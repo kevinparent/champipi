@@ -29,6 +29,11 @@ function ajouterObservation(nomChampi, observation) {
     }
 
     localStorage.setItem("observations", JSON.stringify(observations));
+
+    if (localStorage.getItem("inaturalist_autoSync")) {
+        envoyerObservation(nomChampi, observation);
+    }
+
     alert("Observation ajoutée !");
 }
 
@@ -90,6 +95,40 @@ function telechargerFichier(blob, nomFichier) {
   document.body.removeChild(lien);
   URL.revokeObjectURL(url);
 }
+
+async function envoyerObservation(nomChampi, observation) {
+  const token = localStorage.getItem("inaturalist_token");
+  if (!token) {
+    alert("Token iNaturalist manquant.");
+    return;
+  }
+
+  const obs = observations[index];
+  const body = {
+    species_guess: nomChampi,
+    description: obs.note || "Observation via Champipi",
+    observed_on_string: obs.date || new Date().toISOString().split("T")[0],
+    latitude: obs.localisation?.longitude,
+    longitude: obs.localisation?.longitude,
+    tag_list: "champipi"
+  };
+
+  const res = await fetch("https://api.inaturalist.org/v1/observations", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (res.ok) {
+    alert("Observation envoyée !");
+  } else {
+    alert("Échec de l'envoi.");
+  }
+}
+
 
     // Gestion de l'import
 document.getElementById("importFile").addEventListener("change", async (event) => {

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aide – Champipi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"> <!-- ton CSS commun -->
+  <script type="module" src="nav-component.js"></script> <!-- composant nav -->
+</head>
+<body>
+  <header>
+    <h1>❓ iNaturalist</h1>
+    <p>Synchronise tes observations avec iNaturalist</p>
+  </header>
+
+  <main class="container">  
+    
+    <section class="section card">
+        <h2>Connexion à iNaturalist</h2>
+    <ol>
+    <li>Connecte-toi à ton compte iNaturalist.</li>
+    <li>Va sur <a href="https://www.inaturalist.org/users/api_token" target="_blank">https://www.inaturalist.org/users/api_token</a></li>
+    <li>Copie le jeton affiché.</li>
+    <li>Colle-le ci-dessous :</li>
+    </ol>
+    </section>
+
+    <section id="tokenForm" class="section card" >
+    <input type="text" id="inatToken" placeholder="Collez votre token ici">
+    <button id="tokenButton" class="button" onclick="sauverToken()">Sauvegarder</button>
+    <br>
+    <label>
+    <input type="checkbox" id="autoSync"> Synchroniser automatiquement les prochaines observations
+    </label>
+    </section>
+</main>
+    
+
+<style>
+#tokenForm > * {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+</style>
+
+  <champipi-nav></champipi-nav>
+</body>
+<script>
+    function sauverToken() {
+    const token = document.getElementById("inatToken").value;
+    localStorage.setItem("inaturalist_token", token);
+    alert("Token enregistré !");
+    }
+   
+
+    document.getElementById("autoSync").addEventListener("change", (e) => {
+     localStorage.setItem("inaturalist_autoSync", e.target.checked ? "true" : "false");
+    });
+
+   window.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("inaturalist_token");
+    if (token) {
+        document.getElementById("inatToken").value = token;
+    }
+
+    const autoSync = localStorage.getItem("inaturalist_autoSync") === "true";
+    document.getElementById("autoSync").checked = autoSync;
+    });
+   
+
+    </script>
+</html>
