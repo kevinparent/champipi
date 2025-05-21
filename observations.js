@@ -103,7 +103,7 @@ async function envoyerObservation(nomChampi, observation) {
     return;
   }
 
-  const obs = observations[index];
+  const obs = observation;
   const body = {
     species_guess: nomChampi,
     description: obs.note || "Observation via Champipi",
