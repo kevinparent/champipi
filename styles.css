@@ -117,6 +117,11 @@ h1, h2 {
   transition: 0.2s ease;
 }
 
+.button.invalid {
+  background-color: #c0392b; /* rouge foncé */
+  color: white;
+}
+
 .button:hover {
   background-color: #3F6634;
 }

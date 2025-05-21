@@ -73,7 +73,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <p>Consulte ta carte d'observation et ajoute de nouveaux spécimens observés.</p>
       <p>Tu es actif sur iNaturalist? Partages-y tes observations!</p>
       <a style="margin-right: 1em;" href="observations.html" class="button">Voir la carte</a>
-      <a href="inaturalist.html" class="button">iNaturalist</a>
+      <a id="btniNat" href="inaturalist.html" class="button">iNaturalist</a>
     </section>
 
     <section class="section">
@@ -101,16 +101,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
    window.addEventListener("DOMContentLoaded", () => {
     verifierToken();
   });
+  
 async function verifierToken() {
+  const btn = document.getElementById("btniNat");
   const token = localStorage.getItem("inaturalist_token");
-  if (!token) return;
 
-  const res = await fetch("https://api.inaturalist.org/v1/users/me", {
-    headers: { "Authorization": `Bearer ${token}` }
-  });
+  if (!token) {
+    btn.classList.add("invalid");
+    return;
+  }
 
-  if (!res.ok) {
-    alert("Le token iNaturalist est invalide ou expiré. Veuillez le mettre à jour.");
+  try {
+    const res = await fetch("https://api.inaturalist.org/v1/users/me", {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (res.ok) {
+      btn.classList.add("valid");
+    } else {
+      btn.classList.add("invalid");
+    }
+  } catch (e) {
+    btn.classList.add("invalid");
   }
 }
 
