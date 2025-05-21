@@ -134,11 +134,6 @@ section {
   margin: 1em;
 }
 
-#observationContainerHeader > * {
-  display: inline-block;
-  width: 50%;
-  box-sizing: border-box;;
-} 
 
 #observationContainerHeader {
   border-bottom: 2px solid black;
@@ -164,10 +159,6 @@ section {
 
 .resultContainer .card {
     padding-top: 0;
-}
-
-#stats-container {
-  float: left;
 }
 
 .card {

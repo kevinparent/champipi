@@ -31,16 +31,19 @@
         <h2>Liste des observations</h2>
         
         <div id="observationContainerHeader">
-          <div id="stats-container" class="row stats-card"></div>
-        
-          <aside class="aside">
-            <h3>📤 Exporter / 📥 Importer</h2>
-            <button class="button" onclick="exporterObservations()">📤 Exporter les observations</button>
-            <div style="margin-top: 1em;">
-              <label for="importFile" class="button themed-button">📥 Importer des observations</label>
+        <aside class="aside">
+            <h3>📤 Exporter les observations / 📥 Importer des observations</h2>
+              <div style="margin-top: 1em;"></div>
+              <button class="button" onclick="exporterObservations()">📤 Exporter</button>
+            
+              <label for="importFile" class="button themed-button">📥 Importer</label>
               <input type="file" id="importFile" accept=".json" style="display: none;" />
             </div>
           </aside>
+        
+          <div id="stats-container" class="row stats-card"></div>
+        
+          
         </div>
         <div id="observations-container">
           <!-- Dynamically inserted cards -->
