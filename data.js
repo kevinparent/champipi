@@ -54,88 +54,94 @@ function sansAccents(str) {
     return [tm];
   }
 
-  
-function appliquerRecherche() {
-  
-    if (Object.values(criteresRecherches).length == 0) {
-      loadData();
-    } else {
-      const filtres = tousLesChampignons.filter(champi => {
-        return Object.values(criteresRecherches).every((critere) => {
-          const champiDescription = champi.description || [];
-          const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
-          const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
-  
-           if (critere.critere === "division" ) {
-              return critere.termes[0] != "" ? champi.division === critere.termes[0] : true;
-            }
+  function appliquerRecherche() {
+  if (Object.values(criteresRecherches).length == 0) {
+    loadData();
+    return;
+  }
 
-           let mots = [];
+  const filtres = tousLesChampignons.filter(champi => {
+    const champiDescription = champi.description || [];
 
-          if (critere.critere === "TOUT") {
-            texteGlobal =  champi["list champi"] + " ";
-            texteGlobal += champiDescription.map(d => Object.values(d)[0]).join(" ");
-            mots = sansAccents(texteGlobal.toLowerCase()).split(/\W+/);
+    return Object.values(criteresRecherches).every((critere) => {
+      const estCritereExclu = critere.critere.startsWith("!");
+      const critereNom = estCritereExclu ? critere.critere.slice(1) : critere.critere;
+
+      // Cas spécial : exclusion de critère (!Chapeau)
+      const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critereNom);
+      if (estCritereExclu) return !champiCritere;
+
+      // Cas spécial : division
+      if (critereNom === "division") {
+        return critere.termes[0] !== "" ? champi.division === critere.termes[0] : true;
+      }
+
+      let mots = [];
+      if (critereNom === "TOUT") {
+        let texteGlobal = (champi["list champi"] || "") + " ";
+        texteGlobal += champiDescription.map(d => Object.values(d)[0]).join(" ");
+        mots = sansAccents(texteGlobal.toLowerCase()).split(/\W+/);
+
+         // ✅ Ajout : exclure fiches contenant certains critères (ex: !Chapeau)
+        const exclusions = critere.termes.filter(t => t.startsWith("!")).map(t => t.slice(1).toLowerCase());
+        const contientCritere = champiDescription.map(d => Object.keys(d)[0].toLowerCase());
+        if (exclusions.some(c => contientCritere.includes(sansAccents(c)))) {
+          return false; // fiche exclue si elle contient un des critères mentionnés par !Nom
+        }
+      } else {
+        const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
+        mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
+      }
+
+      return critere.termes.every(ts => {
+        const sousTermes = ts.split(' ou ').map(t => t.trim());
+
+        return sousTermes.some(t => {
+          const estNegatif = t.startsWith("!");
+          const termeNettoye = estNegatif ? t.slice(1) : t;
+          const syno = trouverSynonymes(termeNettoye);
+
+          if (estNegatif) {
+            return syno.every(s => {
+              const sMin = sansAccents(s.toLowerCase());
+              const tolMin = getTolerance(sMin.length);
+
+              return mots.every(val => {
+                const mm = sansAccents(val.toLowerCase());
+                if (mm.startsWith(sMin)) return false;
+                const debutMot = mm.slice(0, sMin.length);
+                const distance = distanceLevenshtein(debutMot, sMin);
+                const memeInitiale = mm.charAt(0) === sMin.charAt(0);
+                return distance > tolMin || !memeInitiale;
+              });
+            });
           } else {
-            const champiCritere = champiDescription.find(desc => Object.keys(desc)[0] === critere.critere);
-            const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
-            mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
+            return syno.some(s => {
+              const sMin = sansAccents(s.toLowerCase());
+              const tolMin = getTolerance(sMin.length);
+              return mots.some(val => validerDonneeRecherche(sMin, tolMin, val));
+            });
           }
-
-           return critere.termes.every(ts => {
-                const st = ts.split(' OU ').map(t => t.trim());
-
-                return st.some(t => {
-                  const estNegatif = t.startsWith("!");
-                  const termeNettoye = estNegatif ? t.slice(1) : t; // Enlever le "!" du terme
-
-                  const syno = trouverSynonymes(termeNettoye);
-
-                  if (estNegatif) {
-                    return syno.every(s => {
-                      sMin = sansAccents(s.toLowerCase());
-                      const tolMin = getTolerance(sMin.length);
-
-                      return mots.every(val => {
-                        mm = sansAccents(val.toLowerCase());
-                        if (mm.startsWith(sMin)) return false; // Si le mot commence par le terme de recherche, il ne doit pas être présent
-                        debutMot = mm.slice(0, sMin.length);
-                        distance = distanceLevenshtein(debutMot, sMin);
-                        memeInitiale = mm.charAt(0) === sMin.charAt(0);
-                        return distance > tolMin || !memeInitiale; // Vérifier si la distance est supérieure à la tolérance ou si les initiales ne correspondent pas
-                      });
-                    });
-                  } else {
-                    return syno.some(s => { 
-                      const sMin = sansAccents(s.toLowerCase());
-                      const tolMin = getTolerance(sMin.length); 
-                      return mots.some(val => {
-                        return validerDonneeRecherche(sMin, tolMin, val)// Vérifier si le mot commence par le terme de recherche et si la distance est inférieure ou égale à la tolérance
-                      });
-                    });
-                  }
-                });
-           });
-
-          //return mots.some(val => {return distanceLevenshtein(val, critere.terme.toLowerCase()) <= getTolerance(critere.terme.length);}); // Vérifier si la valeur correspond au terme de recherche
         });
       });
-      console.log("Recherches Champi = " + filtres.length);
-      loadData(filtres);
-    }  
-  }
+    });
+  });
 
-  function validerDonneeRecherche(termeMin, tolerenceMin, val) {
-    motMin = sansAccents(val.toLowerCase());
+  console.log("Recherches Champi = " + filtres.length);
+  loadData(filtres);
+}
 
-    if (motMin.startsWith(termeMin)) return true;
+function validerDonneeRecherche(termeMin, tolerenceMin, val) {
+  const motMin = sansAccents(val.toLowerCase());
+  if (motMin.startsWith(termeMin)) return true;
 
-    debutMot = motMin.slice(0, termeMin.length);
-    distance = distanceLevenshtein(debutMot, termeMin);
-    memeInitiale = motMin.charAt(0) === termeMin.charAt(0);
+  const debutMot = motMin.slice(0, termeMin.length);
+  const distance = distanceLevenshtein(debutMot, termeMin);
+  const memeInitiale = motMin.charAt(0) === termeMin.charAt(0);
 
-    return memeInitiale && distance <= tolerenceMin;
-  }
+  return memeInitiale && distance <= tolerenceMin;
+}
+
   
   function getTolerance(a) {
       tolerance = 1;
