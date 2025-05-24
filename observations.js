@@ -97,7 +97,7 @@ function telechargerFichier(blob, nomFichier) {
   URL.revokeObjectURL(url);
 }
 
-async function envoyerObservation(nomChampi, observation, fichierImg) {
+async function envoyerObservation(nomChampi, observation) {
   const token = localStorage.getItem("inaturalist_token");
   if (!token) {
     alert("Token iNaturalist manquant.");
@@ -113,7 +113,10 @@ async function envoyerObservation(nomChampi, observation, fichierImg) {
   formData.append("longitude", obs.localisation?.longitude);
   formData.append("tag_list", "champipi");
 
-  formData.append("local_photos[]", fichierImg);
+  if (obs.fichierImg) {
+  formData.append("local_photos[]", obs.fichierImg);  
+  }
+  
   
   /*const body = {
     species_guess: nomChampi,
