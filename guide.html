@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aide – Champipi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"> <!-- ton CSS commun -->
+  <script type="module" src="nav-component.js"></script> <!-- composant nav -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZXJ2Z6ZVP4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZXJ2Z6ZVP4');
+</script>
+  <script src="arbre_decision_champignon.js"></script>
+   <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f9f0;
+    }
+    .question-container {
+      padding: 1em;
+      position: relative;
+      max-width: 500px;
+      margin: auto;
+      margin-top: 2em;
+    }
+    .question-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hidden {
+      opacity: 0;
+      transform: translateX(20px);
+      pointer-events: none;
+      position: absolute;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .option-label {
+      background: #e6f7e6;
+      border: 1px solid #a3d7a3;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .option-label:hover {
+      background: #c6efc6;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔍 Identification guidée</h1>
+    <p>Utilise ce guide pour t'aider à définir les critères d'identification</p>
+  </header>
+    <main class="container">
+      <div class="question-container">
+    <div id="question" class="question-card"></div>    
+    <button class="button" id="nextBtn" disabled>Suivant</button>
+    <div id="resultat" style="margin-top: 2rem; font-weight: bold;"></div>
+  </div>
+
+  <script>
+    const questions = [];
+    let currentIndex = 0;
+    const answers = {};
+
+    async function loadQuestions() {
+      const data = window.champiGuide || [];
+      questions.push(...data);
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const container = document.getElementById("question");
+      container.classList.add("hidden");
+      setTimeout(() => {
+        container.innerHTML = "";
+        document.getElementById("nextBtn").disabled = true;
+
+        let question = getNextQuestion();
+        if (!question) {
+          container.innerHTML = `<p>Identification terminée. Merci !</p>`;
+          afficherResultats();
+          return;
+        }
+
+        const title = document.createElement("h2");
+        title.textContent = question.question;
+        container.appendChild(title);
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        question.options.forEach(opt => {
+          const label = document.createElement("label");
+          label.className = "option-label";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "option";
+          input.value = opt.valeur;
+          input.addEventListener("change", () => {
+            answers[question.cle] = input.value;
+            document.getElementById("nextBtn").disabled = false;
+          });
+
+          label.appendChild(input);
+          label.append(" " + opt.label);
+          optionsDiv.appendChild(label);
+        });
+
+        container.appendChild(optionsDiv);
+        container.classList.remove("hidden");
+      }, 300);
+    }
+
+    function getNextQuestion() {
+      while (currentIndex < questions.length) {
+        const q = questions[currentIndex++];
+        if (!q.condition || answers[q.condition.cle] === q.condition.valeur) {
+          return q;
+        }
+      }
+      return null;
+    }
+
+    function afficherResultats() {
+      const res = [];
+      if (answers.a_chapeau === "non") res.push("!chapeau");
+      else {
+        const details = [];
+        if (answers.couleur_chapeau) details.push(answers.couleur_chapeau);
+        if (answers.texture_chapeau) details.push(answers.texture_chapeau);
+        if (details.length > 0) res.push("chapeau " + details.join(" et "));
+      }
+
+      if (answers.structure_fertile === "lames") {
+        const lames = [];
+        if (answers.couleur_lames) lames.push(answers.couleur_lames);
+        if (answers.espacement_lames) lames.push(answers.espacement_lames);
+        if (lames.length > 0) res.push("lames " + lames.join(" et "));
+      }
+      if (answers.structure_fertile === "pores") {
+        const pores = [];
+        if (answers.forme_pores) pores.push(answers.forme_pores);
+        if (answers.couleur_pores) pores.push(answers.couleur_pores);
+        if (pores.length > 0) res.push("pores " + pores.join(" et "));
+      }
+      if (answers.structure_fertile === "aiguillons") {
+        const aiguillons = [];
+        if (answers.longueur_aiguillons) aiguillons.push(answers.longueur_aiguillons);
+        if (answers.densite_aiguillons) aiguillons.push(answers.densite_aiguillons);
+        if (answers.couleur_aiguillons) aiguillons.push(answers.couleur_aiguillons);
+        if (aiguillons.length > 0) res.push("aiguillons " + aiguillons.join(" et "));
+      }
+
+      if (answers.a_pied === "non") res.push("!pied");
+      else {
+        const pied = [];
+        if (answers.couleur_pied) pied.push(answers.couleur_pied);
+        if (answers.texture_pied) pied.push(answers.texture_pied);
+        if (pied.length > 0) res.push("pied " + pied.join(" et "));
+      }
+
+      if (answers.anneau === "non") res.push("!anneau");
+      else if (answers.anneau) res.push("anneau");
+
+      if (answers.volve === "non") res.push("!volve");
+      else if (answers.volve) res.push("volve");
+
+      if (answers.substrat === "arbre") res.push("ecologie arbre");
+      else if (answers.substrat === "sol") res.push("ecologie sol");
+
+      document.getElementById("resultat").textContent = res.join(", ");
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", showQuestion);
+    loadQuestions();
+  </script>
+    </main>
+  <champipi-nav></champipi-nav>
+</body>
+</html>

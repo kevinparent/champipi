@@ -31,6 +31,9 @@ const dictionnaireSynonymes = [
   ["terreux", "moisi", "humus", "fongique"],
   ["désagréable", "âcre", "nauséabond", "métallique"],
 
+  ["feuillu", "peuplier", "erable", "orme"],
+  ["conifere", "sapin", "pin", "epinette"],
+
   // Croissance / milieux
   ["sol", "terre", "substrat"],
   ["bois", "tronc", "souche", "racine", "écorce"],
