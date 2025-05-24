@@ -104,38 +104,25 @@ async function envoyerObservation(nomChampi, observation) {
     return;
   }
 
-  const formData = new FormData();
   const obs = observation;
-  formData.append("species_guess", nomChampi);
-  formData.append("description", obs.note || "Ovbservation via Champipi");
-  formData.append("observed_on_string", obs.date || new Date().toISOString().split("T")[0]);
-  formData.append("latitude", obs.localisation?.latitude);
-  formData.append("longitude", obs.localisation?.longitude);
-  formData.append("tag_list", "champipi");
 
-  if (obs.fichierImg) {
-  formData.append("local_photos[]", obs.fichierImg);  
-  }
-  
-  
-  /*const body = {
+  const body = {
     species_guess: nomChampi,
     description: obs.note || "Observation via Champipi",
     observed_on_string: obs.date || new Date().toISOString().split("T")[0],
     latitude: obs.localisation?.longitude,
     longitude: obs.localisation?.longitude,
     tag_list: "champipi"
-  };*/
+  };
 
-  const res = await fetch("https://api.inaturalist.org/v1/observations", {
+  cconst res = await fetch("https://api.inaturalist.org/v1/observations", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
     },
-    body: formData
+    body: JSON.stringify(body)
   });
-
-  const data = await res.json();
 
   if (res.ok) {
     alert("Observation envoyée !");
