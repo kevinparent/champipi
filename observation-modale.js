@@ -63,8 +63,6 @@ class ObservationModal extends HTMLElement {
           <label for="date">Choisir une date d'observation</label>
           <input type="date" id="date" />
           <input type="text" id="localisation" placeholder="Localisation" disabled />
-           <label>Photo</label>
-          <input class="button" type="file" id="photoChampi" accept="image/*">
           <textarea id="note" rows="3" placeholder="Note optionnelle..."></textarea>
           <button id="valider">Valider</button>
           <button class="close" id="fermer">Fermer</button>
