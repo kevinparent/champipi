@@ -68,8 +68,8 @@
     </section>
 
     <section class="section" id="recherche-libre" style="display: none;">
-      <h2>📝 Recherche libre</h2>
-      <button onclick="toggleAideRechercheLibre()">ℹ️</button>
+      <h2>📝 Recherche libre <button onclick="toggleAideRechercheLibre()">ℹ️</button></h2>
+      
       <div class="card" style="padding: 1em;">
       
       <p>Entrez une description comme : <em>Chapeau rouge, pied blanc OU jaune, !volve</em></p>
@@ -84,12 +84,12 @@
           <button class="modal-close" onclick="document.getElementById('infoRechercheLibre').style.display='none'">✖️</button>
           <h3>Aide à la recherche</h3>
           <ul>
-            <li><code>chapeau rouge</code> → Recherche dans la description du chapeau</li>
+            <li><code>chapeau rouge</code> → Recherche "rouge" dans la description du chapeau</li>
             <li><code>!pied</code> → Exclut les champignons avec un pied</li>
-            <li><code>chapeau rouge ET visqueux</code> → Tous les termes doivent être présents</li>
-            <li><code>lames blanches OU jaunes</code> → Un des deux suffit</li>
+            <li><code>chapeau rouge ET visqueux</code> → Les termes rouges et visqueux doivent être présent dans la description du chapeau</li>
+            <li><code>lames blanches OU jaunes</code> → Les lames doivent être jaunes ou blanches, un seul des deux suffit</li>
             <li><code>volve</code> → Inclus les fiches ayant une volve</li>
-            <li><code>chapeau rouge, pied blanc, lame blanches ou jaune, volve, anneau</code> → Combines les critères en les séparant par une virgule pour une recherche complexe</li>
+            <li><code>chapeau rouge, pied blanc, lame blanches ou jaune, volve, anneau</code> → Combines les critères en les séparant par une virgule pour une recherche complexe. Un champignon ayant un chapeau rouge, les lames blanches ou jaune, un volve et un anneau</li>
           </ul>
         </div>
       </div>
@@ -175,6 +175,10 @@
   position: relative;
 }
 
+#infoRechercheLibre li {
+  margin-bottom: 0.65em;
+}
+
 .modal-content h3 {
   margin-top: 0;
 }
@@ -193,16 +197,13 @@
   font-size: 1.2em;
   cursor: pointer;
 }
-    #recherche-libre {
-      position: relative;
-    }
-    #recherche-libre > button {
-      position: absolute;
-      top: 0;
+
+    #recherche-libre > h2 > button {
       border-radius: 50%;
-      padding: 0.25em;
       border: 0;
-      right: 0;
+      font-size: 20pt;
+      float: right;
+      margin-top: -2px;
     }
     ul {
       list-style-type: none;
