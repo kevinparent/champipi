@@ -24,10 +24,12 @@ const valeurRecherche = document.getElementById('searchField');
 const boutonRecherche = document.getElementById('searchButton');
 const criteriaList = document.getElementById('criteriaList');
 const criteriaContainer = document.getElementById('filtresActifs');
+const searchButtonCritere = document.getElementById('searchButtonCritere');
 const resetButton = document.getElementById('clearButton');
 
 // Event Listeners
 if (boutonRecherche) boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
+if (searchButtonCritere) searchButtonCritere.addEventListener('click', () => {ajouterCritereDepuisFormulaire();});
 if (resetButton) resetButton.addEventListener('click', () => {
   ignorerRecherche = false;  // Ignorer la recherche lors de la réinitialisation
   Object.keys(criteresRecherches).forEach(k => delete criteresRecherches[k]);  
@@ -36,6 +38,28 @@ if (resetButton) resetButton.addEventListener('click', () => {
   miseAJourCritere() // Recharger les données sans filtres
 
 });
+
+function ajouterCritereDepuisFormulaire() {
+  const cle = document.getElementById("criteria").value;
+  const texte = document.getElementById("valeurRecherche").value.trim();
+
+  if (!cle || !texte) return;
+
+  const termes = texte
+    .split(/\bET\b/i)
+    .map(b => b.trim())
+    .flatMap(etBloc => etBloc.split(/\bOU\b/i).map(t => t.trim()))
+    .filter(Boolean);
+
+  criteresRecherches[cle] = {
+    critere: cle,
+    termes: termes
+  };
+
+  appliquerRecherche();
+  modifierListeCritere(); // Mise à jour des filtres affichés
+}
+
 
 
 

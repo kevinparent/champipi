@@ -7,13 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZXJ2Z6ZVP4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZXJ2Z6ZVP4');
-</script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZXJ2Z6ZVP4');
+  </script>
   <script type="module" src="nav-component.js"></script>
 </head>
 <body>
@@ -23,118 +22,217 @@
   </header>
 
   <main class="container">
-    <section class="section">
-      <h2>Recherche par critères</h2>
-      
-      <div class="photosection">
+    <div>
+      <fieldset class="photosection">
         <div id="photoBoot" class="col-12">
           <input type="file" accept="image/*" id="photoInput" capture="environment" style="display: none;" />
-        <button id="photoButton" class="button btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>        
+          <button id="photoButton" class="button btn btn-warning" onclick="document.getElementById('photoInput').click()">📷 Suggestions basées sur une photo</button>
         </div>
-      <div id="spinnerPhoto" class="text-center col-12" style="display: none;">
+
+        <div id="spinnerPhoto" class="text-center col-12" style="display: none;">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Analyse en cours...</span>
           </div>
           <div class="mt-2">Analyse de la photo...</div>
         </div>
-      
-        <div id="resultatsPhoto" class="col-12">
-          
-        </div>
+
+        <div id="resultatsPhoto" class="col-12"></div>
+      </fieldset>
     </div>
 
-    <div id="sectionRecherche" class="card">
-    <label for="filtre-division">Division :</label>
-     <select id="filtre-division" class="form-select card-select" onchange="filtrerParDivision()">
+    <div style="font-size: 10pt; text-align: center; margin-bottom: 1em;">
+      <button onclick="toggleMode('guide')" class="button">🔘 Recherche par critères</button>
+      <button onclick="toggleMode('libre')" class="button">📝 Recherche libre</button>
+    </div>
+
+    <section class="section" id="recherche-par-criteres">
+      <h2>🔎 Recherche par critères</h2>      
+
+      <fieldset id="sectionRecherche" class="card">
+        <label for="filtre-division">Division :</label>
+        <select id="filtre-division" class="form-select card-select" onchange="filtrerParDivision()">
           <option value="">Toutes les divisions</option>
-          
         </select>
 
         <label for="criteria">Critère :</label>
         <select id="criteria" class="card">
-            <option value="TOUT">Toutes les catégories</option>
+          <option value="TOUT">Toutes les catégories</option>
           <!-- Options injectées dynamiquement -->
         </select>
+
         <label for="valeurRecherche">Description :</label>
-        <input type="text" id="searchField" placeholder="ex. : rouge ET écailleux OU jaune" />
+        <input type="text" id="valeurRecherche" placeholder="ex. : rouge ET écailleux OU jaune" />
+
+        <button class="button" id="searchButtonCritere">Ajouter ce critère</button>
+      </fieldset>
+    </section>
+
+    <section class="section" id="recherche-libre" style="display: none;">
+      <h2>📝 Recherche libre</h2>
+      <button onclick="toggleAideRechercheLibre()">ℹ️</button>
+      <div class="card" style="padding: 1em;">
+      
+      <p>Entrez une description comme : <em>Chapeau rouge, pied blanc OU jaune, !volve</em></p>
+      <label for="searchField">Recherche libre :</label>
+      <input type="text" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche" />
+      
+      <button class="button" id="searchButton">Ajouter cette recherche</button>
       </div>
 
-      <button class="button" id="searchButton">Ajouter le critère</button>
+      <div id="infoRechercheLibre" class="modal-aide" style="display: none;">
+        <div class="modal-content">
+          <button class="modal-close" onclick="document.getElementById('infoRechercheLibre').style.display='none'">✖️</button>
+          <h3>Aide à la recherche</h3>
+          <ul>
+            <li><code>chapeau rouge</code> → Recherche dans la description du chapeau</li>
+            <li><code>!pied</code> → Exclut les champignons avec un pied</li>
+            <li><code>chapeau rouge ET visqueux</code> → Tous les termes doivent être présents</li>
+            <li><code>lames blanches OU jaunes</code> → Un des deux suffit</li>
+            <li><code>volve</code> → Inclus les fiches ayant une volve</li>
+            <li><code>chapeau rouge, pied blanc, lame blanches ou jaune, volve, anneau</code> → Combines les critères en les séparant par une virgule pour une recherche complexe</li>
+          </ul>
+        </div>
+      </div>
+
     </section>
 
     <section class="section">
       <h2>Filtres actifs</h2>
-      <div id="filtresActifs"">
+      <div id="filtresActifs">
         <ul id="criteriaList" class="list-group list-group-horizontal"></ul>
-        <!-- Filtres actifs affichés ici -->
       </div>
     </section>
 
     <section class="section">
       <h2>Résultats : <h4 id="searchResultCount"></h4></h2>
       <div class="resultContainer" id="resultContainer">
-         <ul id="searchResults" class="col-xs-12 row"></ul>
+        <ul id="searchResults" class="col-xs-12 row"></ul>
       </div>
     </section>
   </main>
 
   <champipi-nav></champipi-nav>
   <script type="module" src="observation-modale.js"></script>
-    <script src="champipi_parsed.js"></script>
-    <script src="synonymes.js"></script>
-    <script src="app.js"></script>
-     <script src="observations.js"></script>
-    <script src="data.js"></script>
-    <script>
-      window.onload = (e) => { 
-       
-        loadInitialDataIfNeeded();
-          modifierListeCritere();
-          initialiserFiltreDivisions(window.champiData);
+  <script src="champipi_parsed.js"></script>
+  <script src="synonymes.js"></script>
+  <script src="app.js"></script>
+  <script src="observations.js"></script>
+  <script src="data.js"></script>
+  <script>
+    function toggleMode(mode) {
+      const guide = document.getElementById("recherche-par-criteres");
+      const libre = document.getElementById("recherche-libre");
+      if (mode === 'guide') {
+        guide.style.display = 'block';
+        libre.style.display = 'none';
+      } else {
+        guide.style.display = 'none';
+        libre.style.display = 'block';
+      }
+    }
 
+    function toggleAideRechercheLibre() {
+      blocInfo = document.getElementById('infoRechercheLibre');
+      
+      blocInfo.style.display == "none" ? blocInfo.style.display = "FLEX" : blocInfo.style.display = "none" ;
+    }
 
-           document.querySelectorAll(".favori-icon").forEach(icon => {
+    window.onload = (e) => {
+      loadInitialDataIfNeeded();
+      modifierListeCritere();
+      initialiserFiltreDivisions(window.champiData);
+
+      document.querySelectorAll(".favori-icon").forEach(icon => {
         const id = icon.getAttribute("data-id");
         const favoris = JSON.parse(localStorage.getItem("champiFavoris")) || [];
 
-          if (!window.navigator.onLine) document.getElementById("photoBoot").style.display = "none";
+        if (!window.navigator.onLine) document.getElementById("photoBoot").style.display = "none";
 
         icon.src = favoris.includes(id)
           ? "img/mushroom_selected_32.png"
           : "img/mushroom_unselected_32.png";
-
-          
       });
     };
-      
-    </script>
-    <style>
-      ul {
-        list-style-type: none;
-      }
-      .card {
-        margin-bottom: 1em;
-        padding-left: 0;
-        padding-right: 0;
-      }
-      .card-body {
-        font-size: 10pt;
-        position: relative;
-      }
-      .favori-icon {
-        position: absolute;
-        top: 2em;
-        right: 1em;
-      }
-      .card-text {
-        text-align: justify;
-      }
-      .btnObservation {
-        width: 100%;
-      }
-      #resultatsPhoto h3 {
-        font-size: 9pt;
-      }
-    </style>
+  </script>
+  <style>
+    .modal-aide {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  padding: 1em;
+  border-radius: 12px;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-content ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+    #recherche-libre {
+      position: relative;
+    }
+    #recherche-libre > button {
+      position: absolute;
+      top: 0;
+      border-radius: 50%;
+      padding: 0.25em;
+      border: 0;
+      right: 0;
+    }
+    ul {
+      list-style-type: none;
+    }
+    .card {
+      margin-bottom: 1em;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .card-body {
+      font-size: 10pt;
+      position: relative;
+    }
+    .favori-icon {
+      position: absolute;
+      top: 2em;
+      right: 1em;
+    }
+    .card-text {
+      text-align: justify;
+    }
+    .btnObservation {
+      width: 100%;
+    }
+    #resultatsPhoto h3 {
+      font-size: 9pt;
+    }
+    fieldset {
+      border: 0;
+    }
+  </style>
 </body>
 </html>

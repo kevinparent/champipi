@@ -119,6 +119,14 @@ function sansAccents(str) {
             return syno.some(s => {
               const sMin = sansAccents(s.toLowerCase());
               const tolMin = getTolerance(sMin.length);
+
+              const contientCritere = champiDescription.map(d => Object.keys(d)[0].toLowerCase());
+
+              // ✅ Si l'utilisateur a écrit seulement "volve", on valide que ce champ existe
+              if (critere.critere === "TOUT" && critere.termes.length === 1) {
+                if (contientCritere.includes(sMin)) return true;
+              }
+
               return mots.some(val => validerDonneeRecherche(sMin, tolMin, val));
             });
           }
