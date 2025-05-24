@@ -115,7 +115,7 @@ async function envoyerObservation(nomChampi, observation) {
     tag_list: "champipi"
   };
 
-  cconst res = await fetch("https://api.inaturalist.org/v1/observations", {
+  const res = await fetch("https://api.inaturalist.org/v1/observations", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
