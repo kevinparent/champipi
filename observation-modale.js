@@ -98,7 +98,7 @@ class ObservationModal extends HTMLElement {
     const date = this.querySelector('#date').value;
     const localisation = this.querySelector('#localisation').value;
     const note = this.querySelector('#note').value;
-    const img = this.querySelector("#photoChampi").value;
+    const img = this.querySelector("#photoChampi").files[0];
 
     const observation = { champignon, date, localisation, note, img };
     this.dispatchEvent(new CustomEvent('observation-ajoutee', {
