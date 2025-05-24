@@ -6,7 +6,8 @@ document.body.addEventListener('observation-ajoutee', (e) => {
         localisation: {
           latitude: e.detail.localisation.split(",")[0],
           longitude: e.detail.localisation.split(",")[1]
-        }
+        },
+        fichierImg: e.detail.img
       }
 
       ajouterObservation(e.detail.champignon, nouvelle);
@@ -19,7 +20,7 @@ function ajouterObservation(nomChampi, observation) {
     const index = observations.findIndex(o => o.champiId === nomChampi);
 
     if (index !== -1) {
-      observations[index].observations.push(observation);
+      observations[index].observations.push(observation, observation.fichierImg);
     } else {
       observations.push({
         champiId: nomChampi,
@@ -96,31 +97,42 @@ function telechargerFichier(blob, nomFichier) {
   URL.revokeObjectURL(url);
 }
 
-async function envoyerObservation(nomChampi, observation) {
+async function envoyerObservation(nomChampi, observation, fichierImg) {
   const token = localStorage.getItem("inaturalist_token");
   if (!token) {
     alert("Token iNaturalist manquant.");
     return;
   }
 
+  const formData = new FormData();
   const obs = observation;
-  const body = {
+  formData.append("species_guess", nomChampi);
+  formData.append("description", obs.note || "Ovbservation via Champipi");
+  formData.append("observed_on_string", obs.date || new Date().toISOString().split("T")[0]);
+  formData.append("latitude", obs.localisation?.latitude);
+  formData.append("longitude", obs.localisation?.longitude);
+  formData.append("tag_list", "champipi");
+
+  formData.append("local_photos[]", fichierImg);
+  
+  /*const body = {
     species_guess: nomChampi,
     description: obs.note || "Observation via Champipi",
     observed_on_string: obs.date || new Date().toISOString().split("T")[0],
     latitude: obs.localisation?.longitude,
     longitude: obs.localisation?.longitude,
     tag_list: "champipi"
-  };
+  };*/
 
   const res = await fetch("https://api.inaturalist.org/v1/observations", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
+      "Authorization": `Bearer ${token}`
     },
-    body: JSON.stringify(body)
+    body: formData
   });
+
+  const data = await res.json();
 
   if (res.ok) {
     alert("Observation envoyée !");
