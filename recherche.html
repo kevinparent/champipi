@@ -113,11 +113,13 @@
 
   <champipi-nav></champipi-nav>
   <script type="module" src="observation-modale.js"></script>
-  <script src="champipi_parsed.js"></script>
+  <script src="data.js"></script>
+  <script src="crypto.js"></script>
+  <script src="donnees_chiffrees.js"></script>
   <script src="synonymes.js"></script>
   <script src="app.js"></script>
   <script src="observations.js"></script>
-  <script src="data.js"></script>
+  
   <script>
     function toggleMode(mode) {
       const guide = document.getElementById("recherche-par-criteres");
@@ -140,7 +142,7 @@
     window.onload = (e) => {
       loadInitialDataIfNeeded();
       modifierListeCritere();
-      initialiserFiltreDivisions(window.champiData);
+      initialiserFiltreDivisions(getDataEncrypted());
 
       document.querySelectorAll(".favori-icon").forEach(icon => {
         const id = icon.getAttribute("data-id");

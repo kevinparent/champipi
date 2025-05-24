@@ -1,7 +1,7 @@
 class ObservationModal extends HTMLElement {
     
   connectedCallback() {
-    const champignons = (window.champiData || []).map(item => item["list champi"]).sort();
+    const champignons = (getDataEncrypted() || []).map(item => item["list champi"]).sort();
     const options = champignons.map(nom => `<option value="${nom}">${nom}</option>`).join('');
 
     const dateNow = new Date().toISOString().split('T')[0];

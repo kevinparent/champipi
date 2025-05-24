@@ -1,3 +1,5 @@
+let champiData = [];
+
 function loadData(filtres) {
     elementCount = document.getElementById('searchResultCount');
     if (filtres == undefined) {
@@ -22,11 +24,30 @@ function loadData(filtres) {
   }
 
   function getAllData() {
-  return [...window.champiData].sort((a, b) => {
+  return [...getDataEncrypted()].sort((a, b) => {
       const nomA = a["list champi"]?.toLowerCase() || "";
       const nomB = b["list champi"]?.toLowerCase() || "";
       return nomA.localeCompare(nomB);
     });
+}
+
+function getDataEncrypted() {
+  if (champiData.length > 0) return champiData;
+
+  const keyHex = CryptoJS.enc.Hex.parse("4368616d706970694b65793230323421");
+  const iv = CryptoJS.enc.Base64.parse("nbhEZRI7gIkkjD6iVykMGA==");
+
+  // Contenu directement collé depuis donnees_chiffrees.txt
+  const dataBase64 = window.champiDataEnc;  // <-- à copier/coller ici
+
+  const decrypted = CryptoJS.AES.decrypt(
+    { ciphertext: CryptoJS.enc.Base64.parse(dataBase64) },
+    keyHex,
+    { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+  );
+
+  const jsonStr = decrypted.toString(CryptoJS.enc.Utf8);
+  champiData = JSON.parse(jsonStr);
 }
 
 function sansAccents(str) {
@@ -190,8 +211,8 @@ function validerDonneeRecherche(termeMin, tolerenceMin, val) {
   
   function loadInitialDataIfNeeded() {
     data = getAllData();
-    if (data.length === 0 && window.champiData) {
-      addMultipleData(window.champiData).then(() => {
+    if (data.length === 0 && getDataEncrypted()) {
+      addMultipleData(getDataEncrypted()).then(() => {
         console.log("Données initiales chargées.");
         loadData();  // Charger les données après l'ajout
       

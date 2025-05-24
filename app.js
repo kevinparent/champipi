@@ -1,7 +1,7 @@
 // Init Variables
 let ignorerRecherche = false;
 const filtres = [];
-tousLesChampignons = window.champiData;
+tousLesChampignons = getDataEncrypted();
 criteresRecherches = [];
 criteresSelect = new Map();
 
@@ -405,7 +405,11 @@ function supprimerCritere(critere) {
   appliquerRecherche();
 }
 
-document.getElementById("photoInput").addEventListener("change", function(event) {
+function closeThis() {
+  document.getElementById("resultatsPhoto").innerHTML = "";
+}
+
+/**document.getElementById("photoInput").addEventListener("change", function(event) {
   const file = event.target.files[0];
   if (!file) return;
 
@@ -440,8 +444,5 @@ document.getElementById("photoInput").addEventListener("change", function(event)
   };
 
   reader.readAsDataURL(file);
-});
+});**/
 
-function closeThis() {
-  document.getElementById("resultatsPhoto").innerHTML = "";
-}
