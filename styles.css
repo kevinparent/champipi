@@ -96,7 +96,7 @@ header p {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-#searchField {
+#searchField, #valeurRecherche {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
