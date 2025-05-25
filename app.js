@@ -280,14 +280,14 @@ function surlignerMotsProches(texte, termeRecherche) {
     .join('');
 }
 
-function miseAJourCritere() {
+function miseAJourCritere(filtreString) {
   if (ignorerRecherche) return;
 
 
   document.getElementById("filtresActifs").style.display = "none";
   document.getElementsByClassName("resultContainer")[0].style.display = "none";
 
-  const saisie = valeurRecherche.value.trim();
+  const saisie = filtreString ? filtreString : valeurRecherche.value.trim();
 
   // Réinitialiser les anciens critères uniquement si on détecte des blocs
   const nouvellesRecherches = {};
@@ -311,7 +311,12 @@ function miseAJourCritere() {
       const sousBlocs = reste.split(/\bET\b/i).map(t => t.trim()).filter(Boolean);
       let termes = [];
       for (const sous of sousBlocs) {
-        termes.push(...sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean));
+        const ouGroupes = sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean);
+        if (ouGroupes.length > 1) {
+          termes.push(ouGroupes.join(" ou "));
+        } else if (ouGroupes.length === 1) {
+          termes.push(ouGroupes[0]);
+        }
       }
       
       if (termes.length > 0) {
@@ -322,13 +327,21 @@ function miseAJourCritere() {
       }
     } else {
       // Aucun critère reconnu → on utilise le critère sélectionné
-      const cle = critereSelect.value;
+      const cle = "TOUT";
       
-      const sousBlocs = reste.split(/\bET\b/i).map(t => t.trim()).filter(Boolean);
+      const texte = critereDetecte ? reste : bloc; // si aucun critère, on prend tout le bloc
+      const sousBlocs = texte.split(/\bET\b/i).map(t => t.trim()).filter(Boolean);
       let termes = [];
+
       for (const sous of sousBlocs) {
-        termes.push(...sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean));
+        const ouGroupes = sous.split(/\bOU\b/i).map(t => t.trim()).filter(Boolean);
+        if (ouGroupes.length > 1) {
+          termes.push(ouGroupes.join(" ou "));
+        } else if (ouGroupes.length === 1) {
+          termes.push(ouGroupes[0]);
+        }
       }
+
 
       if (termes.length > 0) {
         if (!nouvellesRecherches[cle]) {
@@ -353,23 +366,29 @@ function miseAJourCritere() {
 }
 
 function trouverCritereCorrespondant(mot) {
+  const motNet = sansAccents(mot).toLowerCase();
+
+  // 1. Match exact direct
+  for (const cle of criteresSelect.keys()) {
+    const cleNet = sansAccents(cle).toLowerCase();
+    if (motNet === cleNet) return cle;
+  }
+
+  // 2. Si pas de match exact, chercher une correspondance unique avec distance faible
   let meilleurCritere = null;
   let distanceMin = Infinity;
-  const motNet = sansAccents(mot).toLowerCase();
 
   for (const cle of criteresSelect.keys()) {
     const cleNet = sansAccents(cle).toLowerCase();
-
-    if (cleNet.includes(motNet)) return cle;
-
     const d = distanceLevenshtein(motNet, cleNet);
+
     if (d < distanceMin && d <= 1) {
       meilleurCritere = cle;
       distanceMin = d;
     }
   }
 
-  return meilleurCritere;
+  return meilleurCritere; // peut être null si rien trouvé
 }
 
 

@@ -139,6 +139,108 @@
       blocInfo.style.display == "none" ? blocInfo.style.display = "FLEX" : blocInfo.style.display = "none" ;
     }
 
+    function appliquerRechecheGuide() {
+      const data = sessionStorage.getItem('guideFiltresChampi');
+      if (data) {
+        try {
+          const filtres = JSON.parse(data);
+
+          // 👉 Appliquer les filtres ici selon ta logique
+          // Exemple : console.log(filtres)
+          appliquerFiltresChampipi(filtres);
+
+          // Effacer les données pour éviter réapplication involontaire au rechargement
+        // sessionStorage.removeItem('guideFiltresChampi');
+        } catch (e) {
+          console.error('Erreur lors du chargement des filtres Champipi', e);
+        }
+      }
+    }
+
+    function appliquerFiltresChampipi(filtres) {
+      let blocs = [];
+
+      // Forme générale — ex. : !chapeau si pas de chapeau
+      if (filtres.forme === "chapeau") {
+        if (filtres.chapeau) {
+          blocs.push("chapeau " + (Array.isArray(filtres.chapeau) ? filtres.chapeau.join(" et ") : filtres.chapeau));
+        }
+        if (filtres.structure_fertile === "lames") {
+          let lames = "lames ";
+          lames += (Array.isArray(filtres.lames) ? filtres.lames.join(" et ") : filtres.lames)
+          if (lames) blocs.push(lames);
+          if (filtres.lait && filtres.lait !== "aucun") blocs.push("latex " + filtres.lait);
+        } else if (filtres.structure_fertile === "pores") {
+          let pores = "pores ";
+          pores += (Array.isArray(filtres.pores) ? filtres.pores.join(" et ") : filtres.pores)
+          if (pores) blocs.push(pores);
+        } else if (filtres.structure_fertile === "aiguillons") {
+          let aiguillons = "aiguillons ";
+          aiguillons += (Array.isArray(filtres.aiguillons) ? filtres.aiguillons.join(" et ") : filtres.aiguillons)
+          if (aiguillons) blocs.push(aiguillons);
+        }
+        
+
+        if (filtres.pied_present == "pied_present") {
+          if (filtres.pied) {
+            const piedTerms = "" + (Array.isArray(filtres.pied) ? filtres.pied.join(" et ") : filtres.pied)
+            blocs.push("pied " + piedTerms);
+          }
+        } else {
+          blocs.push("!pied");
+        }
+      } 
+      if (filtres.forme == "croute") {
+          crouteStr = "basiodiome résupiné ";
+          
+          if (filtres.croute_couleur) {
+            crouteStr += "et " + filtres.croute_couleur;
+          }
+          blocs.push(crouteStr);
+          blocs.push("!chapeau");
+      }
+      if (filtres.forme == "boule") {
+        if (filtres.couleur_externe_boule) {
+          blocs.push("basidiome " + filtres.couleur_externe_boule);
+        }
+        if (filtres.couleur_interne_boule) {
+          blocs.push("glebe " + filtres.couleur_interne_boule);
+        }
+      }
+      if (filtres.forme == "gelatine") {
+        blocs.push("basidiome " + filtres.couleur_gelatine);
+        blocs.push("contexte gélatine ou cartilagineux");
+      }
+
+      if (filtres.forme === "corail") {
+        corailStr = "basidiome clavulé ou rameaux ou aiguillon";
+        if (filtres.corail_couleur) {
+          corailStr += " et " + filtres.corail_couleur;
+        }
+        blocs.push(corailStr);
+        blocs.push("!chapeau");
+      }
+
+      // Volve et anneau
+      if (filtres.anneau){
+        blocs.push("anneau")
+      } else blocs.push("!anneau")
+      if (filtres.volve != undefined) {
+        blocs.push("volve")
+      } else blocs.push("!volve");
+
+      // Écologie
+      if (filtres.ecologie) {
+        const ecoTerms = Array.isArray(filtres.ecologie) ? filtres.ecologie : [filtres.ecologie];
+        ecoTerms.forEach(eco => blocs.push("ecologie " + eco));
+      }
+
+      const filtreGuide = blocs.join(", ");
+
+      // 🔁 Applique le filtre généré
+      miseAJourCritere(filtreGuide);
+    }
+
     window.onload = (e) => {
       loadInitialDataIfNeeded();
       modifierListeCritere();

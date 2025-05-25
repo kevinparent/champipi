@@ -6,7 +6,8 @@ function loadData(filtres) {
       dataList = getAllData();  // Récupérer toutes les données
       elementCount.innerHTML = `Nombre de résultats : ${dataList.length}`;  // Afficher le nombre de résultats
       tousLesChampignons = dataList;  // Stocker les données dans la variable globale
-      remplirMenuCritere(dataList);  // Remplir le menu déroulant avec les critères de recherche
+      remplirMenuCritere(dataList);  
+      // Remplir le menu déroulant avec les critères de recherche
       const list = document.getElementById('searchResults');
       list.innerHTML = '';
       dataList.forEach(item => {
@@ -20,7 +21,9 @@ function loadData(filtres) {
         list.appendChild(afficherChampignon(item));  // Afficher chaque champignon dans la liste
   
       });
-    }
+
+      
+    }  
   }
 
   function getAllData() {
@@ -221,4 +224,5 @@ function validerDonneeRecherche(termeMin, tolerenceMin, val) {
       console.log("Données déjà présentes, pas besoin de charger les données initiales.");
       loadData();  // Charger les données existantes
     }
+    appliquerRechecheGuide();
 }

@@ -15,61 +15,139 @@
 
   gtag('config', 'G-ZXJ2Z6ZVP4');
 </script>
-  <script src="arbre_decision_champignon.js"></script>
+  <script src="arbre_guide.js"></script>
    <style>
     body {
-      font-family: sans-serif;
-      background-color: #f0f9f0;
-    }
-    .question-container {
-      padding: 1em;
-      position: relative;
-      max-width: 500px;
-      margin: auto;
-      margin-top: 2em;
-    }
-    .question-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .hidden {
-      opacity: 0;
-      transform: translateX(20px);
-      pointer-events: none;
-      position: absolute;
-    }
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    .option-label {
-      background: #e6f7e6;
-      border: 1px solid #a3d7a3;
-      border-radius: 12px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .option-label:hover {
-      background: #c6efc6;
-    }
-    button {
-      margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
-      border-radius: 8px;
-      border: none;
-      background: #4caf50;
-      color: white;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #ccc;
-    }
+  margin: 0;
+  color: #2f3e2f;
+}
+
+.container {
+  padding: 1em;
+}
+
+.questionnaire-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 2em;
+  padding: 1em;
+  background-color: #ffffff;
+  border-radius: 1em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#submitBtn {
+  margin-left: auto;
+}
+
+h3 {
+  margin-bottom: 1em;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 0.5em;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+
+.btn {
+  background-color: #6cbf57;
+  color: white;
+  border: none;
+  padding: 0.7em 1.2em;
+  border-radius: 1em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.progress-container {
+  width: 100%;
+  background-color: #dce8d5;
+  border-radius: 1em;
+  overflow: hidden;
+  height: 1em;
+  margin-bottom: 1em;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #6cbf57;
+  transition: width 0.4s ease;
+}
+
+
+.btn:hover:not(:disabled) {
+  background-color: #57a44c;
+  transform: scale(1.02);
+}
+
+.btn:disabled {
+  background-color: #cfd8cf;
+  cursor: not-allowed;
+}
+
+.option-button {
+  display: inline-block;
+  background-color: #eaf4e2;
+  color: #2f3e2f;
+  border: 2px solid #c0d9b5;
+  border-radius: 1em;
+  padding: 0.5em 1em;
+  margin: 0.3em;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  user-select: none;
+}
+
+.option-button:hover {
+  background-color: #d4e8c9;
+  border-color: #a3c48a;
+}
+
+.option-button.selected {
+  background-color: #6cbf57;
+  color: white;
+  border-color: #5aa94c;
+}
+
+.result {
+  white-space: pre-wrap;
+  background: #eef7eb;
+  border-radius: 0.5em;
+  padding: 1em;
+  margin-top: 1em;
+  font-size: 0.9em;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -78,131 +156,194 @@
     <p>Utilise ce guide pour t'aider à définir les critères d'identification</p>
   </header>
     <main class="container">
-      <div class="question-container">
-    <div id="question" class="question-card"></div>    
-    <button class="button" id="nextBtn" disabled>Suivant</button>
-    <div id="resultat" style="margin-top: 2rem; font-weight: bold;"></div>
+    <div class="section questionnaire-wrapper">
+      <div class="progress-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+      <div id="questionnaire" class="questionnaire fade-in"></div>
+
+      <div id="navigation" class="navigation">
+        <button id="prevBtn" class="btn" disabled>Précédent</button>
+        <button id="nextBtn" class="btn">Suivant</button>
+      </div>
+
+      <pre id="resultat" class="result"></pre>
+    </div>
+     </main>
+  <champipi-nav></champipi-nav>
   </div>
 
   <script>
-    const questions = [];
-    let currentIndex = 0;
-    const answers = {};
+   // Exemple: charge le JSON des étapes (remplace par fetch ou import si besoin)
+const etapes = window.arbreGuide;
 
-    async function loadQuestions() {
-      const data = window.champiGuide || [];
-      questions.push(...data);
-      showQuestion();
+    let indexEtape = 0;
+    const reponses = {};
+
+    const container = document.getElementById('questionnaire');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultat = document.getElementById('resultat');
+    const progressBar = document.getElementById('progress-bar');
+
+    function estVisible(etape) {
+      if (!etape.condition) return true;
+      const valeur = reponses[etape.condition.cle];
+      if (valeur === undefined) return false;
+      return Array.isArray(valeur)
+        ? valeur.some(v => etape.condition.valeurs.includes(v))
+        : etape.condition.valeurs.includes(valeur);
     }
 
-    function showQuestion() {
-      const container = document.getElementById("question");
-      container.classList.add("hidden");
-      setTimeout(() => {
-        container.innerHTML = "";
-        document.getElementById("nextBtn").disabled = true;
+    function afficherEtape() {
+      container.innerHTML = '';
+      const etapesVisibles = etapes.filter(estVisible);
+      const etape = etapesVisibles[indexEtape];
+      if (!etape) return;
 
-        let question = getNextQuestion();
-        if (!question) {
-          container.innerHTML = `<p>Identification terminée. Merci !</p>`;
-          afficherResultats();
-          return;
-        }
+      const titre = document.createElement('h3');
+      titre.textContent = etape.question;
+      container.appendChild(titre);
 
-        const title = document.createElement("h2");
-        title.textContent = question.question;
-        container.appendChild(title);
+      const form = document.createElement('div');
+      const nomChamp = etape.cle;
 
-        const optionsDiv = document.createElement("div");
-        optionsDiv.className = "options";
+      etape.options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'option-button';
+        btn.textContent = opt.label;
+        btn.dataset.value = opt.valeur;
 
-        question.options.forEach(opt => {
-          const label = document.createElement("label");
-          label.className = "option-label";
+        const rep = reponses[nomChamp];
+        const isSelected = (etape.type === 'multi' && Array.isArray(rep) && rep.includes(opt.valeur)) ||
+                           (etape.type === 'choix' && rep === opt.valeur);
+        if (isSelected) btn.classList.add('selected');
 
-          const input = document.createElement("input");
-          input.type = "radio";
-          input.name = "option";
-          input.value = opt.valeur;
-          input.addEventListener("change", () => {
-            answers[question.cle] = input.value;
-            document.getElementById("nextBtn").disabled = false;
-          });
-
-          label.appendChild(input);
-          label.append(" " + opt.label);
-          optionsDiv.appendChild(label);
+        btn.addEventListener('click', () => {
+          if (etape.type === 'choix') {
+            form.querySelectorAll('.option-button').forEach(b => b.classList.remove('selected'));
+            reponses[nomChamp] = opt.valeur;
+            btn.classList.add('selected');
+          } else {
+            if (!Array.isArray(reponses[nomChamp])) reponses[nomChamp] = [];
+            const selected = reponses[nomChamp];
+            const index = selected.indexOf(opt.valeur);
+            if (index >= 0) {
+              selected.splice(index, 1);
+              btn.classList.remove('selected');
+            } else {
+              selected.push(opt.valeur);
+              btn.classList.add('selected');
+            }
+          }
+          verifierActivationBouton();
         });
 
-        container.appendChild(optionsDiv);
-        container.classList.remove("hidden");
-      }, 300);
-    }
+        form.appendChild(btn);
+      });
 
-    function getNextQuestion() {
-      while (currentIndex < questions.length) {
-        const q = questions[currentIndex++];
-        if (!q.condition || answers[q.condition.cle] === q.condition.valeur) {
-          return q;
+      container.appendChild(form);
+
+      // Animation slide/fade
+      container.classList.remove('fade-slide');
+      void container.offsetWidth;
+      container.classList.add('fade-slide');
+
+      function verifierActivationBouton() {
+        const etape = etapesVisibles[indexEtape];
+        const nomChamp = etape.cle;
+        const valeur = reponses[nomChamp];
+
+        if (etape.type === 'choix') {
+          nextBtn.disabled = valeur === undefined;
+        } else if (etape.type === 'multi') {
+          nextBtn.disabled = !Array.isArray(valeur) || valeur.length === 0;
+        } else {
+          nextBtn.disabled = false; // au cas où tu ajoutes un autre type
         }
       }
-      return null;
+
+      verifierActivationBouton();
+
+      const progressPercent = ((indexEtape + 1) / etapesVisibles.length) * 100;
+      progressBar.style.width = progressPercent + '%';
+      prevBtn.disabled = indexEtape === 0;
     }
 
-    function afficherResultats() {
-      const res = [];
-      if (answers.a_chapeau === "non") res.push("!chapeau");
-      else {
-        const details = [];
-        if (answers.couleur_chapeau) details.push(answers.couleur_chapeau);
-        if (answers.texture_chapeau) details.push(answers.texture_chapeau);
-        if (details.length > 0) res.push("chapeau " + details.join(" et "));
-      }
+    function afficherResume() {
+      container.innerHTML = '';
+      resultat.innerHTML = '';
 
-      if (answers.structure_fertile === "lames") {
-        const lames = [];
-        if (answers.couleur_lames) lames.push(answers.couleur_lames);
-        if (answers.espacement_lames) lames.push(answers.espacement_lames);
-        if (lames.length > 0) res.push("lames " + lames.join(" et "));
-      }
-      if (answers.structure_fertile === "pores") {
-        const pores = [];
-        if (answers.forme_pores) pores.push(answers.forme_pores);
-        if (answers.couleur_pores) pores.push(answers.couleur_pores);
-        if (pores.length > 0) res.push("pores " + pores.join(" et "));
-      }
-      if (answers.structure_fertile === "aiguillons") {
-        const aiguillons = [];
-        if (answers.longueur_aiguillons) aiguillons.push(answers.longueur_aiguillons);
-        if (answers.densite_aiguillons) aiguillons.push(answers.densite_aiguillons);
-        if (answers.couleur_aiguillons) aiguillons.push(answers.couleur_aiguillons);
-        if (aiguillons.length > 0) res.push("aiguillons " + aiguillons.join(" et "));
-      }
+      const titre = document.createElement('h3');
+      titre.textContent = 'Résumé de vos réponses';
+      container.appendChild(titre);
 
-      if (answers.a_pied === "non") res.push("!pied");
-      else {
-        const pied = [];
-        if (answers.couleur_pied) pied.push(answers.couleur_pied);
-        if (answers.texture_pied) pied.push(answers.texture_pied);
-        if (pied.length > 0) res.push("pied " + pied.join(" et "));
-      }
+      const liste = document.createElement('div');
+      const visibles = etapes.filter(estVisible);
 
-      if (answers.anneau === "non") res.push("!anneau");
-      else if (answers.anneau) res.push("anneau");
+      visibles.forEach((etape, i) => {
+        const bloc = document.createElement('div');
+        bloc.className = 'resume-item';
 
-      if (answers.volve === "non") res.push("!volve");
-      else if (answers.volve) res.push("volve");
+        const label = document.createElement('strong');
+        label.textContent = etape.question;
+        bloc.appendChild(label);
 
-      if (answers.substrat === "arbre") res.push("ecologie arbre");
-      else if (answers.substrat === "sol") res.push("ecologie sol");
+        const valeur = reponses[etape.cle];
+        const affichage = Array.isArray(valeur) ? valeur.join(', ') : valeur || '(aucune réponse)';
+        const p = document.createElement('p');
+        p.textContent = affichage;
+        bloc.appendChild(p);
 
-      document.getElementById("resultat").textContent = res.join(", ");
+        
+        liste.appendChild(bloc);
+      });
+
+      container.appendChild(liste);
+
+      const submitBtn = document.createElement('button');
+      submitBtn.id = 'submitBtn';
+      submitBtn.className = 'btn';
+      submitBtn.textContent = 'Soumettre';
+
+      submitBtn.addEventListener('click', () => {
+        sessionStorage.setItem('guideFiltresChampi', JSON.stringify(reponses));
+        window.location.href = 'recherche.html';
+      });
+
+      document.getElementById('navigation').appendChild(submitBtn);
     }
 
-    document.getElementById("nextBtn").addEventListener("click", showQuestion);
-    loadQuestions();
+    nextBtn.addEventListener('click', () => {
+      const visibles = etapes.filter(estVisible);
+      if (indexEtape < visibles.length - 1) {
+        indexEtape++;
+        afficherEtape();
+      } else {
+        afficherResume();
+        nextBtn.style.display = 'none';
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (indexEtape > 0) {
+        indexEtape--;
+
+        // Supprimer le bouton de soumission s’il est là
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) submitBtn.remove();
+
+        // Réactiver et réafficher le bouton suivant
+        nextBtn.disabled = false;
+        nextBtn.style.display = '';
+
+        afficherEtape();
+      }
+    });
+
+
+    afficherEtape();
   </script>
-    </main>
-  <champipi-nav></champipi-nav>
+   
 </body>
 </html>
