@@ -332,7 +332,8 @@ window.arbreGuide = [
     { "valeur": "ecailleux", "label": "Écailleux ou rugueux" },
     { "valeur": "grenu", "label": "Orné de granules ou verrues" },
     { "valeur": "réticulé", "label": "Réticulé (réseau visible)" },
-    { "valeur": "visqueux", "label": "Visqueux ou gluant" }
+    { "valeur": "visqueux", "label": "Visqueux ou gluant" },
+    { "valeur": "", "label": "Ne sait pas" }
   ]
 },
  {
