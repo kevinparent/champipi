@@ -298,7 +298,7 @@ window.arbreGuide = [
     "etape": "Couleur du pied",
     "question": "Quelle est la couleur du pied ?",
     "type": "choix",
-    "cle": "pied",
+    "cle": "pied_couleur",
     "condition": {
         "cle": "pied_present",
         "valeurs": ["pied_present"]
@@ -319,8 +319,8 @@ window.arbreGuide = [
     {
   "etape": "Texture du pied",
   "question": "Quel est l’aspect du pied au toucher ou visuellement ?",
-  "type": "multi",
-  "cle": "pied",
+  "type": "choix",
+  "cle": "pied_texture",
   "condition": {
     "cle": "pied_present",
     "valeurs": ["pied_present"]

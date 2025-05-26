@@ -182,10 +182,14 @@
         
 
         if (filtres.pied_present == "pied_present") {
-          if (filtres.pied) {
-            const piedTerms = "" + (Array.isArray(filtres.pied) ? filtres.pied.join(" et ") : filtres.pied)
-            blocs.push("pied " + piedTerms);
+          piedStr = "pied";
+          if (filtres.pied_couleur) {
+            piedStr += " " + filtres.pied_couleur;
           }
+          if (filtres.pied_texture) {
+            piedStr += " " + filtres.pied_texture;
+          }
+          blocs.push(piedStr);
         } else {
           blocs.push("!pied");
         }
