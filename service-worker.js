@@ -15,6 +15,7 @@ const FILES_TO_CACHE = [
   '/champipi/glossaire.html',
   '/champipi/guide.html',
   '/champipi/app.js',
+  '/champipi/crypto.js',
   '/champipi/data.js',
   '/champipi/leaflet.css',
   '/champipi/leaflet.js',
