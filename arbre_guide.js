@@ -341,7 +341,7 @@ window.arbreGuide = [
   "type": "multi",
   "cle": "pied_volve_anneau",
   "condition": {
-    "cle": "pied",
+    "cle": "pied_present",
     "valeurs": ["pied_present"]
   },
   "options": [
