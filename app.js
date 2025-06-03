@@ -160,7 +160,7 @@ function afficherChampignon(champignon) {
       champiImgOverlayAuthor = document.createElement('h5');
       champiImgOverlayAuthor.className = 'card-title';
       champiImgOverlayAuthor.innerHTML = "Crédit photo : " + champignon["auteur"];
-      champiCard.appendChild(champiImg);  
+   //   champiCard.appendChild(champiImg);  
       if (champignon["auteur"]) {
         champiImgOverlay.appendChild(champiImgOverlayAuthor);
       }
