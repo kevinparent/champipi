@@ -1,4 +1,5 @@
 // Init Variables
+const criteresMatchExact = ["Comestible", "Toxicité"];
 let ignorerRecherche = false;
 const filtres = [];
 tousLesChampignons = getDataEncrypted();

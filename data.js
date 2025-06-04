@@ -112,10 +112,24 @@ function sansAccents(str) {
         if (exclusions.some(c => contientCritere.includes(sansAccents(c)))) {
           return false; // fiche exclue si elle contient un des critères mentionnés par !Nom
         }
-      } else {
-        const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
-        mots = sansAccents(valeur.toLowerCase()).split(/\W+/);
       }
+      else {
+        const valeur = champiCritere ? Object.values(champiCritere)[0] : '';
+        const valeurNorm = sansAccents(valeur.toLowerCase().trim());
+
+        if (criteresMatchExact.includes(critereNom)) {
+          return critere.termes.every(ts => {
+            const sousTermes = ts.split(' ou ').map(t => t.trim());
+            return sousTermes.some(t => {
+              const terme = sansAccents(t.toLowerCase());
+              return valeurNorm === terme;
+            });
+          });
+        } else {
+          mots = valeurNorm.split(/\W+/);
+        }
+      }
+
 
       return critere.termes.every(ts => {
         const sousTermes = ts.split(' ou ').map(t => t.trim());
