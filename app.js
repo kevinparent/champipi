@@ -101,26 +101,7 @@ function remplirMenuCritere(champignons) {
 function afficherChampignon(champignon) {
   const li = document.createElement('li');
   li.className = 'list-group-item champi-item col-lg-4 col-md-6 col-xs-12';
-      // Map pour parcourir les descriptions
-      let descriptionItems = "";
       
-      champignon.description.forEach(desc => {
-        // Récupérer la clé dynamique de description
-        const descriptionName = desc['description-name'];
-        // Accéder à la valeur en utilisant la clé dynamique
-        const descriptionValue = desc[Object.keys(desc)[0]];
-
-        const critereCorrespondant = Object.values(criteresRecherches).find(critere => critere.critere === Object.keys(desc)[0]);
-
-        const contenuText = critereCorrespondant && critereCorrespondant.termes.length > 0
-              ? surlignerMotsProches(descriptionValue, critereCorrespondant.termes) 
-              : descriptionValue;  // Vérifier si le critère correspond à la description
-
-        if (critereCorrespondant != undefined) {
-          descriptionItems += `<li><strong>${descriptionName} :</strong> ${contenuText}</li>`;
-        }
-        
-      });
 
       head = document.createElement("h5");
       head.className = "col-10"
@@ -179,7 +160,20 @@ function afficherChampignon(champignon) {
       champiCardBody.appendChild(champiCardBodyTitle);
       champiCardBodyText = document.createElement('p');
       champiCardBodyText.className = 'card-text';
-      champiCardBodyText.innerHTML = champignon["resume_concis"]
+      const resumeComplet = champignon["resume_concis"];
+      const resumeMaxLength = 120;
+      const isLong = resumeComplet.length > resumeMaxLength;
+      const resumeTronque = resumeComplet.slice(0, resumeMaxLength);
+
+      const resumeId = `resume-${Math.random().toString(36).substring(2, 10)}`;
+      const boutonId = `btn-${resumeId}`;
+
+      champiCardBodyText.innerHTML = `
+        <div class="resume-wrapper" id="${resumeId}" style="max-height: 5em; overflow: hidden; transition: max-height 0.5s ease;">
+          ${resumeTronque}${isLong ? "..." : ""}
+        </div>
+        ${isLong ? `<button id="${boutonId}" class="btn btn-sm btn-link p-0" onclick="toggleResume('${resumeId}', '${boutonId}', \`${resumeComplet.replace(/`/g, '\\`')}\`, \`${resumeTronque.replace(/`/g, '\\`')}\`)">[plus]</button>` : ""}
+      `;
 
       observationButton = document.createElement('button');
       observationButton.innerHTML = "Ajouter une observation";
@@ -196,7 +190,9 @@ function afficherChampignon(champignon) {
       mycoButton = document.createElement('a');
       mycoButton.innerHTML = "En savoir plus";
       mycoButton.className = 'button btn btn-info champi-btn-myco';
-      mycoButton.href = champignon["list champi-href"]
+      mycoButton.href = champignon["list champi-href"];
+      mycoButton.target = "_blank";
+      mycoButton.rel = "noopener noreferrer";
 
       champiCardBody.appendChild(champiCardBodyText);
 
@@ -208,13 +204,30 @@ function afficherChampignon(champignon) {
       champiCardBody.appendChild(buttonGroupChamp);
 
       champiCard.className = 'card champi-card';
-      champiCardBody.appendChild(favIcon);
 
       champiCard.appendChild(champiCardBody);
       li.appendChild(champiCard);
 
       return li;
 }
+
+function afficherResumeComplet(spanId, fullText, btn) {
+  const span = document.getElementById(spanId);
+  if (span) span.textContent = fullText;
+  if (btn) btn.remove();
+}
+
+function toggleResume(resumeId, boutonId, fullText, shortText) {
+  const resumeEl = document.getElementById(resumeId);
+  const btn = document.getElementById(boutonId);
+
+  const isCollapsed = btn.textContent === "[plus]";
+
+  resumeEl.innerHTML = isCollapsed ? fullText : shortText + "...";
+  resumeEl.style.maxHeight = isCollapsed ? "1000px" : "5em"; // transition visible
+  btn.textContent = isCollapsed ? "[moins]" : "[plus]";
+}
+
 
 function getImageSrc(champignon) {
   if (champignon["image"] != "./img/icon.jpg") return champignon["image"];
