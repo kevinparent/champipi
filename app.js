@@ -158,6 +158,7 @@ function afficherChampignon(champignon) {
       groupeDivision = champignon["division"] ? champignon["division"] : "";
       champiCardBodyTitle.innerHTML = champignon["list champi"] + "<small style='font-size: 8pt'> (" + nomChampiLatin + " / " + groupeTaxo +" ) <br /> Division : "+ groupeDivision +" </small>  ";  
       champiCardBody.appendChild(champiCardBodyTitle);
+      champiCardBody.appendChild(iconWrapper);
       champiCardBodyText = document.createElement('p');
       champiCardBodyText.className = 'card-text';
       const resumeComplet = champignon["resume_concis"];
