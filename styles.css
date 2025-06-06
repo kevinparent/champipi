@@ -28,6 +28,27 @@ header::before {
   border-bottom-right-radius: 30px;
 }
 
+  .preset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .preset-chips span {
+    padding: 6px 12px;
+    background: #e0f2e9;
+    border: 1px solid #a4caa1;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    color: #2f4f2f;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .preset-chips span:hover {
+    background: #cce6dc;
+  }
+
 header h1,
 header p {
   position: relative;
@@ -67,6 +88,13 @@ header {
 
 .favori-icon {
   width: 48px;
+}
+
+#sectionsRecherches {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
 }
 
 #photoButton {

@@ -40,9 +40,10 @@
       </fieldset>-->
     </div>
 
-    <div style="font-size: 10pt; text-align: center; margin-bottom: 1em; margin-top: 1em;">
+    <div id="sectionsRecherches" style="font-size: 10pt; padding: 0 1em; margin-bottom: 1em; margin-top: 1em;">
       <button onclick="toggleMode('guide')" class="button">🔘 Recherche par critères</button>
       <button onclick="toggleMode('libre')" class="button">📝 Recherche libre</button>
+      <button onclick="toggleMode('suggestions')" class="button">✨ Suggestions rapides</button>
     </div>
 
     <section class="section" id="recherche-par-criteres">
@@ -95,6 +96,17 @@
       </div>
 
     </section>
+    <!-- Section suggestions avec pastilles -->
+    <section id="recherche-suggestions" class="section" style="display: none;">
+      <h2>✨ Suggestions rapides</h2>
+      <div class="preset-chips">
+        <span onclick="appliquerPreset('printemps_comestibles')">🍄 Printemps comestibles</span>
+        <span onclick="appliquerPreset('ete_comestibles')">🍄 Été comestibles</span>
+        <span onclick="appliquerPreset('automne_comestibles')">🍄 Automne comestibles</span>
+        <span onclick="appliquerPreset('toxiques_ete')">☠️ Toxiques</span>
+        <span onclick="appliquerPreset('toxiques_mortel')">☠️ Toxiques Mortel</span>
+      </div>
+    </section>
 
     <section class="section">
       <h2>Filtres actifs</h2>
@@ -121,16 +133,27 @@
   <script src="observations.js"></script>
   
   <script>
+    const presets = {
+      printemps_comestibles: "comestibilite et !non et comestible et !toxique, printemps ou mai ou juin",
+      ete_comestibles: "comestibilite et !non et comestible et !toxique, juillet ou aout ou ete",
+      automne_comestibles: "comestibilite et !non et comestible et !toxique, automne ou septembre ou octobre ou novembre",
+      toxiques_ete: "comestibilite toxique",
+      toxiques_mortel: "comestibilite mortel ou toxique et mortel"
+    };
+
+    function appliquerPreset(presetId) {
+      const preset = presets[presetId];
+      if (!preset) return;
+      miseAJourCritere(preset); // Mise à jour des filtres affichés
+    }
     function toggleMode(mode) {
       const guide = document.getElementById("recherche-par-criteres");
       const libre = document.getElementById("recherche-libre");
-      if (mode === 'guide') {
-        guide.style.display = 'block';
-        libre.style.display = 'none';
-      } else {
-        guide.style.display = 'none';
-        libre.style.display = 'block';
-      }
+      const suggestions = document.getElementById("recherche-suggestions");
+
+      guide.style.display = mode === 'guide' ? 'block' : 'none';
+      libre.style.display = mode === 'libre' ? 'block' : 'none';
+      suggestions.style.display = mode === 'suggestions' ? 'block' : 'none';
     }
 
     function toggleAideRechercheLibre() {
