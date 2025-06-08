@@ -24,6 +24,9 @@ const dictionnaireSynonymes = [
   ["bulbeux", "renflé", "enflé"],
   ["creux", "fistuleux", "tubulaire"],
   ["étroit", "allongé", "élancé", "fusiforme"],
+  ["incurvé", "recourbé", "crochu", "enroulé"],
+  ["spiralé", "hélicoïdal", "tortueux"],  
+  ["radial", "en étoile", "stellé"],
 
   // Odeurs
   ["phénol", "encre", "chimique"],
