@@ -41,12 +41,13 @@
     </div>
 
     <div id="sectionsRecherches" style="font-size: 10pt; padding: 0 1em; margin-bottom: 1em; margin-top: 1em;">
-      <button onclick="toggleMode('guide')" class="button">🔘 Recherche par critères</button>
+      <!--<button onclick="toggleMode('guide')" class="button">🔘 Recherche par critères</button>-->
+      <a class="button" href="guide.html">Recherche guidée</a>
       <button onclick="toggleMode('libre')" class="button">📝 Recherche libre</button>
       <button onclick="toggleMode('suggestions')" class="button">✨ Suggestions rapides</button>
     </div>
 
-    <section class="section" id="recherche-par-criteres">
+    <section class="section" id="recherche-par-criteres" style="display: none;">
       <h2>🔎 Recherche par critères</h2>      
 
       <fieldset id="sectionRecherche" class="card">
@@ -68,14 +69,14 @@
       </fieldset>
     </section>
 
-    <section class="section" id="recherche-libre" style="display: none;">
+    <section class="section" id="recherche-libre">
       <h2>📝 Recherche libre <button onclick="toggleAideRechercheLibre()">ℹ️</button></h2>
       
       <div class="card" style="padding: 1em;">
       
       <p>Entrez une description comme : <em>Chapeau rouge, pied blanc OU jaune, !volve</em></p>
       <label for="searchField">Recherche libre :</label>
-      <input type="text" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche" />
+      <textarea autofocus rows="5" type="text" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche" ></textarea>
       
       <button class="button" id="searchButton">Ajouter cette recherche</button>
       </div>
