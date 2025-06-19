@@ -77,7 +77,8 @@
       <p>Entrez une description comme : <em>Chapeau rouge, pied blanc OU jaune, !volve</em></p>
       <label for="searchField">Recherche libre :</label>
       <textarea autofocus rows="5" type="text" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche" ></textarea>
-      
+      <ul id="autocompleteList" class="autocomplete-suggestions"></ul>
+
       <button class="button" id="searchButton">Ajouter cette recherche</button>
       </div>
 
@@ -134,6 +135,91 @@
   <script src="observations.js"></script>
   
   <script>
+    suggestions = [];
+    suggestionsSet = new Set();
+
+const searchField = document.getElementById("searchField");
+const autocompleteList = document.getElementById("autocompleteList");
+
+function insererSuggestion(suggestion) {
+  const mots = searchField.value.trim().split(/\s+/);
+  mots[mots.length - 1] = suggestion;
+  searchField.value = mots.join(" ") + " ";
+
+  autocompleteList.style.display = "none";
+}
+
+
+function afficherSuggestionsPour(mot) {
+  if (mot.length < 2) {
+    autocompleteList.style.display = "none";
+    return;
+  }
+
+  const suggestions = Array.from(suggestionsSet) // tousLesMots = Set global
+    .filter(m => m.toLowerCase().startsWith(mot.toLowerCase()))
+    .slice(0, 6); // limiter à 6 suggestions
+
+  autocompleteList.innerHTML = "";
+  suggestions.forEach(s => {
+    const li = document.createElement("li");
+    li.textContent = s;
+    li.onclick = () => insererSuggestion(s);
+    autocompleteList.appendChild(li);
+  });
+
+  autocompleteList.style.display = suggestions.length ? "block" : "none";
+}
+
+
+searchField.addEventListener("input", () => {
+  const mots = searchField.value.split(/\s+/);
+  const motActuel = mots[mots.length - 1].toLowerCase();
+
+  afficherSuggestionsPour(motActuel);
+// Convertir en tableau exploitable
+/*const suggestions = Array.from(suggestionsSet);
+
+  const value = searchField.value;
+  const lastPart = value.split(/[,;\n]/).pop().trim().toLowerCase();
+
+  autocompleteList.innerHTML = "";
+
+  if (lastPart.length < 2) {
+    autocompleteList.style.display = "none";
+    return;
+  }
+
+  const matches = suggestions.filter(s => s.toLowerCase().startsWith(lastPart));
+  if (matches.length === 0) {
+    autocompleteList.style.display = "none";
+    return;
+  }
+
+  matches.forEach(suggestion => {
+    const li = document.createElement("li");
+    li.textContent = suggestion;
+    li.onclick = () => {
+      const parts = value.split(/[,;\n]/);
+      parts[parts.length - 1] = " " + suggestion;
+      searchField.value = parts.join(", ").replace(/^, /, "");
+      autocompleteList.innerHTML = "";
+      autocompleteList.style.display = "none";
+      searchField.focus();
+    };
+    autocompleteList.appendChild(li);
+  });
+
+  autocompleteList.style.display = "block";*/
+});
+
+document.addEventListener("click", (e) => {
+  if (!autocompleteList.contains(e.target) && e.target !== searchField) {
+    autocompleteList.innerHTML = "";
+    autocompleteList.style.display = "none";
+  }
+});
+
     const presets = {
       printemps_comestibles: "comestibilite et !non et comestible et !toxique, printemps ou mai ou juin",
       ete_comestibles: "comestibilite et !non et comestible et !toxique, juillet ou aout ou ete",
@@ -273,6 +359,18 @@
       loadInitialDataIfNeeded();
       modifierListeCritere();
       initialiserFiltreDivisions(getDataEncrypted());
+        // Crée un Set vide
+      // Ajout des données du Map criteresSelect
+      criteresSelect.forEach((valeurs, cle) => {
+        suggestionsSet.add(valeurs); // clé seule
+      });
+
+      dictionnaireSynonymes.forEach(syn => {
+        syn.forEach(s => {
+          suggestionsSet.add(s); // Ajoute chaque synonyme
+        });
+      });
+
 
       document.querySelectorAll(".favori-icon").forEach(icon => {
         const id = icon.getAttribute("data-id");

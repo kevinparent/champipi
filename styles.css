@@ -28,6 +28,34 @@ header::before {
   border-bottom-right-radius: 30px;
 }
 
+.autocomplete-suggestions {
+  display: none; /* 👈 caché par défaut */
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin-top: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 9999;
+  width: 100%;
+  font-size: 10pt;
+}
+
+
+.autocomplete-suggestions li {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.autocomplete-suggestions li:hover {
+  background-color: #e6f4ec;
+}
+
+
   .preset-chips {
     display: flex;
     flex-wrap: wrap;
