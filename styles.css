@@ -55,6 +55,23 @@ header::before {
   background-color: #e6f4ec;
 }
 
+.historique-item {
+  background-color: #e6f2e6;         /* crème verdâtre doux */
+  border: 1px solid #a4c3a4;         /* vert pâle pour contour */
+  border-radius: 20px;
+  padding: 8px 14px;
+  margin: 6px 0;
+  font-size: 0.95em;
+  color: #2f4f2f;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.historique-item:hover {
+  background-color: #cfe6cf;         /* vert plus soutenu au hover */
+}
+
 
   .preset-chips {
     display: flex;

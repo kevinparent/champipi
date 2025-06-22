@@ -80,6 +80,11 @@
       <ul id="autocompleteList" class="autocomplete-suggestions"></ul>
 
       <button class="button" id="searchButton">Ajouter cette recherche</button>
+      <h4 id="afficherHistorique">🕘 Historique de recherche</h4>
+      <div id="historiqueBloc" class="card" style="margin-top: 1em; padding: 1em; display: none;">        
+        <ul id="historiqueListe" class="list-group"></ul>
+        <button onclick="effacerHistorique()" class="button btn btn-sm">🗑 Effacer</button>
+      </div>
       </div>
 
       <div id="infoRechercheLibre" class="modal-aide" style="display: none;">
@@ -141,14 +146,75 @@
 const searchField = document.getElementById("searchField");
 const autocompleteList = document.getElementById("autocompleteList");
 
+document.addEventListener("click", function (event) {
+  if (!autocompleteList.contains(event.target) && event.target !== searchField) {
+    autocompleteList.style.display = "none";
+  }
+});
+
+searchField.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    autocompleteList.style.display = "none";
+  }
+});
+
+document.getElementById("afficherHistorique").addEventListener("click", () => {
+  const historiqueBloc = document.getElementById("historiqueBloc");
+  historiqueBloc.style.display = historiqueBloc.style.display === "none" ? "block" : "none";
+});
+
+function afficherHistoriqueRecherche() {
+  const liste = document.getElementById("historiqueListe");
+  liste.innerHTML = "";
+
+  const historique = JSON.parse(localStorage.getItem("historiqueRecherche")) || [];
+  historique.forEach(item => {
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.textContent = item;
+    li.className = "historique-item";
+    li.style.cursor = "pointer";
+    li.onclick = () => {
+      document.getElementById("searchField").value = item;
+    };
+    liste.appendChild(li);
+  });
+}
+
+function effacerHistorique() {
+  localStorage.removeItem("historiqueRecherche");
+  afficherHistoriqueRecherche();
+
+  const historiqueBloc = document.getElementById("historiqueBloc");
+  historiqueBloc.style.display = "none";
+}
+
 function insererSuggestion(suggestion) {
   const mots = searchField.value.trim().split(/\s+/);
   mots[mots.length - 1] = suggestion;
   searchField.value = mots.join(" ") + " ";
 
   autocompleteList.style.display = "none";
+  searchField.focus();
 }
 
+function ajouterHistoriqueRecherche(recherche) {
+  if (!recherche || recherche.trim() === "") return;
+  
+  let historique = JSON.parse(localStorage.getItem("historiqueRecherche")) || [];
+
+  // Supprime les doublons
+  historique = historique.filter(item => item !== recherche);
+
+  // Ajoute en début
+  historique.unshift(recherche);
+
+  // Limite à 10 éléments
+  if (historique.length > 10) historique = historique.slice(0, 10);
+
+  localStorage.setItem("historiqueRecherche", JSON.stringify(historique));
+  afficherHistoriqueRecherche();
+}
 
 function afficherSuggestionsPour(mot) {
   if (mot.length < 2) {
@@ -169,8 +235,8 @@ function afficherSuggestionsPour(mot) {
   });
 
   autocompleteList.style.display = suggestions.length ? "block" : "none";
+ 
 }
-
 
 searchField.addEventListener("input", () => {
   const mots = searchField.value.split(/\s+/);
@@ -359,6 +425,7 @@ document.addEventListener("click", (e) => {
       loadInitialDataIfNeeded();
       modifierListeCritere();
       initialiserFiltreDivisions(getDataEncrypted());
+      afficherHistoriqueRecherche();
         // Crée un Set vide
       // Ajout des données du Map criteresSelect
       criteresSelect.forEach((valeurs, cle) => {

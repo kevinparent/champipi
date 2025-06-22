@@ -297,13 +297,13 @@ function surlignerMotsProches(texte, termeRecherche) {
 
 function miseAJourCritere(filtreString) {
   if (ignorerRecherche) return;
-
+  
 
   document.getElementById("filtresActifs").style.display = "none";
   document.getElementsByClassName("resultContainer")[0].style.display = "none";
 
   const saisie = filtreString ? filtreString : valeurRecherche.value.trim();
-
+  ajouterHistoriqueRecherche(saisie);
   // Réinitialiser les anciens critères uniquement si on détecte des blocs
   const nouvellesRecherches = {};
 
