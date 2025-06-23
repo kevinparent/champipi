@@ -318,8 +318,8 @@ function miseAJourCritere(filtreString) {
 
     critereTrouve = trouverCritereDansPhrase(bloc);
     critereDetecte = critereTrouve ? critereTrouve.critere : null;
-
-    const regex = new RegExp(`^${critereTrouve.candidat}\\s+`, 'i'); // début du bloc + espace
+    stringToRemove = critereTrouve ? critereTrouve.candidat : "";
+    const regex = new RegExp(`^${stringToRemove}\\s+`, 'i'); // début du bloc + espace
     const reste = bloc.replace(regex, '').trim();
 
     if (critereDetecte && mots.length > 1) {
