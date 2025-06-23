@@ -253,40 +253,6 @@ searchField.addEventListener("input", () => {
   const motActuel = mots[mots.length - 1].toLowerCase();
 
   afficherSuggestionsPour(motActuel);
-// Convertir en tableau exploitable
-/*const suggestions = Array.from(suggestionsSet);
-
-  const value = searchField.value;
-  const lastPart = value.split(/[,;\n]/).pop().trim().toLowerCase();
-
-  autocompleteList.innerHTML = "";
-
-  if (lastPart.length < 2) {
-    autocompleteList.style.display = "none";
-    return;
-  }
-
-  const matches = suggestions.filter(s => s.toLowerCase().startsWith(lastPart));
-  if (matches.length === 0) {
-    autocompleteList.style.display = "none";
-    return;
-  }
-
-  matches.forEach(suggestion => {
-    const li = document.createElement("li");
-    li.textContent = suggestion;
-    li.onclick = () => {
-      const parts = value.split(/[,;\n]/);
-      parts[parts.length - 1] = " " + suggestion;
-      searchField.value = parts.join(", ").replace(/^, /, "");
-      autocompleteList.innerHTML = "";
-      autocompleteList.style.display = "none";
-      searchField.focus();
-    };
-    autocompleteList.appendChild(li);
-  });
-
-  autocompleteList.style.display = "block";*/
 });
 
 document.addEventListener("click", (e) => {
