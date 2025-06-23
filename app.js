@@ -316,10 +316,10 @@ function miseAJourCritere(filtreString) {
     const mots = bloc.split(/\s+/);
     if (mots.length === 0) continue;
 
-    const premierMot = mots[0];
-    const critereDetecte = trouverCritereCorrespondant(premierMot);
+    critereTrouve = trouverCritereDansPhrase(bloc);
+    critereDetecte = critereTrouve ? critereTrouve.critere : null;
 
-    const regex = new RegExp(`^${premierMot}\\s+`, 'i'); // début du bloc + espace
+    const regex = new RegExp(`^${critereTrouve.candidat}\\s+`, 'i'); // début du bloc + espace
     const reste = bloc.replace(regex, '').trim();
 
     if (critereDetecte && mots.length > 1) {
@@ -380,31 +380,65 @@ function miseAJourCritere(filtreString) {
   appliquerRecherche();
 }
 
+function trouverCritereDansPhrase(texte) {
+  const mots = texte.trim().toLowerCase().split(/\s+/);
+
+  for (let i = 0; i < mots.length; i++) {
+    const candidats = [
+      mots[i],
+      mots[i] + " " + (mots[i + 1] || ""),
+      mots[i] + " " + (mots[i + 1] || "") + " " + (mots[i + 2] || "")
+    ];
+
+    for (const candidat of candidats) {
+      const critere = trouverCritereCorrespondant(candidat);
+      if (critere) return  { critere, candidat };
+    }
+  }
+
+  return null;
+}
+
+
 function trouverCritereCorrespondant(mot) {
   const motNet = sansAccents(mot).toLowerCase();
 
-  // 1. Match exact direct
+  let correspondancesPartielles = [];
+
+  // 1. Match exact
   for (const cle of criteresSelect.keys()) {
     const cleNet = sansAccents(cle).toLowerCase();
     if (motNet === cleNet) return cle;
   }
 
-  // 2. Si pas de match exact, chercher une correspondance unique avec distance faible
+  // 2. Contient le mot (ex. "face" dans "face poroïde")
+  for (const cle of criteresSelect.keys()) {
+    const cleNet = sansAccents(cle).toLowerCase();
+    if (cleNet.includes(motNet)) {
+      correspondancesPartielles.push(cle);
+    }
+  }
+
+  if (correspondancesPartielles.length === 1) {
+    return correspondancesPartielles[0];
+  }
+
+  // 3. Levenshtein sur toutes les clés
   let meilleurCritere = null;
   let distanceMin = Infinity;
 
   for (const cle of criteresSelect.keys()) {
     const cleNet = sansAccents(cle).toLowerCase();
     const d = distanceLevenshtein(motNet, cleNet);
-
-    if (d < distanceMin && d <= 1) {
+    if (d < distanceMin && d <= 2) { // plus tolérant ici
       meilleurCritere = cle;
       distanceMin = d;
     }
   }
 
-  return meilleurCritere; // peut être null si rien trouvé
+  return meilleurCritere || null;
 }
+
 
 
 function modifierListeCritere() {

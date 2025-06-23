@@ -1,4 +1,5 @@
 const dictionnaireSynonymes = [
+  ["face poroide", "faceporoide"],
     // Couleurs
   ["rouge", "rougeâtre", "roux", "carmin", "vermillon"],
   ["jaune", "doré", "citron", "paille"],
