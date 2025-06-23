@@ -1,4 +1,4 @@
-const CACHE_NAME = 'champipi-offline-cache-v1-2025-06-23-940';
+const CACHE_NAME = 'champipi-offline-cache-v1-2025-06-23-953';
 const FILES_TO_CACHE = [
   '/champipi/',
   '/champipi/index.html',
@@ -61,6 +61,13 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', event => {
   const request = event.request;
+
+  const url = new URL(event.request.url);
+
+  // Exclure les appels à Google Analytics ou d'autres domaines
+  if (url.hostname.includes('google-analytics.com')) {
+    return; // on ne fait rien → la requête passe directement au réseau
+  }
 
   // Gestion spécifique pour les pages HTML (navigate mode)
   if (request.mode === 'navigate') {
