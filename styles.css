@@ -55,6 +55,41 @@ header::before {
   background-color: #e6f4ec;
 }
 
+.textarea-container {
+  position: relative;
+  width: 100%;
+}
+
+.textarea-container textarea {
+  width: 100%;
+  padding-right: 2.5em; /* espace pour l’icône à droite */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  font-size: 1em;
+  resize: vertical;
+  min-height: 5em; /* assure une hauteur de base */
+}
+
+.search-icon-button {
+  position: absolute;
+  top: 50%;
+  right: 0.6em;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 1.3em;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  line-height: 1;
+}
+
+.search-icon-button:hover {
+  color: #222;
+}
+
+
 .historique-item {
   background-color: #e6f2e6;         /* crème verdâtre doux */
   border: 1px solid #a4c3a4;         /* vert pâle pour contour */
@@ -145,11 +180,6 @@ header {
 #photoButton {
   width: 100%;
   margin-bottom: 1em;
-}
-
-#searchButton, #searchButtonCritere {
-  width: 100%;
-  margin-top: 1em;
 }
 
 #sectionRecherche {

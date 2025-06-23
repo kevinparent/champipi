@@ -77,10 +77,15 @@
       
       <p>Entrez une description comme : <em>Chapeau rouge, pied blanc OU jaune, !volve</em></p>
       <label for="searchField">Recherche libre :</label>
-      <textarea autofocus rows="5" type="text" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche" ></textarea>
+      <div class="textarea-container">
+        <textarea autofocus rows="5" id="searchField" placeholder="ex. : Chapeau rouge, !pied, volve blanche"></textarea>
+        <button class="search-icon-button" id="searchButton" onclick="lancerRechercheDepuisIcone()" title="Lancer la recherche">
+          🔍
+        </button>
+      </div>
       <ul id="autocompleteList" class="autocomplete-suggestions"></ul>
 
-      <button class="button" id="searchButton">Ajouter cette recherche</button>
+      <!--<button class="button" id="searchButton">Ajouter cette recherche</button>-->
       <h4 id="afficherHistorique">🕘 Historique de recherche</h4>
       <div id="historiqueBloc" class="card" style="margin-top: 1em; padding: 1em; display: none;">        
         <ul id="historiqueListe" class="list-group"></ul>
@@ -157,6 +162,10 @@ searchField.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     autocompleteList.style.display = "none";
   }
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("searchButton").click();
+  } 
 });
 
 document.getElementById("afficherHistorique").addEventListener("click", () => {
