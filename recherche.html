@@ -45,8 +45,19 @@
       
       <button onclick="toggleMode('libre')" class="button">📝 Recherche libre</button>
       <button onclick="toggleMode('suggestions')" class="button">✨ Suggestions rapides</button>
+      <button onclick="toggleMode('noms')" class="button">🔍 Recherche par nom</button>
       <a class="button" href="guide.html">Recherche guidée</a>
     </div>
+
+    <section class="section" id="recherche-par-nom" style="display: none;">
+      <h2>🔍 Recherche par nom</h2>
+      <fieldset id="sectionRecherche" class="card">
+        <label for="searchByName">Nom du champignon :</label>
+        <input type="text" id="searchByName" placeholder="ex. : Amanita muscaria" />
+        <ul id="autocompleteListNom" class="autocomplete-suggestions"></ul>
+        <button class="button" id="searchButtonByName">Rechercher</button>
+      </fieldset>
+    </section>
 
     <section class="section" id="recherche-par-criteres" style="display: none;">
       <h2>🔎 Recherche par critères</h2>      
@@ -147,23 +158,39 @@
   <script>
     suggestions = [];
     suggestionsSet = new Set();
+    nomChampiSet = new Set();
 
 const searchField = document.getElementById("searchField");
+const searchNameField = document.getElementById("searchByName");
 const autocompleteList = document.getElementById("autocompleteList");
+const autocompleteListNom = document.getElementById("autocompleteListNom");
 
 document.addEventListener("click", function (event) {
   if (!autocompleteList.contains(event.target) && event.target !== searchField) {
     autocompleteList.style.display = "none";
   }
+  if (!autocompleteListNom.contains(event.target) && event.target !== searchField) {
+    autocompleteListNom.style.display = "none";
+  }
 });
 
 searchField.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    autocompleteListNom.style.display = "none";
+  }
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("searchButton").click();
+  } 
+});
+
+searchNameField.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     autocompleteList.style.display = "none";
   }
   if (e.key === "Enter") {
     e.preventDefault();
-    document.getElementById("searchButton").click();
+    document.getElementById("searchButtonByName").click();
   } 
 });
 
@@ -207,6 +234,15 @@ function insererSuggestion(suggestion) {
   searchField.focus();
 }
 
+function insererSuggestionNom(suggestion) {
+  const mots = searchNameField.value.trim().split(/\s+/);
+  mots[mots.length - 1] = suggestion;
+  searchNameField.value = mots.join(" ") + " ";
+
+  autocompleteListNom.style.display = "none";
+  searchNameField.focus();
+}
+
 function ajouterHistoriqueRecherche(recherche) {
   if (!recherche || recherche.trim() === "") return;
   
@@ -223,6 +259,28 @@ function ajouterHistoriqueRecherche(recherche) {
 
   localStorage.setItem("historiqueRecherche", JSON.stringify(historique));
   afficherHistoriqueRecherche();
+}
+
+function afficherSuggestionsPourNom(mot) {
+  if (mot.length < 1) {
+    autocompleteListNom.style.display = "none";
+    return;
+  }
+
+  const suggestions = Array.from(nomChampiSet) // tousLesMots = Set global
+    .filter(m => m.toLowerCase().startsWith(mot.toLowerCase()))
+    .slice(0, 6); // limiter à 6 suggestions
+
+  autocompleteListNom.innerHTML = "";
+  suggestions.forEach(s => {
+    const li = document.createElement("li");
+    li.textContent = s;
+    li.onclick = () => insererSuggestionNom(s);
+    autocompleteListNom.appendChild(li);
+  });
+
+  autocompleteListNom.style.display = suggestions.length ? "block" : "none";
+ 
 }
 
 function afficherSuggestionsPour(mot) {
@@ -246,6 +304,14 @@ function afficherSuggestionsPour(mot) {
   autocompleteList.style.display = suggestions.length ? "block" : "none";
  
 }
+
+searchNameField.addEventListener("input", () => {
+  const mots = searchNameField.value.split(/\s+/);
+  const motActuel = mots[mots.length - 1].toLowerCase();
+
+  afficherSuggestionsPourNom(motActuel);
+});
+
 
 searchField.addEventListener("input", () => {
   const mots = searchField.value.split(/\s+/);
@@ -278,7 +344,9 @@ document.addEventListener("click", (e) => {
       const guide = document.getElementById("recherche-par-criteres");
       const libre = document.getElementById("recherche-libre");
       const suggestions = document.getElementById("recherche-suggestions");
+      const noms = document.getElementById("recherche-par-nom");
 
+      noms.style.display = mode === 'noms' ? 'block' : 'none';
       guide.style.display = mode === 'guide' ? 'block' : 'none';
       libre.style.display = mode === 'libre' ? 'block' : 'none';
       suggestions.style.display = mode === 'suggestions' ? 'block' : 'none';
@@ -411,6 +479,10 @@ document.addEventListener("click", (e) => {
         syn.forEach(s => {
           suggestionsSet.add(s); // Ajoute chaque synonyme
         });
+      });
+
+      window.champiData.forEach(champi => {
+        nomChampiSet.add(champi["list champi"]);
       });
 
 

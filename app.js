@@ -27,7 +27,10 @@ const criteriaList = document.getElementById('criteriaList');
 const criteriaContainer = document.getElementById('filtresActifs');
 const searchButtonCritere = document.getElementById('searchButtonCritere');
 const resetButton = document.getElementById('clearButton');
+const rechercheParNom = document.getElementById('recherche-par-nom');
+const searchByNameField = document.getElementById('searchByName');
 
+if (rechercheParNom) rechercheParNom.addEventListener('click', () => {rechercheParNomFunction(searchByNameField.value);});
 // Event Listeners
 if (boutonRecherche) boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
 if (searchButtonCritere) searchButtonCritere.addEventListener('click', () => {ajouterCritereDepuisFormulaire();});

@@ -78,6 +78,20 @@ function sansAccents(str) {
     return [tm];
   }
 
+  function rechercheParNomFunction(value) {
+    if (!value || value.trim() === "") {
+      loadData();
+      return;
+    }
+
+    const filtres = tousLesChampignons.filter(champi => {
+      if (!champi.champiTitre) return false;  // Vérifier si champiTitre existe
+      return champi.champiTitre.toLowerCase().includes(value.toLowerCase());
+    });
+
+    loadData(filtres);
+  }
+
   function appliquerRecherche() {
   if (Object.values(criteresRecherches).length == 0) {
     loadData();
