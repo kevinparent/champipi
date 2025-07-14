@@ -49113,7 +49113,7 @@ window.champiData = [
     "division": "Basidiomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/polypore_ombelle.jpg",
     "list champi": "Polypore en ombelle",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=P&l=f&nom=Cladomeris%20umbellata%20/%20Polypore%20en%20ombelle&tag=Cladomeris%20umbellata&gro=114",
     "description": [
@@ -52760,7 +52760,7 @@ window.champiData = [
     "division": "Basidiomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/polypore_mounce.jpg",
     "list champi": "Polypore de Mounce",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=P&l=f&nom=Fomitopsis%20mounceae%20/%20Polypore%20de%20Mounce&tag=Fomitopsis%20mounceae&gro=143",
     "description": [
@@ -93689,7 +93689,7 @@ window.champiData = [
     "division": "Basidiomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/mycene_lea.jpg",
     "list champi": "Mycène de Lea",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=M&l=f&nom=Mycena%20leaiana%20/%20Myc%C3%A8ne%20de%20Lea&tag=Mycena%20leaiana&gro=28",
     "description": [
@@ -167541,7 +167541,7 @@ window.champiData = [
     "division": "Ascomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/dermatose_russule.jpg",
     "list champi": "Dermatose des russules",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=D&l=f&nom=Hypomyces%20lactifluorum%20/%20Dermatose%20des%20russules&tag=Hypomyces%20lactifluorum&gro=263",
     "description": [
@@ -213141,7 +213141,7 @@ window.champiData = [
     "division": "Basidiomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/clytocibe_squamuleux.jpg",
     "list champi": "Clitocybe squamuleux",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=C&l=f&nom=Infundibulicybe%20squamulosa%20/%20Clitocybe%20squamuleux&tag=Infundibulicybe%20squamulosa&gro=159",
     "description": [
@@ -232272,7 +232272,7 @@ window.champiData = [
     "division": "Ascomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/auriculaire_amerique.jpg",
     "list champi": "Auriculaire d'Amérique",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=A&l=f&nom=Auricularia%20americana%20/%20Auriculaire%20d%27Am%C3%A9rique&tag=Auricularia%20americana&gro=109",
     "description": [
@@ -239564,7 +239564,7 @@ window.champiData = [
     "division": "Basidiomycota"
   },
   {
-    "image": "./img/icon.jpg",
+    "image": "./img/amanite_flocons.jpg",
     "list champi": "Amanite à voile jaune",
     "list champi-href": "https://www.mycoquebec.org/bas.php?trie=A&l=f&nom=Amanita%20flavoconia%20/%20Amanite%20%C3%A0%20voile%20jaune&tag=Amanita%20flavoconia&gro=13",
     "description": [

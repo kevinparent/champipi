@@ -37,7 +37,7 @@ function loadData(filtres) {
 function getDataEncrypted() {
   if (champiData.length > 0) return champiData;
 
-  const keyHex = CryptoJS.enc.Hex.parse("4368616d706970694b65793230323421");
+ /* const keyHex = CryptoJS.enc.Hex.parse("4368616d706970694b65793230323421");
   const iv = CryptoJS.enc.Base64.parse("nbhEZRI7gIkkjD6iVykMGA==");
 
   // Contenu directement collé depuis donnees_chiffrees.txt
@@ -49,8 +49,8 @@ function getDataEncrypted() {
     { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
   );
 
-  const jsonStr = decrypted.toString(CryptoJS.enc.Utf8);
-  champiData = JSON.parse(jsonStr);
+  const jsonStr = decrypted.toString(CryptoJS.enc.Utf8);*/
+  champiData = window.champiData;//JSON.parse(jsonStr);
 }
 
 function sansAccents(str) {
