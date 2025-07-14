@@ -240,7 +240,7 @@ function insererSuggestion(suggestion) {
 function insererSuggestionNom(suggestion) {
   const mots = searchNameField.value.trim().split(/\s+/);
   mots[mots.length - 1] = suggestion;
-  searchNameField.value = mots.join(" ") + " ";
+  searchNameField.value = suggestion;
 
   autocompleteListNom.style.display = "none";
   searchNameField.focus();
@@ -309,10 +309,9 @@ function afficherSuggestionsPour(mot) {
 }
 
 searchNameField.addEventListener("input", () => {
-  const mots = searchNameField.value.split(/\s+/);
-  const motActuel = mots[mots.length - 1].toLowerCase();
+  const mots = searchNameField.value || "";
 
-  afficherSuggestionsPourNom(motActuel);
+  afficherSuggestionsPourNom(mots);
 });
 
 
