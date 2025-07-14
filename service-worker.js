@@ -1,4 +1,4 @@
-const CACHE_NAME = 'champipi-offline-cache-v1-2025-06-23-1130';
+const CACHE_NAME = 'champipi-offline-cache-v1-2025-07-14-1600';
 const FILES_TO_CACHE = [
   '/champipi/',
   '/champipi/index.html',
