@@ -32,7 +32,15 @@ const searchByNameField = document.getElementById('searchByName');
 
 if (rechercheParNom) rechercheParNom.addEventListener('click', () => {rechercheParNomFunction(searchByNameField.value);});
 // Event Listeners
-if (boutonRecherche) boutonRecherche.addEventListener('click', () => {miseAJourCritere(); });
+if (boutonRecherche) boutonRecherche.addEventListener('click', () => {
+  miseAJourCritere(); 
+
+  gtag('event', 'recherche_libre', {
+    event_category: 'recherche',
+    event_label: 'libre',
+    recherche_valeur: valeurRecherche.value || "" // paramètre personnalisé
+  });
+});
 if (searchButtonCritere) searchButtonCritere.addEventListener('click', () => {ajouterCritereDepuisFormulaire();});
 if (resetButton) resetButton.addEventListener('click', () => {
   ignorerRecherche = false;  // Ignorer la recherche lors de la réinitialisation
