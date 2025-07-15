@@ -74,6 +74,10 @@
       const totalEspèces = observations.length;
       const totalObservations = observations.reduce((acc, item) => acc + item.observations.length, 0);
       const toutesLesDates = observations.flatMap(item => item.observations.map(obs => {
+        if (!obs) {
+          console.warn(`Observation sans données pour ${item.nom}`);
+          return Date.now(); // Utilise la date actuelle si absente
+        }
         if (!obs.date) {
           console.warn(`Observation sans date pour ${obs.champignon}`);
           return Date.now(); // Utilise la date actuelle si absente
