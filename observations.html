@@ -73,7 +73,13 @@
 
       const totalEspèces = observations.length;
       const totalObservations = observations.reduce((acc, item) => acc + item.observations.length, 0);
-      const toutesLesDates = observations.flatMap(item => item.observations.map(obs => new Date(obs.date || Date.now())));
+      const toutesLesDates = observations.flatMap(item => item.observations.map(obs => {
+        if (!obs.date) {
+          console.warn(`Observation sans date pour ${obs.champignon}`);
+          return Date.now(); // Utilise la date actuelle si absente
+        }
+        return new Date(obs.date || Date.now());
+      }));
       const dateMin = new Date(Math.min(...toutesLesDates));
       const dateMax = new Date(Math.max(...toutesLesDates));
 

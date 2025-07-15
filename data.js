@@ -35,7 +35,7 @@ function loadData(filtres) {
 }
 
 function getDataEncrypted() {
-  if (champiData.length > 0) return champiData;
+  if (champiData && champiData.length > 0) return champiData;
 
  /* const keyHex = CryptoJS.enc.Hex.parse("4368616d706970694b65793230323421");
   const iv = CryptoJS.enc.Base64.parse("nbhEZRI7gIkkjD6iVykMGA==");
@@ -51,6 +51,7 @@ function getDataEncrypted() {
 
   const jsonStr = decrypted.toString(CryptoJS.enc.Utf8);*/
   champiData = window.champiData;//JSON.parse(jsonStr);
+  return champiData;
 }
 
 function sansAccents(str) {
